@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post[某次优化实践-Nginx是拿来干什么的]
+rake new_post[SSH登录原理简介]
 rake preview
 
-./push "source branch commit log"
+./push.sh "[new blog]ssh"
