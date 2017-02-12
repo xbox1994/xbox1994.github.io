@@ -3,7 +3,7 @@ layout: post
 title: "SSH登录原理简介"
 date: 2017-01-16 22:19:46 +0800
 comments: true
-categories: 后台技术
+categories: Devops
 ---
 
 每次都用SSH登录,却没有关心过其中的原理,实在没脸用SSH
