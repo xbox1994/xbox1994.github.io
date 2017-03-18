@@ -6,7 +6,7 @@ comments: true
 categories: 翻译
 ---
 译自：https://blog.hartleybrody.com/https-certificates/
-
+<!--more-->
 #HTTPS如何加密连接：每个Web开发者都应该知道的东西
 
 ##为什么
@@ -63,16 +63,18 @@ TLS是一个混合加密系统，意味着它将利用多个加密步骤，我�
 
 记住，A和B都有自己的没有被共享的私钥（100多个数字）。在网络上公开交换的是他们的私钥加上跟和素数的混合体。
 
-A的混合体=（根<sup>A的私钥</sup>）%素数
-B的混合体=（根<sup>B的私钥</sup>）%素数
+_**A的混合体=（根<sup>A的私钥</sup>）%素数**_
+
+_**B的混合体=（根<sup>B的私钥</sup>）%素数**_
+
 %是模，取余数
 
 所以A在常量（根和素数）上加上他的私钥，B也这样做。一旦他们收到对方的混合体，他们执行更多的数学运算来导出会话中的信息。
 
-A的计算：
-（B的混合体<sup>A的私钥</sup>)%素数
-B的计算：
-（A的混合体<sup>B的私钥</sup>)%素数
+
+_**A的计算：（B的混合体<sup>A的私钥</sup>)%素数**_
+
+_**B的计算：（A的混合体<sup>B的私钥</sup>)%素数**_
 
 这个计算公式为A和B产生相同的数字，这个数字就是在会话中被共享的秘密。牛逼！
 
@@ -80,54 +82,65 @@ B的计算：
 
 注意起始颜色（黄色）最终是如何与A和B的颜色混合。这就是最终如何在双方是一样的过程。被通过连接发送的只是中途混合的过程，这对任何监听这个连接的人是没有意义的。
 
-译者来了个Java实现：
+Java实现：
 
-	public class Test1 {
-	    public static final int P=30;//公开的大家都知道的
-	    public static final int G=9;//公开的大家都知道的
-	 
-	    public static void main(String[] args) {
-	        A x = new A();
-	        int one = x.getV();
-	        //分割 A 代表A这边的系统加密  one 代表是给别人的值
-	        B y = new B();
-	        int two = y.getV();
-	        //B 代表另外一边加密 two 代表是给别人的值
-	        System.out.println(x.getKey(two));
-	        System.out.println(y.getKey(one));
-	    }
-	}
-	 
-	class A{
-	    private int a;//自己的私有密值,不会告诉任何人
-	     
-	    public A() {
-	         Random r = new Random(200);
-	        a=r.nextInt();
-	    }
-	     
-	    public int getV(){
-	        return (Test1.G^a)%Test1.P;
-	    }
-	     
-	    public int getKey(int v){
-	        return (v^a)%Test1.P;
-	    }
-	}
-	 
-	class B{
-	    private int b;//自己的私有密值，不会告诉任何人
-	     
-	    public B() {
-	        Random r = new Random(200);
-	        b=r.nextInt();
-	    }
-	    public int getV(){
-	        return (Test1.G^b)%Test1.P;
-	    }
-	     
-	    public int getKey(int v){
-	        return (v^b)%Test1.P;
-	    }
-	}
+	import java.util.Random;
+    
+    public class Main {
+        //公开的大家都知道的根与一个大素数
+        public static final int ROOT = 123;
+        public static final int PRIME = 307;
+    
+        public static void main(String[] args) {
+            A a = new A();
+            int mixtureA = a.getMixture();
+    
+            B b = new B();
+            int mixtureB = b.getMixture();
+    
+            //mixtureA and mixtureB will be transmitted in network, but it is meaningless for anyone
+            System.out.println(mixtureA);
+            System.out.println(mixtureB);
+    
+            //Alice and Bob will get the same key number from each other
+            System.out.println(a.getCommonKey(mixtureB));
+            System.out.println(b.getCommonKey(mixtureA));
+        }
+    }
+    
+    class A {
+        //自己的私有密值,不会告诉任何人
+        private int private_key_number;
+    
+        public A() {
+            Random r = new Random(System.currentTimeMillis());
+            private_key_number = r.nextInt();
+        }
+    
+        public int getMixture() {
+            return (Main.ROOT ^ private_key_number) % Main.PRIME;
+        }
+    
+        public int getCommonKey(int v) {
+            return (v ^ private_key_number) % Main.PRIME;
+        }
+    }
+    
+    class B {
+        //自己的私有密值，不会告诉任何人
+        private int private_key_number;
+    
+        public B() {
+            Random r = new Random(System.currentTimeMillis());
+            private_key_number = r.nextInt();
+        }
+    
+        public int getMixture() {
+            return (Main.ROOT ^ private_key_number) % Main.PRIME;
+        }
+    
+        public int getCommonKey(int v) {
+            return (v ^ private_key_number) % Main.PRIME;
+        }
+    }
 ##对称密钥加密
