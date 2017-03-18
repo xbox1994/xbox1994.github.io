@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["Linux进程后台启动总结"]
+rake new_post["[译]How HTTPS Secures Connections"]
 rake preview
 
 ./push.sh "[new blog]docker with iptables"
