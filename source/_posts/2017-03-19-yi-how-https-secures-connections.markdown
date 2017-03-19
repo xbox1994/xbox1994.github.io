@@ -82,65 +82,105 @@ _**B的计算：（A的混合体<sup>B的私钥</sup>)%素数**_
 
 注意起始颜色（黄色）最终是如何与A和B的颜色混合。这就是最终如何在双方是一样的过程。被通过连接发送的只是中途混合的过程，这对任何监听这个连接的人是没有意义的。
 
-Java实现：
+译者Java实现：
 
-	import java.util.Random;
-    
-    public class Main {
-        //公开的大家都知道的根与一个大素数
-        public static final int ROOT = 123;
-        public static final int PRIME = 307;
-    
-        public static void main(String[] args) {
-            A a = new A();
-            int mixtureA = a.getMixture();
-    
-            B b = new B();
-            int mixtureB = b.getMixture();
-    
-            //mixtureA and mixtureB will be transmitted in network, but it is meaningless for anyone
-            System.out.println(mixtureA);
-            System.out.println(mixtureB);
-    
-            //Alice and Bob will get the same key number from each other
-            System.out.println(a.getCommonKey(mixtureB));
-            System.out.println(b.getCommonKey(mixtureA));
-        }
-    }
-    
-    class A {
-        //自己的私有密值,不会告诉任何人
-        private int private_key_number;
-    
-        public A() {
-            Random r = new Random(System.currentTimeMillis());
-            private_key_number = r.nextInt();
-        }
-    
-        public int getMixture() {
-            return (Main.ROOT ^ private_key_number) % Main.PRIME;
-        }
-    
-        public int getCommonKey(int v) {
-            return (v ^ private_key_number) % Main.PRIME;
-        }
-    }
-    
-    class B {
-        //自己的私有密值，不会告诉任何人
-        private int private_key_number;
-    
-        public B() {
-            Random r = new Random(System.currentTimeMillis());
-            private_key_number = r.nextInt();
-        }
-    
-        public int getMixture() {
-            return (Main.ROOT ^ private_key_number) % Main.PRIME;
-        }
-    
-        public int getCommonKey(int v) {
-            return (v ^ private_key_number) % Main.PRIME;
-        }
-    }
+	import java.math.BigInteger;
+
+	public class Main {
+	    //公开的A和B都知道的素数和素数的原根
+	    public static final BigInteger ROOT = BigInteger.valueOf(5);
+	    public static final BigInteger PRIME = BigInteger.valueOf(97);
+	
+	    public static void main(String[] args) {
+	        ShyMan a = new ShyMan(111);
+	        int mixtureA = a.getMixture();
+	        ShyMan b = new ShyMan(222);
+	        int mixtureB = b.getMixture();
+	
+	        //mixtureA and mixtureB will be transmitted in network, but it is meaningless for anyone
+	        System.out.println(mixtureA);
+	        System.out.println(mixtureB);
+	
+	        //Alice and Bob will get the same key number from each other
+	        System.out.println(a.getCommonKey(mixtureB));
+	        System.out.println(b.getCommonKey(mixtureA));
+	    }
+	}
+	
+	class ShyMan {
+	    //自己的私有密值,不会告诉任何人
+	    private int private_key_number;
+	
+	    public ShyMan(int private_key_number) {
+	        this.private_key_number = private_key_number;
+	    }
+	
+	    public int getMixture() {
+	        return Main.ROOT.pow(private_key_number).mod(Main.PRIME).intValue();
+	    }
+	
+	    public int getCommonKey(int mixture) {
+	        return BigInteger.valueOf(mixture).pow(private_key_number).mod(Main.PRIME).intValue();
+	    }
+	}
 ##对称密钥加密
+公钥交换在每次会话中仅需要发生一次，就是在客户端和服务端连接的时候。一旦他们确认使用这个公钥，客户端和服务端用[对称密钥加密系统](https://en.wikipedia.org/wiki/Symmetric-key_algorithm)，这更有利于高效的通信因为它在每次通信中都节省了一次往返。
+
+在他们使用公钥的基础上，加上一个商定的密码套件（本质上是一个加密算法的集合），客户端和服务端现在就可以加密通信，窥探着也只能看见乱七八糟的数据来回。
+
+##验证
+DH允许双方创建一个私有且共享的密钥，但是他们怎么知道他们得到了对方真正的消息？我们到目前为止还没有谈论过验证这个东西。
+
+如果我拿起我的电话给朋友打电话并且我们用DH来加密，但是有没有可能我的这次通信被截获然后实际上我在和别人通话？我确实在进行安全的通信-一旦我们开始商议DH密钥那么没有任何人能解码我们的通信-但是对方不一定是我们想联系的那个人。那么这样还是非常危险的。
+
+为了解决验证这个问题，我们需要[公钥基础设施](https://en.wikipedia.org/wiki/Public_key_infrastructure)来确保他确实是他。这个基础设施的建立是为了创建，管理和注销签名证书。证书是一个头疼的事这是因为你要付费，为了让你的网站使用HTTPS。
+
+但是什么是证书？它怎么就能让通信变得安全？
+##证书
+从一个比较高的角度来看，公钥证书是个用数字签名将机器的公钥和机器的身份绑定的文件，证书上的数字签名是用来让某个个人或组织担保一个特定的公钥属于另外某个个人或者组织的。
+
+证书基本上将域名与特定公钥联系起来。这就防止监听者看到公钥，然后假装成服务端欺骗客户端。
+
+在上面电话通信的例子中，攻击者可以试图将他的公钥替换掉我朋友的，但是证书上的签名不能被替换。
+
+为了被一般浏览器信任，证书必须被证书证书颁发机构（CA）签名。CA是执行手动检查和审查的公司，确保申请的实体是一个
+
+1. 真实的人或者存在于公共记录的商业实体
+2. 他们申请的证书有可控制的域名
+
+一旦CA验证申请人是真实的并且有他们自己的域名，CA将给证书签名，基本上如果他们批准之后，网站的公钥就应该被信任了。
+
+你的浏览器预先加载了一个受信任的CA列表。如果服务器返回一个不是由受信任CA颁发的证书，他讲闪烁一个大红色的错误警告。否则任何人都可以绕过去从而“签署”伪造证书。
+
+![](https://blog.hartleybrody.com/wp-content/uploads/2013/07/https-security-warning.gif)
+
+因此即使攻击者使用它们自己机器的公钥并且生成证书说这个证书是facebook的，浏览器不能信任他因为证书的办法机构不是CA。
+
+##关于证书的其他事项
+**扩展验证证书（EV）**
+
+除了通用的X.509证书，[扩展验证证书](https://en.wikipedia.org/wiki/Extended_validation)承诺了一个更强的信任级别。
+
+当授予一个EV时，CA必须做更多检查拥有域名的实体的身份（通常需要护照或者水电费）。
+
+这种证书让浏览器地址栏变绿，除了显示通常只显示的锁图标。
+
+**可服务多个网站的同一服务器**
+
+因为TLS在HTTP连接建立之前发生握手，如果多个网站建立在IP地址相同的同一个服务器上就会有问题。
+
+命名的虚拟主机路由发生在Web服务器中，但是握手发生在连接到达之前。该系统的单个证书需要被发送到该计算机托管的任何站点，这可能会产生[共享主机环境的问题](https://en.wikipedia.org/wiki/Transport_Layer_Security#Support_for_name-based_virtual_servers)。
+
+如果你用网站运营公司，那么一般你需要购买专用的IP地址在你设置HTTPS之前。否则当网站更新时每次都需要获取新证书（并且从CA那里再次验证）译者注：为什么？AWS是一个反例？
+
+##补充：HTTPS加密全过程
+参考：
+
+http://robertheaton.com/2014/03/27/how-does-https-actually-work/
+
+http://mp.weixin.qq.com/s?__biz=MjM5MjY3OTgwMA==&mid=2652455231&idx=1&sn=42fc62fd1b27e3f9355b83fcc0f91e77&chksm=bd4f73288a38fa3eb9afab8b272c103a9ee967aae2c67bb07415768c4312f426ceb13628e3f9&mpshare=1&scene=23&srcid=03190fyiPrWEm3f0UXBJTCSb%23rd
+
+1. Hello - 握手开始于客户端发送Hello消息。包含服务端为了通过SSL连接到客户端的所有信息，包括客户端支持的各种密码套件和最大SSL版本。服务器也返回一个Hello消息，包含客户端需要的类似信息，包括到底使用哪一个加密算法和SSL版本。
+2. 证书交换 - 现在连接建立起来了，服务器必须证明他的身份。这个由SSL证书实现，像护照一样。SSL证书包含各种数据，包含所有者名称，相关属性（域名），证书上的公钥，数字签名和关于证书有效期的信息。客户端检查它是不是被CA验证过的。注意服务器被允许需求一个证书去证明客户端的身份，但是这个只发生在敏感应用。
+3. 密钥交换 - 先使用RSA非对称公钥加密算法（客户端生成一个对称密钥，然后用SSL证书里带的服务器公钥将改对称密钥加密。随后发送到服务端，服务端用服务器私钥解密，到此，握手阶段完成。）或者DH交换算法（上面有）在客户端与服务端双方确定一将要使用的密钥，这个密钥是双方都同意的一个简单，对称的密钥，这个过程是基于非对称加密方式和服务器的公钥/私钥的。
+4. 加密通信 - 在服务器和客户端加密实际信息是用到对称加密算法，用哪个算法在Hello阶段已经确定。对称加密算法用对于加密和解密都很简单的密钥，这个密钥是基于第三步在客户端与服务端已经商议好的。与需要公钥/私钥的非对称加密算法相反。
