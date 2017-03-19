@@ -78,7 +78,9 @@ _**B的计算：（A的混合体<sup>B的私钥</sup>)%素数**_
 
 这个计算公式为A和B产生相同的数字，这个数字就是在会话中被共享的秘密。牛逼！
 
-为了少一些数学概念，维基有一个很好的有混合颜色的图![](https://blog.hartleybrody.com/wp-content/uploads/2013/07/Diffie-Hellman_Key_Exchange.png)
+为了少一些数学概念，维基有一个很好的有混合颜色的图
+
+![](https://blog.hartleybrody.com/wp-content/uploads/2013/07/Diffie-Hellman_Key_Exchange.png)
 
 注意起始颜色（黄色）最终是如何与A和B的颜色混合。这就是最终如何在双方是一样的过程。被通过连接发送的只是中途混合的过程，这对任何监听这个连接的人是没有意义的。
 

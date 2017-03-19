@@ -1,5 +1,5 @@
-{% if page.date %}{% capture time %}{{ page.date_time_html }}{% endcapture %}{% endif %}
-{% if post.date %}{% capture time %}{{ post.date_time_html }}{% endcapture %}{% endif %}
+{% if page.date %}{% capture time %}{{ page.date_text }}{% endcapture %}{% endif %}
+{% if post.date %}{% capture time %}{{ post.date_text }}{% endcapture %}{% endif %}
 
-{% if page.updated %}{% capture updated %}{{ page.date_time_updated_html }}{% endcapture %}{% endif %}
-{% if post.updated %}{% capture updated %}{{ post.date_time_updated_html }}{% endcapture %}{% endif %}
+{% if page.updated %}{% capture updated %}{{ page.date_updated_text }}{% endcapture %}{% endif %}
+{% if post.updated %}{% capture updated %}{{ post.date_updated_text }}{% endcapture %}{% endif %}
