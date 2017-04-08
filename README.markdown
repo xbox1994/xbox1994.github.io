@@ -7,4 +7,4 @@ rake new_page[about]
 rake new_post["[译]How HTTPS Secures Connections"]
 rake preview
 
-./push.sh "[new blog]docker with iptables"
+./push.sh "[feature] add comment"
