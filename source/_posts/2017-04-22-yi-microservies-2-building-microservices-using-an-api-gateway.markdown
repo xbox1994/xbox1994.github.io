@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[译][Microservies 2]Building Microservices: Using an API Gateway"
+title: "[译][Microservies 2]构建微服务:使用API网关"
 date: 2017-04-22 22:26:33 +0800
 comments: true
 categories: Devops
