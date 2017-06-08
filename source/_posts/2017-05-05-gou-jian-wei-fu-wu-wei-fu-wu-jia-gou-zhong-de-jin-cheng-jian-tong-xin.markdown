@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "[译][Microservies 3]构建微服务:微服务架构中的进程间通信"
+title: "[译][MicroService 3]构建微服务:微服务架构中的进程间通信"
 date: 2017-05-05 14:39:20 +0800
 comments: true
-categories: Microservies
+categories: MicroService
 ---
 
 在单体应用上，组件通过语言级别的方法或者方法彼此调用。相比之下，基于微服务的应用是在多台机器上运行的分布式系统。每个服务实例通常是一个进程。

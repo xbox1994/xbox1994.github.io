@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["[译][Microservies 7]将巨无霸重构成微服务"]
+rake new_post["[译][Microservies 6]选择一个微服务部署策略"]
 rake preview
 
-./push.sh "[blog] post microservice 7 and change the theme"
+./push.sh "[blog] post microservice 6"

@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "[译][Microservies 7]将巨无霸重构成微服务"
+title: "[译][MicroService 7]将巨无霸重构成微服务"
 date: 2017-06-01 23:08:21 +0800
 comments: true
-categories: Microservies
+categories: MicroService
 ---
 
 <!--more-->
