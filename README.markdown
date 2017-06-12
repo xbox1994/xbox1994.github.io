@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["一次脑暴+Inception的过程"]
+rake new_post["对CI/CD与分支模型的理解"]
 rake preview
 
-./push.sh "[blog] 一次脑暴+Inception的过程"
+./push.sh "[blog] 对CI/CD与分支模型的理解"
