@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["对CI/CD与分支模型的理解"]
+rake new_post["监听器的前世今生"]
 rake preview
 
-./push.sh "[about] update about"
+./push.sh "[blog] 监听器的前世今生"
