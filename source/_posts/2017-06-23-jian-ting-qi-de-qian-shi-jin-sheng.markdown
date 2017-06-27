@@ -81,8 +81,10 @@ public void multicastEvent(final ApplicationEvent event, ResolvableType eventTyp
 
 在使用SpringApplication.run时，会调用multicastEvent(new ApplicationStartedEvent())方法调用所有注册了ApplicationStartedEvent的监听器，还有其他官方提供的监听事件可从[Spring官方文档](https://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#context-functionality-events)找到。
 
-##结合JPA
-还有一种结合JPA使用的监听器，通过在JPA实体中注册一个JPA监听器，然后在该监听器中publish事件给Spring框架，最后让Spring将该事件广播给所有注册过该事件的监听器。无图无XX，请叫我灵魂画师。
+##结合JPA监听器
+Spring中存在另一种监听器：JPA监听器。首先我们要明确JPA监听器的意义，JPA是针对数据模型的监听，当数据模型被修改的时候可以触发，具体参见[这里](https://docs.jboss.org/hibernate/orm/4.0/hem/en-US/html/listeners.html)。Spring应用监听器是对于框架内部流程与自定义事件的监听。
+
+通过在JPA实体中注册一个JPA监听器，然后在该监听器中publish事件给Spring框架，最后让Spring将该事件广播给所有注册过该事件的监听器。无图无XX，请叫我灵魂画师。
 
 {% img /images/blog/2017-06-23_2.png 'image' %}
 
@@ -126,10 +128,10 @@ public class TodoTaskDoneEventListener implements ApplicationListener<TodoTaskDo
 ```
 之后，就可以使用EventPublisher.publish(new Event())来发布自定义的事件，用在数据库的增删改查前后的操作比较方便。
 
-###使用场景
-JPA监听器的使用场景与Spring应用监听器的使用场景有一定差异。首先我们要明确JPA监听器的意义，JPA是针对数据模型的监听，当数据模型被修改的时候可以触发，具体参见[这里](https://docs.jboss.org/hibernate/orm/4.0/hem/en-US/html/listeners.html)。Spring应用监听器是对于框架内部流程与自定义事件的监听。
+这里至于为什么绕一个大圈子来处理而不是直接在TodoTaskEntityListener中写业务代码，因为解耦、分层。Task所在的数据持久层的监听器不应该替代业务逻辑层应该做的事情。下面的使用场景里会提到。
 
-所以，可以把JPA监听器看作持久层之内，但区别于数据模型的一层。
+###使用场景
+JPA监听器的使用场景与Spring应用监听器的使用场景有一定差异。可以把JPA监听器看作持久层之内，但区别于数据模型的一层。
 
 使用场景：
 
