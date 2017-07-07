@@ -21,7 +21,7 @@ categories: MicroService
 DAO层：分两种情况。
 
 * 不写。因为通常来说DAO层不应该包含复杂逻辑，逻辑在上两层已经留够空间去处理，应当仅是包含SQL语句的执行或者调用数据库对应的Template工具类，所以没有什么东西可以测。所以DAO层单元测试也不应该依赖外部系统，应该放到集成测试里写。[这里](https://www.petrikainulainen.net/programming/testing/writing-tests-for-data-access-code-unit-tests-are-waste/)有篇比较极端的文章支持此观点。
-* 写。与不写的观点持反对意见的例外是，在DAO层使用Hibernate/Redis Template的工具来手动调用。
+* 写。与不写的观点持反对意见的例外是，有一些复杂的查询调用或者复杂的SQL语句，在自己不能确保绝对正确的情况下，写DAO层的测试也是有必要的。
 
 ##Service
 Service层：
@@ -101,9 +101,9 @@ Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pa
 官方有两个实现的例子，在[这里](http://cloud.spring.io/spring-cloud-contract/spring-cloud-contract.html#_step_by_step_guide_to_cdc)，忍不住吐槽一下，这个项目都两年了才100多个星星，跟着Spring和Cloud两大标签走竟然还能这么少的星星，是后端技术人员的保守跟前端那种几个月上万颗星星的浮夸相反吗？还有要注意的是除了官方文档几乎没有任何资料可以查询，给的例子用的又是很多处于BUILD版本的库，这是使用它最大的难点。
 
 ###疑问
-你应该会误认为SCC使用的是提供者驱动契约模式，但其实并不是，刚刚向SCC的作者Grzejszczak确认了这一点，因为CDC的思想是消费者有需求的时候然后根据这个需求去开发提供者的API，注意第一步当我在Consumer开发的时候已经意识到需要什么API了，然后进行第二步。原话是
+你应该会误认为SCC使用的是提供者驱动契约模式，但其实并不是，刚刚向SCC的作者Grzejszczak确认了这一点，因为CDC的思想是消费者有需求的时候然后根据这个需求去开发提供者的API，注意第一步当我在Consumer开发的时候已经意识到需要什么API了，然后进行我作为Consumer跑到Provider中去写一个契约。原话是
 
-> that means that the source of truth in terms of contract validity is the provider side but what drives the change of the contract is the consum
+> It's the consumer that writes its expectations. The contracts are stored on the producer side cause from those contracts stubs are generated. That means that the source of truth in terms of contract validity is the provider side but what drives the change of the contract is the consumer
 
 ##E2E测试是什么
 
@@ -113,3 +113,4 @@ Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pa
 以上是本人总结，难免偏颇，不过本人会根据本人持续变化的理解持续更新。
 
 V1.0：2017.07.07 发表
+V1.1：2017.07.08 更新DAO层理解与SCC作者解释
