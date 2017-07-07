@@ -94,7 +94,7 @@ Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pa
 
 1. 在Consumer中使用TDD开发，编写好发送请求的测试代码
 2. 在Provider内定义并生成Contract，SCC会根据Contract自动生成测试代码作为契约测试，此时跑Provider的契约测试肯定是挂的
-3. 实现Provider，跑过契约测试之后将生成的契约文件交给Consumer当做Mock服务器的契约规范来验证Contract是否匹配
+3. 实现Provider，跑过契约测试之后将生成的契约文件交给Consumer当做WireMock服务器的契约规范来验证Contract是否匹配
 4. 在Consumer端编写契约测试后用SCC根据契约文件启动Mock服务器来测试Consumer是否符合契约
 
 ###例子
@@ -104,6 +104,16 @@ Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pa
 你应该会误认为SCC使用的是提供者驱动契约模式，但其实并不是，刚刚向SCC的作者Grzejszczak确认了这一点，因为CDC的思想是消费者有需求的时候然后根据这个需求去开发提供者的API，注意第一步当我在Consumer开发的时候已经意识到需要什么API了，然后进行我作为Consumer跑到Provider中去写一个契约。原话是
 
 > It's the consumer that writes its expectations. The contracts are stored on the producer side cause from those contracts stubs are generated. That means that the source of truth in terms of contract validity is the provider side but what drives the change of the contract is the consumer
+
+好处：
+
+1. 自动生成提供者端的测试，当消费者在提供者端写好契约之后，提供者如果不实现应有API接口，那么SCC根据契约生成的测试会无法通过
+2. Groovy DSL来定义契约，天生适合开发契约的语言
+
+劣势：
+
+1. 支持语言太少，资料太少
+2. 没有Pact的强制消费者驱动方式，如果我直接在SCC上开发提供者然后去写消费者是没问题的
 
 ##E2E测试是什么
 
