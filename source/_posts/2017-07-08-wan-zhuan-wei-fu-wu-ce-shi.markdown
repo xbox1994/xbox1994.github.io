@@ -69,7 +69,7 @@ Controller层：
 `消费者驱动契约模式`在2006年老马引用的[这篇文章](https://martinfowler.com/articles/consumerDrivenContracts.html)中提出，在[这篇文章](http://dius.com.au/2016/02/03/microservices-pact/)中解释的更接地气，是一种测试驱动开发的契约测试模式，携带着敏捷与TDD的好处，更重要的是**将提供者开发API的局面扭转成消费者驱动开发**，由于提供者开发时不清楚消费者具体需要什么，所以在集成的时候会非常难做。将文档化的API转换为契约测试依赖的数据。
 
 ##如何开发
-下图是CDC的开发模式，简单讲是消费者撰写契约让自己与提供者去分别跑契约测试，从而验证双方契约匹配。下面会根据具体开发流程讲到两个符合这种模式的工具来规范化我们的契约测试的开发，因为人们的约定总是不够优雅并且会被打破滴所以不得不借助工具。
+下图是CDC的开发模式，简单讲是消费者撰写契约和对应的契约测试让自己与提供者去分别跑契约测试，从而验证双方契约匹配。下面会根据具体开发流程讲到两个符合这种模式的工具来规范化我们的契约测试的开发，因为一些便捷的功能以及人们的约定总是不够优雅并且会被打破滴所以不得不借助工具。
 
 {% img /images/blog/2017-07-08_2.png 'image' %}
 
@@ -108,9 +108,9 @@ Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pa
 
 > It's the consumer that writes its expectations. The contracts are stored on the producer side cause from those contracts stubs are generated. That means that the source of truth in terms of contract validity is the provider side but what drives the change of the contract is the consumer
 
-好处：
+优势：
 
-1. 自动生成提供者端的测试，当消费者在提供者端写好契约之后，提供者如果不实现应有API接口，那么SCC根据契约生成的测试会无法通过
+1. 根据契约自动生成提供者端的集成测试代码，即覆盖到了集成测试，也覆盖到了提供者端的契约测试
 2. Groovy DSL来定义契约，天生适合开发契约的语言
 
 劣势：
@@ -119,6 +119,7 @@ Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pa
 2. 没有Pact的强制消费者驱动方式，如果我直接在SCC上开发提供者然后去写消费者是没问题的
 
 ##E2E测试是什么
+有请Cucumber、CapybaraQA登场
 
 未完待续
 
@@ -133,3 +134,4 @@ http://www.51testing.com/html/43/n-3718143.html
 V1.0：2017.07.07 发表
 V1.1：2017.07.08 更新DAO层理解与SCC作者解释
 V1.2：2017.07.10 更新集成测试的理解
+V1.3：2017.07.14 更新SCC优势
