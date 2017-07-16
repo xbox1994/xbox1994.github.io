@@ -3,7 +3,7 @@ layout: post
 title: "你的名字。"
 date: 2016-12-25 15:57:48 +0800
 comments: true
-categories: 这不是影评
+categories: 生活绝非编码
 ---
 
 某夜,趟雨,迟到5分钟,坐下,观影,值了.

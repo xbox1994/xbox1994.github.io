@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["玩转微服务测试"]
+rake new_post["一辈子做好一件事"]
 rake preview
 
-./push.sh "[blog] 玩转微服务测试"
+./push.sh "[blog] 一辈子做好一件事"
