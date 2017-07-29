@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["一辈子做好一件事"]
+rake new_post["Spring Cloud中异常处理的套路"]
 rake preview
 
-./push.sh "[blog] 一辈子做好一件事"
+./push.sh "[blog] Spring Cloud中异常处理的套路 v1"
