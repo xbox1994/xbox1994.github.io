@@ -45,7 +45,7 @@ public class ControllerAdvice {
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResult handleOtherException(Throwable e) {
-        logger.error("system error", e);
+        RestControllerAdvice
         return new ErrorResult(ErrorCode.UNKNOWN, e.getMessage());
     }
 
@@ -59,7 +59,16 @@ public class ControllerAdvice {
 }
 
 ```
-这种异常处理方式个人认为在我们代码中越多越好，如果能在代码中涵盖业务中的很多边界值，对于整体应用的**健壮性**提升有着非常大的帮助，并且对于前端来说，前端可以根据此异常信息给予用户更加明确**友好的错误提示**。
+这种异常处理方式个人认为在我们代码中越多越好，如果能在代码中涵盖业务中的很多边界值，对于整体应用的**健壮性**提升有着非常大的帮助，并且对于前端来说，前端可以根据此异常信息给予用户更加明确**友好的错误提示**：
+
+```
+携带错误码为500的错误请求：
+{
+    "message": "cannot find pre inspection base info by order id: 1",
+    "error_code": "SERVICE_REQUEST_ERROR"
+}
+```
+
 ##系统异常
 这种异常在调试时非常常见，要么是某个服务挂掉了，或者超时这样的情况，跟业务没有关系，也不是代码中的BUG导致的，这个时候我们必须设计好一个预案去cover这种风险。
 
@@ -81,10 +90,12 @@ public class ControllerAdvice {
 
 和系统异常一样，这些异常由于是Throwable异常类下的异常，所以会被返回给前端。
 #异常处理流程
-异常处理流程在微服务架构中可能会比直接向前端发送异常信息这个过程多上一环，比如多了Service向BFF层级传递异常一级。
+异常处理流程在微服务架构中可能会比直接向前端发送异常信息这个过程麻烦一些，如Service向BFF层级传递异常一级。
 ##异常在服务之间的传递
-BFF -> 服务 starUML
+API Gateway (with Zuul) => BFF => 某服务
 
-等待V2补充
-##与REST配合使用
-以上只是后端处理异常的流程与输出，我们还需要与前端进行密切的沟通，确保前端能从我们返回的错误码、错误信息组合出对应的前端报错信息。
+由于BFF与服务之间是通过Feign连接，所以我们需要自己统一一下错误格式成为业务相关的格式返回给前端而不是直接将细化某个Java异常类的全部异常信息交给前端。
+
+{% img /images/blog/2017-07-30.png 'image' %}
+
+这里可以丰富完善一下。
