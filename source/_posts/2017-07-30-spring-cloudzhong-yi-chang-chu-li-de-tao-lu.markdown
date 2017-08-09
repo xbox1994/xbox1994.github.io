@@ -89,7 +89,7 @@ public class ControllerAdvice {
 我把代码中存在的BUG叫做代码异常，与系统异常不同的是，这种异常只能尽量避免与预防。比如程序员没有考虑到的情况导致空指针异常、SQL语句编写错误导致SQLException。在线上环境是非常严重的错误，需要立马开hotfix分支去修的，因为没有编写对应的业务处理方式，最严重的后果可能导致某个用户扣了钱但是没有显示支付成功。
 
 和系统异常一样，这些异常由于是Throwable异常类下的异常，所以会被返回给前端。
-#异常处理流程
+#异常处理流程与规范
 异常处理流程在微服务架构中可能会比直接向前端发送异常信息这个过程麻烦一些，如Service向BFF层级传递异常一级。
 ##异常在服务之间的传递
 API Gateway (with Zuul) => BFF => 某服务
@@ -98,4 +98,17 @@ API Gateway (with Zuul) => BFF => 某服务
 
 {% img /images/blog/2017-07-30.png 'image' %}
 
-这里可以丰富完善一下。
+在这张图中，在BFF中检测参数是否匹配，在Service中检测是否资源存在，如果在BFF中抛出异常，则将INVALID_PARAMETER异常返回给前端，如果在Service中抛出异常，则将SERVICE_REQUEST_ERROR返回给前端。也就是将异常做出简单的分类：业务异常、非业务异常，非业务异常中可以像上面分类一样继续分类。
+##约定返回格式
+前后端统一错误格式，需要规定如下：
+
+* 返回格式：JSON
+* 返回请求状态码：根据不同请求对应的状态码意义返回
+* 返回具体格式如下
+
+```
+{
+   "message": "reservation details doesn't exist with id: xxx",
+   "errorCode": "SERVICE_REQUEST_ERROR",
+}
+```
