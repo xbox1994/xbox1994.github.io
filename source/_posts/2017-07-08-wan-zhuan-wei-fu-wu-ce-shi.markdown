@@ -28,13 +28,15 @@ Service层：
 
 * 一定要写。服务层一般拥有比较复杂的业务逻辑，可能调用到的其他服务请Mock出来。
 
-##Controller
-Controller层：
+##其他（如Controller、Utils、Domain）
 
-* 不一定要写。如果有比较复杂的业务逻辑则需要写。此时测Controller中的业务逻辑会调用Service，那么请Mock Service。
+* 如果有**比较复杂的逻辑**则需要写。如果是测Controller中的业务逻辑会调用Service，那么请Mock Service。
 
 #集成测试如何写
-**集成测试是将多个功能模块组合在一起进行的测试**。与单元测试相同之处在于**关注的是某个层级内部的实现**单元测试关注的层级是方法级别，集成测试关注的级别是应用级别，换句话说就是系统内部的各个层级之间是否能正常协同工作。好处是能发现单元测试无法发现的问题，比如连接数据库端口问题、层级之间调用问题；缺点是测试经过的代码太多，难以追踪BUG所在并且花费的时间比单元测试长很多。
+**集成测试是将多个功能模块组合在一起进行的测试**。有两种层级的集成测试：
+
+* 服务之间的集成测试。好处是能发现单元测试无法发现的问题，比如连接数据库端口问题、层级之间调用问题；缺点是测试经过的代码太多，难以追踪BUG所在并且花费的时间比单元测试长很多。
+* 单个服务内部的集成测试。与单元测试相同之处在于**关注的是某个层级内部的实现**单元测试关注的层级是方法级别，集成测试关注的级别是应用级别，换句话说就是系统内部的各个层级之间是否能正常协同工作。
 
 ##当集成测试遇上微服务
 微服务架构将一个应用程序划分成多个有自己业务或功能职责的小服务，服务之间相互协作、互相配合调用为整个应用提供服务支持，服务之间通常采用REST API通信，然而在微服务中，集成测试的"特点"被放大了很多倍：
@@ -47,12 +49,8 @@ Controller层：
 所以我们Team现在采用的集成测试是：单个服务依赖的其他服务Mock出来，比如对于依赖的外部服务则需要Mock出来，数据库则使用类似的H2内存数据库代替MySQL进行测试，所以我们要写的测试就的是发送请求到本地服务器及内存数据库，在内存数据库增删改查。
 
 #契约测试如何写
-在老马给出的测试金字塔中，契约测试处于很尴尬的位置，因为图中根本就没有，不过老马要强调的是应该具有比通过GUI运行的高级端到端测试更多的低级单元测试，也没有谈到微服务，当然在这个上下文中是比较合理的。
-
-{% img /images/blog/2017-07-08_1.png 'image' %}
-
 ##微服务中的契约测试
-然而在关于微服务架构的测试中，契约测试有着至关重要的地位。甚至可以说**契约测试的出现，将线上集成测试模式转换成线下的单元测试**。
+然而在关于微服务架构的测试中，契约测试有着至关重要的地位。**契约测试的出现，将服务之间的集成测试模式一定程度上转换成服务内部的集成测试**。
 
 在单体应用中，大部分功能层级之间的调用是函数方法的调用，属于在本地内存中通过Java虚拟机的实现方式的调用，如果与其他服务集成不多，那么契约测试将无用武之地。在微服务架构中，情况平衡了一些，一个服务会经常调用另外的一个服务获取或同步数据，业务一旦复杂起来，服务之间也会拥有较为复杂调用的关系，虽然BFF(Backend For Frontend)减缓了这个情况，但加强了BFF与服务之间的联系。
 
@@ -64,7 +62,8 @@ Controller层：
 * Provider：服务的提供者，接收Consumer的请求。
 * Consumer: 服务的消费者，是向Provider发起请求。
 * Contract: 合同、契约，Provider与Consumer的交互方式。
-* 由于双方是根据生成的契约进行测试，从而可以达到**独立测试**的好处，不需要双方之间发生网络交互。
+
+划重点！由于双方是根据生成的契约进行测试，从而可以达到**独立测试**的好处，不需要双方之间发生网络交互。
 
 `消费者驱动契约模式`在2006年老马引用的[这篇文章](https://martinfowler.com/articles/consumerDrivenContracts.html)中提出，在[这篇文章](http://dius.com.au/2016/02/03/microservices-pact/)中解释的更接地气，是一种测试驱动开发的契约测试模式，携带着敏捷与TDD的好处，更重要的是**将提供者开发API的局面扭转成消费者驱动开发**，由于提供者开发时不清楚消费者具体需要什么，所以在集成的时候会非常难做。将文档化的API转换为契约测试依赖的数据。
 
@@ -76,37 +75,47 @@ Controller层：
 {% img /images/blog/2017-07-08_3.png 'image' %}
 
 ##Pact
-###简介
-Pact就是这样的测试工具，在技术雷达中提到过多次，作为CDC的实践，Pact名列前茅。
-
-###开发流程
-
-1. 在Consumer通过编写请求与返回格式产生Contract
-2. 编写Consumer的契约测试来测试刚刚写出来的Contract是否满足Consumer调用需求
-3. 在本地测试通过后将契约文件交给Provider
-4. Provider使用契约文件测试Contract是否匹配。由于两端均跑过基于Contract的测试来验证契约，所以保证了两端契约是匹配的，以后不管哪一方修改端口之后一定会触发契约测试失败。
-
-###例子
-Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pact Swift。参见[官网](https://docs.pact.io/)获取样例。
+Pact就是这样的测试工具，在技术雷达中提到过多次，作为CDC的实践，Pact名列前茅。Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pact Swift。参见[官网](https://docs.pact.io/)获取样例。本文主要以SCC为例讲解。
 
 ##Spring Cloud Contract
 ###简介
 该项目于2015年开始创建核心代码，GitHub上Star虽然不多，但是功能比较强大，[这里](http://www.infoq.com/cn/news/2017/04/spring-cloud-contract)有一篇关于作者的访谈文章，对于理解这个项目比较有帮助。
 
-###开发流程
+###官方开发流程
+官方开发流程在[这里](http://cloud.spring.io/spring-cloud-contract/spring-cloud-contract.html#_step_by_step_guide_to_cdc)。下面是简化版本。
 
-1. 在Consumer中使用TDD开发，编写好发送请求的测试代码
-2. 在Provider内定义并生成Contract，SCC会根据Contract自动生成测试代码作为契约测试，此时跑Provider的契约测试肯定是挂的
-3. 实现Provider，跑过契约测试之后将生成的契约文件交给Consumer当做WireMock服务器的契约规范来验证Contract是否匹配
-4. 在Consumer端编写契约测试后用SCC根据契约文件启动Mock服务器来测试Consumer是否符合契约
+Consumer端：
+
+1. 在Consumer中使用TDD开发，编写好契约测试/集成测试的代码
+2. 实现Consumer
+3. 在Provider的代码库中定义并生成Contract
+4. 把生成的契约文件交给Consumer当做WireMock服务器的契约规范来跑第一步中的测试验证Contract是否匹配
+
+
+Provider端：
+
+1. SCC会根据Consumer写的契约自动生成测试代码作为契约测试/集成测试，此时跑Provider的契约测试肯定是挂的
+2. 实现Provider
+3. 在跑测试之前在数据库中提供契约中匹配的数据
+4. 运行SCC生成的测试
+
+###流程优化
+官方开发流程中，作为Consumer端，契约测试是需要自己手写的，但如果某个服务属于前端的Provider又属于后端的Consumer时，SCC帮我们生成的Provider端的测试可以当做作为测Consumer的测试。所以在我们项目中开发流程是这样的：
+
+1. 前端开发与后端开发确定契约，并写到BFF代码库中
+2. 作为前端开发，使用此契约做为mock server的数据来源，开发调试前端
+3. 作为后端开发，先实现Service层级的代码和契约供BFF的契约测试使用，然后再实现BFF中的代码与契约。
 
 ###例子
 官方有两个实现的例子，在[这里](http://cloud.spring.io/spring-cloud-contract/spring-cloud-contract.html#_step_by_step_guide_to_cdc)，忍不住吐槽一下，这个项目都两年了才100多个星星，跟着Spring和Cloud两大标签走竟然还能这么少的星星，是后端技术人员的保守跟前端那种几个月上万颗星星的浮夸相反吗？还有要注意的是除了官方文档几乎没有任何资料可以查询，给的例子用的又是很多处于BUILD版本的库，这是使用它最大的难点。
 
-###疑问
-你应该会误认为SCC使用的是提供者驱动契约模式，但其实并不是，刚刚向SCC的作者Grzejszczak确认了这一点，因为CDC的思想是消费者有需求的时候然后根据这个需求去开发提供者的API，注意第一步当我在Consumer开发的时候已经意识到需要什么API了，然后进行我作为Consumer跑到Provider中去写一个契约。原话是
+###消费者驱动？
+你可能会误认为SCC使用的是提供者驱动契约模式，因为契约是写在Provider中，但其实并不是，向SCC的作者Grzejszczak确认了这一点，因为CDC的思想是消费者有需求的时候然后根据这个需求去开发提供者的API，注意第一步当我在Consumer开发的时候已经意识到需要什么API了，然后进行我作为Consumer跑到Provider的代码库中去写一个契约。原话是
 
 > It's the consumer that writes its expectations. The contracts are stored on the producer side cause from those contracts stubs are generated. That means that the source of truth in terms of contract validity is the provider side but what drives the change of the contract is the consumer
+
+###其他语言怎么办？
+SCC没有提供其他语言的测试框架，那么如何完成作为消费者的前端的契约测试呢？向作者讨要之后作者给了一个[例子](https://github.com/marcingrzejszczak/sc-contract-car-rental)，具体做法README中有。
 
 优势：
 
@@ -119,7 +128,7 @@ Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pa
 2. 没有Pact的强制消费者驱动方式，如果我直接在SCC上开发提供者然后去写消费者是没问题的
 
 ##E2E测试是什么
-有请Cucumber、CapybaraQA登场
+有请Cucumber、Capybara、QA登场
 
 未完待续
 
@@ -127,11 +136,16 @@ Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pa
 以上是本人总结，难免偏颇，不过本人会根据本人持续变化的理解持续更新。
 
 参考资料：
-http://www.51testing.com/html/43/n-3718143.html
+
+* http://www.51testing.com/html/43/n-3718143.html
+* 公司内部文章
 
 ***
 
+```
 V1.0：2017.07.07 发表
 V1.1：2017.07.08 更新DAO层理解与SCC作者解释
 V1.2：2017.07.10 更新集成测试的理解
 V1.3：2017.07.14 更新SCC优势
+v1.4：2017.08.16 补充所有测试说明
+```
