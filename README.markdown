@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["Spring Cloud中异常处理的套路"]
+rake new_post["开源产品商业化成功是一种怎样的体验"]
 rake preview
 
-./push.sh "[blog] Spring Cloud中异常处理的套路 v1"
+./push.sh "[blog] 开源产品商业化成功是一种怎样的体验"
