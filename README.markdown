@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["开源产品商业化成功是一种怎样的体验"]
+rake new_post["什么时候能用上设计模式？"]
 rake preview
 
-./push.sh "[blog] 开源产品商业化成功是一种怎样的体验"
+./push.sh "[blog] 什么时候能用上设计模式？"
