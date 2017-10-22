@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["什么时候能用上设计模式？"]
+rake new_post["从URL开始，定位世界"]
 rake preview
 
-./push.sh "[blog] 什么时候能用上设计模式？"
+./push.sh "[blog] 从URL开始，定位世界"

@@ -24,7 +24,7 @@ categories: 后台技术
 
 ##设计
 
-{% img /images/blog/2017-10-18.png 'image' %}
+{% img /images/blog/2017-10-08.png 'image' %}
 
 代码请见：[这里](https://github.com/xbox1994/DesignPattern/tree/master/src/PipelineFilter)
 

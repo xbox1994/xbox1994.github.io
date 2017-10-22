@@ -3,7 +3,7 @@ layout: post
 title: "《Docker进阶与实战》笔记-基本知识篇"
 date: 2017-05-19 00:09:41 +0800
 comments: true
-categories: Docker
+categories: Devops
 ---
 
 <!--more-->
