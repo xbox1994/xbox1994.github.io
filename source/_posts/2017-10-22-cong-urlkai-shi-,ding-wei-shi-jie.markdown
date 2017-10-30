@@ -120,7 +120,7 @@ www.google.com.		300	IN	A	216.58.200.228
 * 第一次与第二次握手完成意味着：A能发送请求到B，并且B能解析A的请求
 * 第二次与第三次握手完成意味着：A能解析B的请求，并且B能发送请求到A
 
-这样就保证了**A与B之间既能相互发送请求也能相互接收解析请求**。同时**避免了因为网络延迟产生的重复连接问题**，比如A发送一次连接请求但网络延迟导致这次请求是在A重发连接请求并完成与B通信之后的，那么如果不用三次握手，A与B则会再次建立一次连接。
+这样就保证了**A与B之间既能相互发送请求也能相互接收解析请求**。同时**避免了因为网络延迟产生的重复连接问题**，比如A发送一次连接请求但网络延迟导致这次请求是在A重发连接请求并完成与B通信之后的，有三次握手的话，B返回的建立请求A就不会理睬了。
 
 >短连接与长连接？
 
@@ -183,6 +183,9 @@ www.google.com.		300	IN	A	216.58.200.228
 接下来，根据渲染树对页面进行渲染（可以理解为“画”元素）。
 
 当然，显示出来到屏幕上又涉及到显卡的绘制啦，显存的修改啦...
+
+<iframe src="https://www.icloud.com/keynote/0Mu0DJnu0kyfoZwSZUmCYKSWQ?embed=true" width="640" height="500" frameborder="0" allowfullscreen="1" referrer="no-referrer"></iframe>
+
 #参考
 [https://github.com/skyline75489/what-happens-when-zh_CN](https://github.com/skyline75489/what-happens-when-zh_CN)
 
