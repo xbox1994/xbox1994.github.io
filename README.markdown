@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["React Native组件设计实践"]
+rake new_post["来吃鸡"]
 rake preview
 
-./push.sh "[blog] React Native组件设计实践"
+./push.sh "[blog] 来吃鸡"
