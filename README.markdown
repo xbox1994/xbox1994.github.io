@@ -7,4 +7,4 @@ rake new_page[about]
 rake new_post["来吃鸡"]
 rake preview
 
-./push.sh "[blog] 来吃鸡"
+./push.sh "[blog] 来吃鸡 to 少年的2017年尾声"
