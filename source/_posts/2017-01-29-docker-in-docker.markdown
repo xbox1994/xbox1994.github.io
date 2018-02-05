@@ -3,7 +3,7 @@ layout: post
 title: "Docker in Docker"
 date: 2017-01-29 14:52:48 +0800
 comments: true
-categories: Devops
+categories: DevOps
 ---
 我想过一个非常有意思的东西:在docker里面运行docker,然后在docker里运行的docker中再运行一个docker,接着在docker里运行的docker里运行的docker中再开一个docker..接着迭代100次会发生什么
 <!--more-->
