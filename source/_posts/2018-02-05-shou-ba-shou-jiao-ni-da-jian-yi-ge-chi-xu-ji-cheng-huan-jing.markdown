@@ -104,25 +104,16 @@ Vagrant.configure("2") do |config| #2代表配置文件的版本
     ansible.inventory_path = "playbooks/hosts"
   end
 
-  #定义名为Nginx的主机，18081为宿主机可访问Nginx的端口
+  #定义名为Nginx的主机，在宿主机上可直接访问192.168.56.101来访问Nginx
   config.vm.define "nginx" do |config|
     config.vm.hostname = 'nginx'
-    config.vm.provision :host_shell do |host_shell|
-      host_shell.inline = 'vagrant/bootstrap.sh' #会在主机上执行的脚本
-    end
-
-    config.vm.network :private_network, ip: "192.168.56.102"
-    config.vm.network :forwarded_port, guest: 22, host: 10102, id: "ssh"
-    config.vm.network :forwarded_port, guest: 80, host: 18081, id: "app"
+    config.vm.network :private_network, ip: "192.168.56.101"
   end
 
-  #定义名为Jenkins的主机，18080为宿主机可访问Jenkins的端口
+  #定义名为Jenkins的主机，在宿主机上可直接访问192.168.56.102来访问Jenkins
   config.vm.define "jenkins" do |config|
     config.vm.hostname = 'jenkins'
-
-    config.vm.network :private_network, ip: "192.168.56.101"
-    config.vm.network :forwarded_port, guest: 22, host: 10101, id: "ssh"
-    config.vm.network :forwarded_port, guest: 8080, host: 18080, id: "jenkins"
+    config.vm.network :private_network, ip: "192.168.56.102"
   end
 end
 ```
@@ -139,11 +130,20 @@ end
 3. 按Vagrantfile安装并启动Jenkins虚拟机
 4. 执行Jenkins虚拟机依赖的provision模块
 
-所以下面这段配置会在Nginx虚拟机启动之后，Jenkins虚拟机启动之前执行，由于Jenkins虚拟机需要Nginx虚拟机的私钥，所以需要在Jenkins虚拟机执行Ansible之前将私钥放到Jenkins的file文件夹中。
+###Jenkins访问Nginx
+如果你能把所有环境启动起来并能访问Jenkins主页，但此时你还无法在Jenkins上直接ssh登录到Nginx，因为此时两台机器还没有互信。但是幸运的是Vagrant启动完Nginx之后就已经将私钥（可以拿这个私钥去访问Nginx，无论你是谁）放到了宿主机上，那么你可以手动将这个私钥复制到Jenkins中，然后就可以在Jenkins中访问Nginx了。
+
+**但是为了自动化上面的操作，进行以下的配置：**
+下面这段配置会在Nginx虚拟机启动之后，Jenkins虚拟机启动之前执行。由于Jenkins虚拟机需要在部署代码的时候使用到Nginx虚拟机的私钥来部署，所以需要在Jenkins虚拟机执行Ansible之前将私钥放到Jenkins的file文件夹中。
 
 ```
-config.vm.provision :host_shell do |host_shell|
-  host_shell.inline = 'vagrant/bootstrap.sh'
+config.vm.define "nginx" do |config|
+  config.vm.hostname = 'nginx'
+  config.vm.network :private_network, ip: "192.168.56.101"
+
+  config.vm.provision :host_shell do |host_shell|
+    host_shell.inline = 'vagrant/bootstrap.sh' #会在主机上执行的脚本
+  end
 end
 ```
 
@@ -168,7 +168,7 @@ ansible-playbook
 ##世界有了，来联通各国吧
 到现在为止，你已经了解了所有我们使用的工具以及通过运行命令搭建完成了一套持续集成环境的基础设施，但是还需要对Jenkins进行一些配置才能真正做到持续集成。
 ###Jenkins的配置
-现在你可以访问 http://localhost:18080 了，然后页面提示需要你输入**Administrator password**。该密码可以通过下面的方式获取：
+现在你可以访问 http://192.168.56.102:8080 了，然后页面提示需要你输入**Administrator password**。该密码可以通过下面的方式获取：
 
 1. 进入Jenkins虚拟机：`vagrant ssh jenkins`
 2. 获取root权限：`sudo su`
@@ -207,7 +207,7 @@ ansible-playbook
 --------------------------deploy finished ! --------------------------
 ```
 
-并且访问http://localhost:18081 ，能看到下面的文字，那么恭喜你，顺利通关！
+并且访问http://192.168.56.101 ，能看到下面的文字，那么恭喜你，顺利通关！
 
 ```
 恭喜！
