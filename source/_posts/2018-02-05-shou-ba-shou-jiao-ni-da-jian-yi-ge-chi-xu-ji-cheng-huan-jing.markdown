@@ -19,7 +19,7 @@ By: 巧颖 & 天一
 
 我们会在本地启动两台虚拟机，一台部署Nginx作为静态文件服务器，一台作为Jenkins服务器，在每台虚拟机内部安装Docker，使用Docker来完成Nginx与Jenkins的搭建、配置，然后手动在Jenkins配置内配置好一条Pipeline作为持续集成流水线，最后尝试提交一次代码去触发一次持续集成操作，将最新的html项目代码从Github上部署到Nginx中，实现持续集成。
 
-避免本文过长，部分源代码没有贴在文中，本文参考完成源代码在此：[https://github.com/tw-wh-devops-community/cooking-chicken.git](https://github.com/tw-wh-devops-community/cooking-chicken.git)。建议参考源码阅读本文，然后自己尝试从0开始搭建一个相同的环境出来。相信你一定会碰到很多坑，但坑外便是晴天。
+避免本文过长，部分源代码没有贴在文中，本文参考完成源代码在此：[https://github.com/tw-wh-devops-community/cooking-chicken.git](https://github.com/tw-wh-devops-community/cooking-chicken.git)。建议在自己尝试从0开始搭建的同时参考源码阅读本文。相信你一定会碰到很多坑，但坑外便是晴天。
 
 #首先我们需要两台机器
 ##我们需要Vagrant
@@ -99,9 +99,9 @@ Ansible是基于python开发的，需要在安装有python的机器下才能够�
 ####roles文件夹
 roles是基于一个Ansible默认的目录结构，Ansible在执行任务的时候会去默认加载`templates`、`tasks`以及`handlers`文件夹中的文件等。我们基于roles 对内容进行分组，使得我们可以容易地将不同的环境（如Java与NodeJs）区分开来，本次Demo中的roles下有三个文件夹，分别是common、jenkins和nginx，其中每个文件夹下都会定义一些例如`tasks`任务与相关配置文件。
 ####role - common
-前面已经说过本次demo需要在本地启动两台虚拟机，分别在内部装上docker，在common中我们定义了安装docker的task，这样在定义jenkins服务器和部署nginx的服务器中都可以调用该task来安装配置docker环境；
+前面已经说过本次demo需要在本地启动两台虚拟机，分别在内部装上Docker，在common中我们定义了安装Docker的task，这样在定义Jenkins服务器和部署nginx的服务器中都可以调用该task来安装配置Docker环境；
 ####role - jenkins
-定义安装和部署jenkins服务器的task：其中docker-compose.yml配置文件，是用于分别对jenkins-master和jenkins_slave进行一些基本配置；task下的main.yml文件是配置一系列的安装命令，类似于在命令行中一行行输入安装和部署命令；
+定义安装和部署Jenkins服务器的task：其中docker-compose.yml配置文件，是用于分别对jenkins-master和jenkins_slave进行一些基本配置；task下的main.yml文件是配置一系列的安装命令，类似于在命令行中一行行输入安装和部署命令；
 ####role - nginx
 与jenkins文件夹类似，对Nginx服务器的一些基本配置：例如Nginx配置文件default.conf，配置文件中定义了templates下的index.html作为Nginx的入口模版文件，使Nginx作为一个文件服务器。task下的main.yml文件则是与jenkins中类似，配置了安装部署命令，在使用vagrant up时通过Ansible来安装并运行Nginx服务。
 ###配置文件
@@ -229,7 +229,7 @@ ansible-playbook \
 #虚拟机中的世界是如何构成的呢
 现在你已经将所有的环境部署完成了，但是部署应用（Jenkins、Nginx）的过程还没有提及，下面将带你从Ansbile的对于每个虚拟机的任务开始，介绍相应的工具与具体的实施步骤。
 ##Docker
-###什么是docker
+###什么是Docker
 Docker是一个开源的容器应用引擎，可以理解为一个存放应用容器的平台，我们只需要简单的几行命令就可以构建一个与本地环境相对隔离的环境来运行我们的应用而不影响任何角色；
 
 基本要素：
@@ -251,8 +251,8 @@ Docker的图标：
 ###Docker中常用的命令
 
 ```
-docker run xxx： 启动一个容器
-docker start／stop／restart xxx：开启／停止／重启xxx的容器
+docker run 镜像名： 启动容器
+docker start／stop／restart 容器ID：开启／停止／重启容器
 docker images: 查看所有镜像列表；
 docker ps：查看所有运行中的容器；
 docker rmi：从本地移除一个或多个指定的镜像；
@@ -260,9 +260,10 @@ docker rmi：从本地移除一个或多个指定的镜像；
 
 更多Docker相关内容请参考：https://yeasy.gitbooks.io/docker_practice/content/introduction/
 ###怎么用
-demo中的用法：在demo中使用Docker运行Nginx和运行jenkins的方式不同；
 
-####安装Nginx：由于Nginx只有一个container，直接使用docker中run的命令去repository中下载安装即可
+**要注意的是，Ansible对应的任务是在Vagrant启动虚拟机之后执行的，是在虚拟机的内部，Docker容器的外部**
+
+####安装Nginx：由于我们只需要启动一个Nginx的容器，直接使用Docker中run的命令去repository中下载安装即可
 
 * 准备文件，例如default.conf,index.html
 
@@ -280,7 +281,7 @@ demo中的用法：在demo中使用Docker运行Nginx和运行jenkins的方式不
     group: vagrant
 ```
 
-* 使用Ansible中提供的Docker模块安装Nginx，包括拉docker images，设置ports，以及多久需要pull一次新代码等
+* 使用Ansible中提供的Docker模块安装Nginx，包括拉Docker images，设置ports，以及多久需要pull一次新代码等
 
 ```
 - name: start nginx container
@@ -297,12 +298,12 @@ demo中的用法：在demo中使用Docker运行Nginx和运行jenkins的方式不
 ```
 
 
-####安装jenkins：demo中需要用到jenkins-master和jenkins-slave两个container，因此使用docker-compose更加方便
+####安装Jenkins：demo中需要用到jenkins-master和jenkins-slave两个container，因此使用docker-compose更加方便
 #####比较dockerfile与docker-compose
-* dockerfile是把构建一个docker image过程记录到一个文档里面，通过运行docker build来进行镜像的构造。
+* dockerfile是把构建一个Docker image过程记录到一个文档里面，通过运行docker build来进行镜像的构造。
 * docker-compose则是定义你需要哪些images，每个image应该怎么配置，要挂载哪些volume等信息，但是不包含构建image的信息，像咱们demo中所用到的image都是直接从docker registry中拉取下来的，所以事实上也不需要用到dockerfile。
 
-docker-compose.yml中定义了镜像的地址、端口号等，并通过执行它进行在docker中的部署。其中slave节点选用了jaydp17/jenkins-slave这样一个包含Java、git、curl环境的Image方便执行持续集成任务。
+docker-compose.yml中定义了镜像的地址、端口号等，并通过执行它进行在Docker中的部署。其中slave节点选用了jaydp17/jenkins-slave这样一个包含Java、git、curl环境的Image方便执行持续集成任务。
 
 ```
 services:
@@ -342,13 +343,13 @@ Nginx相比于apache的优点：
 * 社区活跃，各种高性能模块出品迅速等；
 
 ####怎么用Nginx
-本次demo中使用Ansible的一个task来定义安装配置Nginx需要的操作流程，用的是docker提供的Nginx镜像，在docker中安装配置Nginx，为了使ngixn能够启动起来，我们还需要进行一系列的配置，包括配置文件和模版文件等；default.conf就是Nginx的配置文件，此处http模块的相关配置：
+在demo中写了一个role来定义安装配置Nginx需要的操作流程，用的是Docker提供的Nginx镜像，在Docker中安装配置Nginx，为了使Nginx能够启动起来，我们还需要进行一系列的配置，包括配置文件和模版文件等；default.conf就是Nginx的配置文件，此处http模块的相关配置：
 
 * listen 80：监听的端口号是80；
 * default_server：设定为默认虚拟主机；
 * server_name localhost：设置虚拟主机名称为localhost；
 * root /usr/share/nginx/html：设置web服务URL资源映射的本地文件系统的资源所在的目录；
-* index index.html index.htm：定义默认主页面；
+* index index.html index.htm：定义默认主页面，需要自己编写并放到Ansbile对应目录；
 
 ```
 server {
@@ -361,10 +362,9 @@ server {
 
 还有一些其他的配置，详情请参考[https://www.nginx.com/resources/wiki/start/topics/examples/full/](https://www.nginx.com/resources/wiki/start/topics/examples/full/)
 
-
 Ansible关于Nginx的task中yml文件的配置：
 
-创建文件夹 --> copy Nginx的配置文件到环境中 --> copy模版文件 --> 以及使用docker镜像运行Nginx；
+创建文件夹 --> copy Nginx的配置文件到环境中 --> copy模版文件 --> 以及使用Docker镜像运行Nginx；
 
 ```
 - name: create folder
@@ -398,7 +398,7 @@ Ansible关于Nginx的task中yml文件的配置：
 
 {% img /images/blog/2018-02-05_3.png 'image' %}
 
-如果你现在能在Jenkins界面上看到你刚刚创建的slave节点，那么已经完成配置了。另外，为了能让后面的部署过程100%在slave节点上执行，建议点击master节点右方的配置按钮将默认开启的master节点中的executors数量改为0。
+如果你现在能在Jenkins界面上看到你刚刚创建的slave节点，那么已经完成配置了。另外，为了让部署过程仅仅在slave节点上执行来确认slave是否已经部署成功，可以尝试点击master节点右方的配置按钮将默认开启的master节点中的executors数量改为0。
 
 ####创建Pipeline
 接下来我们将创建一条流水线。回到Jenkins首页，然后
