@@ -197,7 +197,7 @@ end
 3. 按Vagrantfile安装并启动Jenkins虚拟机
 4. 执行Jenkins虚拟机依赖的provision模块
 
-###Jenkins访问Nginx
+###Jenkins访问Nginx（选修，建议有时间或者将Jenkins搭建完成之后再看）
 如果你能把所有环境启动起来并能访问Jenkins主页，但此时你还无法在Jenkins上直接ssh登录到Nginx，因为此时两台机器还没有互信。但是幸运的是Vagrant启动完Nginx之后就已经将私钥（可以拿这个私钥去访问Nginx，无论你是谁）放到了宿主机上，那么你可以手动将这个私钥复制到Jenkins中，然后就可以在Jenkins中访问Nginx了。
 
 **但是为了自动化上面的操作，进行以下的配置：**
