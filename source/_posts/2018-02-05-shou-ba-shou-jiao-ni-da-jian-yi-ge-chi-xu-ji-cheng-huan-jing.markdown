@@ -187,7 +187,7 @@ end
 
 那么现在可以启动了，在命令行内跳转到根目录，使用`vagrant up`就可以将虚拟机按上面的配置启动了，同时在启动完成之后会调用provision模块跑Ansible的对应脚本安装配置虚拟机的依赖工具。启动完成之后，那么一个隔离的环境创建完毕，接下来我们可以在里面任意玩耍了。
 
-**注意**：因为把所有的配置甚至下载启动Jenkins都写到了Ansible中，所以跑完`vagrant up`需要较长时间。
+**特别注意**：因为第一次运行需要下载ubuntu/trusty64镜像，以及把所有的配置甚至通过Docker下载Jenkins镜像、slave镜像，以及启动Jenkins都写到了Ansible中，所以跑完`vagrant up`需要**较长时间**。
 
 ###启动、执行顺序
 基本是按Vagrant的配置文件的上下顺序来启动的。具体顺序如下：
@@ -201,7 +201,9 @@ end
 如果你能把所有环境启动起来并能访问Jenkins主页，但此时你还无法在Jenkins上直接ssh登录到Nginx，因为此时两台机器还没有互信。但是幸运的是Vagrant启动完Nginx之后就已经将私钥（可以拿这个私钥去访问Nginx，无论你是谁）放到了宿主机上，那么你可以手动将这个私钥复制到Jenkins中，然后就可以在Jenkins中访问Nginx了。
 
 **但是为了自动化上面的操作，进行以下的配置：**
-下面这段配置会在Nginx虚拟机启动之后，Jenkins虚拟机启动之前执行。由于Jenkins虚拟机需要在部署代码的时候使用到Nginx虚拟机的私钥来部署，所以需要在Jenkins虚拟机执行Ansible之前将私钥放到Jenkins的file文件夹中。
+Vagrant会在启动一个虚拟机之后，会在Mac上创建.vagrant文件夹并把一些关于这个虚拟机的文件放到里面，比如该虚拟机的私钥，后面可以拿到这私钥作为SSH联络的key。
+
+比如下面这段配置会在Nginx虚拟机启动之后，Jenkins虚拟机启动之前执行。由于Jenkins虚拟机需要在部署代码的时候使用到Nginx虚拟机的私钥来部署，所以需要在Jenkins虚拟机执行Ansible之前将私钥放到Jenkins的file文件夹中。
 
 ```
 config.vm.define "nginx" do |config|
@@ -394,7 +396,11 @@ Ansible关于Nginx的task中yml文件的配置：
 
 {% img /images/blog/2018-02-05_2.png 'image' %}
 
-简单起见，用密码登录的方式进行身份验证，用户名密码都为jenkins
+简单起见，用密码登录的方式进行身份验证，用户名密码都为jenkins。
+
+那么问题来了，为什么slave节点的用户名密码是jenkins呢？是在这个[Dockerfile](https://hub.docker.com/r/evarga/jenkins-slave/~/dockerfile/)里配置的。我们用的虽然是jaydp17/jenkins-slave，但是你可以看到这个镜像的[构建文件](https://hub.docker.com/r/jaydp17/jenkins-slave/~/dockerfile/)中引用了evarga/jenkins-slave，其中`echo "jenkins:jenkins" | chpasswd`可以设置密码。其次，我们需要git这样工具所以选用了jaydp17/jenkins-slave。
+
+另外要注意一下，我们通过设置Host key verification strategy为Non verifying verification strategy从而关闭了slave主机的公钥检查，更多了解请参看[这篇文章](http://www.worldhello.net/2010/04/08/1026.html)。
 
 {% img /images/blog/2018-02-05_3.png 'image' %}
 
