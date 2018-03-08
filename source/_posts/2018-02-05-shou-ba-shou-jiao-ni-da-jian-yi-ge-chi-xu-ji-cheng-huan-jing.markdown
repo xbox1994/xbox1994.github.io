@@ -51,106 +51,6 @@ vagrant plugin install vagrant-host-shell
 * 从休眠中恢复：`vagrant resume`
 * 移除虚拟机所有文件：`vagrant destroy`
 
-##我们需要Ansible
-###什么是Ansible
-Ansible是一种自动化部署工具，可以用来自动化管理配置项、持续交付、（AWS）云服务管理；
-
-简单来说也就是可以批量的远程服务器上执行一系列的命令，其原理是基于ssh来和远程主机进行通信的。
-###为什么用Ansible
-
-* playbook使用的是yml语言，易读性较好；
-* 没有主节点和代理，仅仅依赖于SSH，使得应用的部署简单而轻量；
-* 提供了大量模块支持Google Compute Engine (GCE)， Amazon Web Service（AWS）；
-* nsible支持多台服务器同时管理部署；
-
-###安装Ansible
-Ansible是基于python开发的，需要在安装有python的机器下才能够安装Ansible
-
-* 在本机安装python：`brew install python`（Mac自带ython，因此这步可以省略，inux系统中需要安装Python）
-* 安装pip：`sudo apt install python-pip`
-* 安装Ansible：`sudo pip install ansible`
-
-其他环境的安装详情请参考：[http://docs.ansible.com/Ansible/latest/intro_installation.html](http://docs.ansible.com/ansible/latest/intro_installation.html)
-
-###目录结构
-```
-├── ansible.cfg
-├── deploy.yml
-├── hosts
-└── roles
-    ├── common
-    │   └── tasks
-    │       ├── install_docker.yml
-    │       └── main.yml
-    ├── jenkins
-    │   ├── files
-    │   │   └── docker-compose.yml
-    │   └── tasks
-    │       └── main.yml
-    └── nginx
-        ├── files
-        │   └── default.conf
-        ├── tasks
-        │   └── main.yml
-        └── templates
-            └── index.html
-```
-
-####roles文件夹
-roles是基于一个Ansible默认的目录结构，Ansible在执行任务的时候会去默认加载`templates`、`tasks`以及`handlers`文件夹中的文件等。我们基于roles 对内容进行分组，使得我们可以容易地将不同的环境（如Java与NodeJs）区分开来，本次Demo中的roles下有三个文件夹，分别是common、jenkins和nginx，其中每个文件夹下都会定义一些例如`tasks`任务与相关配置文件。
-####role - common
-前面已经说过本次demo需要在本地启动两台虚拟机，分别在内部装上Docker，在common中我们定义了安装Docker的task，这样在定义Jenkins服务器和部署nginx的服务器中都可以调用该task来安装配置Docker环境；
-####role - jenkins
-定义安装和部署Jenkins服务器的task：其中docker-compose.yml配置文件，是用于分别对jenkins-master和jenkins_slave进行一些基本配置；task下的main.yml文件是配置一系列的安装命令，类似于在命令行中一行行输入安装和部署命令；
-####role - nginx
-与jenkins文件夹类似，对Nginx服务器的一些基本配置：例如Nginx配置文件default.conf，配置文件中定义了templates下的index.html作为Nginx的入口模版文件，使Nginx作为一个文件服务器。task下的main.yml文件则是与jenkins中类似，配置了安装部署命令，在使用vagrant up时通过Ansible来安装并运行Nginx服务。
-###配置文件
-Ansible的配置文件包括但不仅限于ansible.cfg、deploy.yml以及hosts
-####ansible.cfg文件
-如在本Demo中用到的几个配置：
-
-* forks：设置在与主机通信时的默认并行进程数，默认值为5；
-* inventory：设置主机与组之间的对应关系，在Ansible1.9之前使用的是hostfile；
-* host\_key_checking：检测主机密钥的功能，可以通过设置值为false来禁用该功能（跳过两台主机之间首次连接需要确认的过程）；
-* nocows：设置其值为1时禁用调用一些cowsay的特性，cowsay是linux系统下一个在终端用ASCII码组成的小牛，这个小牛会说出你想要它说的话。
-* gathering：控制默认的远程系统变量（facts）收集，有三种不同的值； 默认是`implicit`，即每一次play，变量都会被收集，除非设置`gather_facts: False`；为`explicit`时，则facts不会被收集；为`smart`时，则没有facts的新hosts将不会被扫描，用于节省fact收集；
-* fact\_caching_timeout：定义fact缓存超时时间；
-* fact_caching：定义fact的缓存，2.4版本的Ansible支持`redis`和`jsonfile`两种格式的缓存文件；
-* fact\_caching_connection:定义cache的存储位置，根据cache文件的格式不同定义的方式不同；
-
-####deploy.yml文件
-我们先来写一个playbook的入口配置文件：定义hosts主机、以及相应主机需要执行的tasks等；
-
-```
-- hosts: all
-  tasks:
-    - debug: var=ansible_distribution,ansible_env
-
-- hosts: jenkins
-  become: yes
-  roles:
-    - common
-    - jenkins
-
-- hosts: nginx
-  become: yes
-  roles:
-    - common
-    - nginx
-```
-
-####hosts
-然后加上远程主机的网络相关配置，以如下命令为例，是为IP地址1192.168.56.102，端口号22的网络地址设置一个别名nginx，且声明其ssh private key文件的地址；
-
-```
-nginx \
-ansible_ssh_host=192.168.56.102 \
-ansible_connection=ssh \
-ansible_ssh_user=vagrant \
-ansible_ssh_port=22 \
-ansible_ssh_private_key_file=../.vagrant/machines/nginx/virtualbox/private_key
-```
-
 ##开始创建世界！
 ###Vagrantfile
 我们来新建一个工程，在根目录创建一个名为Vagrantfile的文件，内容如下：
@@ -162,13 +62,6 @@ Vagrant.configure("2") do |config| #2代表配置文件的版本
   config.vm.provider :virtualbox do |v|
     v.customize ["modifyvm", :id, "--memory", 1024]
     v.customize ["modifyvm", :id, "--cpus", 1]
-  end
-
-  #对于每台虚拟机依赖的Ansible配置
-  config.vm.provision :ansible do |ansible|
-    ansible.verbose = "vv"
-    ansible.playbook = "playbooks/deploy.yml"
-    ansible.inventory_path = "playbooks/hosts"
   end
 
   #定义名为Nginx的主机，在宿主机上可直接访问192.168.56.101来访问Nginx
@@ -226,6 +119,130 @@ ansible-playbook \
 --limit="nginx" \
 --inventory-file=playbooks/hosts \
 -vv playbooks/deploy.yml
+```
+
+##我们需要Ansible
+###什么是Ansible
+Ansible是一种自动化部署工具，可以用来自动化管理配置项、持续交付、（AWS）云服务管理；
+
+简单来说也就是可以批量的远程服务器上执行一系列的命令，其原理是基于ssh来和远程主机进行通信的。
+###为什么用Ansible
+
+* playbook使用的是yml语言，易读性较好；
+* 没有主节点和代理，仅仅依赖于SSH，使得应用的部署简单而轻量；
+* 提供了大量模块支持Google Compute Engine (GCE)， Amazon Web Service（AWS）；
+* nsible支持多台服务器同时管理部署；
+
+###安装Ansible
+Ansible是基于python开发的，需要在安装有python的机器下才能够安装Ansible
+
+* 在本机安装python：`brew install python`（Mac自带ython，因此这步可以省略，inux系统中需要安装Python）
+* 安装pip：`sudo apt install python-pip`
+* 安装Ansible：`sudo pip install ansible`
+
+其他环境的安装详情请参考：[http://docs.ansible.com/Ansible/latest/intro_installation.html](http://docs.ansible.com/ansible/latest/intro_installation.html)
+
+###目录结构
+你可以按如下目录结构去编写你的Ansible文件。
+
+```
+├── ansible.cfg
+├── deploy.yml
+├── hosts
+└── roles
+    ├── common
+    │   └── tasks
+    │       ├── install_docker.yml
+    │       └── main.yml
+    ├── jenkins
+    │   ├── files
+    │   │   └── docker-compose.yml
+    │   └── tasks
+    │       └── main.yml
+    └── nginx
+        ├── files
+        │   └── default.conf
+        ├── tasks
+        │   └── main.yml
+        └── templates
+            └── index.html
+```
+
+####roles文件夹
+roles是基于一个Ansible默认的目录结构，Ansible在执行任务的时候会去默认加载`templates`、`tasks`以及`handlers`文件夹中的文件等。我们基于roles 对内容进行分组，使得我们可以容易地将不同的环境（如Java与NodeJs）区分开来，本次Demo中的roles下有三个文件夹，分别是common、jenkins和nginx，其中每个文件夹下都会定义一些例如`tasks`任务与相关配置文件。
+####role - common
+前面已经说过本次demo需要在本地启动两台虚拟机，分别在内部装上Docker，在common中我们定义了安装Docker的task，这样在定义Jenkins服务器和部署nginx的服务器中都可以调用该task来安装配置Docker环境；
+
+install_docker.yml中应该包含如下内容：
+
+* 安装Docker
+* 安装docker-compose工具
+* 安装docker-py依赖包（如果我们想用Ansible的docker模块去执行docker相关命令的话需要这个依赖）
+
+
+####role - jenkins
+定义安装和部署Jenkins服务器的task：其中docker-compose.yml配置文件，是用于分别对jenkins-master和jenkins_slave进行一些基本配置；task下的main.yml文件是配置一系列的安装命令，类似于在命令行中一行行输入安装和部署命令；
+####role - nginx
+与jenkins文件夹类似，对Nginx服务器的一些基本配置：例如Nginx配置文件default.conf，配置文件中定义了templates下的index.html作为Nginx的入口模版文件，使Nginx作为一个文件服务器。task下的main.yml文件则是与jenkins中类似，配置了安装部署命令，在使用vagrant up时通过Ansible来安装并运行Nginx服务。
+###配置文件
+Ansible的配置文件包括但不仅限于ansible.cfg、deploy.yml以及hosts
+####ansible.cfg文件
+如在本Demo中用到的几个配置：
+
+* forks：设置在与主机通信时的默认并行进程数，默认值为5；
+* inventory：设置主机与组之间的对应关系，在Ansible1.9之前使用的是hostfile；
+* host\_key_checking：检测主机密钥的功能，可以通过设置值为false来禁用该功能（跳过两台主机之间首次连接需要确认的过程）；
+* nocows：设置其值为1时禁用调用一些cowsay的特性，cowsay是linux系统下一个在终端用ASCII码组成的小牛，这个小牛会说出你想要它说的话。
+* gathering：控制默认的远程系统变量（facts）收集，有三种不同的值； 默认是`implicit`，即每一次play，变量都会被收集，除非设置`gather_facts: False`；为`explicit`时，则facts不会被收集；为`smart`时，则没有facts的新hosts将不会被扫描，用于节省fact收集；
+* fact\_caching_timeout：定义fact缓存超时时间；
+* fact_caching：定义fact的缓存，2.4版本的Ansible支持`redis`和`jsonfile`两种格式的缓存文件；
+* fact\_caching_connection:定义cache的存储位置，根据cache文件的格式不同定义的方式不同；
+
+####deploy.yml文件
+这是Ansible的入口配置文件：定义hosts主机、以及相应主机需要执行的tasks等；
+
+```
+- hosts: all
+  tasks:
+    - debug: var=ansible_distribution,ansible_env
+
+- hosts: jenkins
+  become: yes
+  roles:
+    - common
+    - jenkins
+
+- hosts: nginx
+  become: yes
+  roles:
+    - common
+    - nginx
+```
+
+####hosts
+然后加上远程主机的网络相关配置，这样Ansible才能通过SSH到虚拟机中执行你写的任务哟。
+
+以如下命令为例，是为IP地址1192.168.56.102，端口号22的网络地址设置一个别名nginx，且声明其ssh private key文件的地址；
+
+```
+nginx \
+ansible_ssh_host=192.168.56.102 \
+ansible_connection=ssh \
+ansible_ssh_user=vagrant \
+ansible_ssh_port=22 \
+ansible_ssh_private_key_file=../.vagrant/machines/nginx/virtualbox/private_key
+```
+
+###与Vagrant结合
+现在，Ansible的任务已经写完了，我们需要将Ansible与Vagrant结合，将如下代码加入到Vagrantfile中，可以在执行`vagrant up`的时候执行Ansible。
+
+```
+  #对于每台虚拟机依赖的Ansible配置
+  config.vm.provision :ansible do |ansible|
+    ansible.verbose = "vv"
+    ansible.playbook = "playbooks/deploy.yml"
+    ansible.inventory_path = "playbooks/hosts"
+  end
 ```
 
 #虚拟机中的世界是如何构成的呢
@@ -301,9 +318,6 @@ docker rmi：从本地移除一个或多个指定的镜像；
 
 
 ####安装Jenkins：demo中需要用到jenkins-master和jenkins-slave两个container，因此使用docker-compose更加方便
-#####比较dockerfile与docker-compose
-* dockerfile是把构建一个Docker image过程记录到一个文档里面，通过运行docker build来进行镜像的构造。
-* docker-compose则是定义你需要哪些images，每个image应该怎么配置，要挂载哪些volume等信息，但是不包含构建image的信息，像咱们demo中所用到的image都是直接从docker registry中拉取下来的，所以事实上也不需要用到dockerfile。
 
 docker-compose.yml中定义了镜像的地址、端口号等，并通过执行它进行在Docker中的部署。其中slave节点选用了jaydp17/jenkins-slave这样一个包含Java、git、curl环境的Image方便执行持续集成任务。
 
@@ -366,7 +380,11 @@ server {
 
 Ansible关于Nginx的task中yml文件的配置：
 
-创建文件夹 --> copy Nginx的配置文件到环境中 --> copy模版文件 --> 以及使用Docker镜像运行Nginx；
+* 创建文件夹
+* copy Nginx的配置文件到环境中
+* copy模版文件
+* 以及使用Docker镜像运行Nginx
+
 
 ```
 - name: create folder
@@ -398,7 +416,7 @@ Ansible关于Nginx的task中yml文件的配置：
 
 简单起见，用密码登录的方式进行身份验证，用户名密码都为jenkins。
 
-那么问题来了，为什么slave节点的用户名密码是jenkins呢？是在这个[Dockerfile](https://hub.docker.com/r/evarga/jenkins-slave/~/dockerfile/)里配置的。我们用的虽然是jaydp17/jenkins-slave，但是你可以看到这个镜像的[构建文件](https://hub.docker.com/r/jaydp17/jenkins-slave/~/dockerfile/)中引用了evarga/jenkins-slave，其中`echo "jenkins:jenkins" | chpasswd`可以设置密码。其次，我们需要git这样工具所以选用了jaydp17/jenkins-slave。
+那么问题来了，为什么slave节点的用户名密码是jenkins呢？是在这个[Dockerfile](https://hub.docker.com/r/evarga/jenkins-slave/~/dockerfile/)里配置的。我们用的虽然是jaydp17/jenkins-slave，但是你可以看到这个镜像的[构建文件](https://hub.docker.com/r/jaydp17/jenkins-slave/~/dockerfile/)中引用了evarga/jenkins-slave，其中`echo "jenkins:jenkins" | chpasswd`可以设置密码。
 
 另外要注意一下，我们通过设置Host key verification strategy为Non verifying verification strategy从而关闭了slave主机的公钥检查，更多了解请参看[这篇文章](http://www.worldhello.net/2010/04/08/1026.html)。
 
