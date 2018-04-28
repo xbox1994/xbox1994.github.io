@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["手把手教你搭建一个持续集成环境"]
+rake new_post["Java高并发系列一并发基础与模拟工具"]
 rake preview
 
-./push.sh "[blog] 手把手教你搭建一个持续集成环境"
+./push.sh "[blog] Java高并发系列一：并发基础与模拟工具"
