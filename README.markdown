@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["Java高并发系列一并发基础与模拟工具"]
+rake new_post["Java高并发系列二：线程安全性"]
 rake preview
 
-./push.sh "[blog] Java高并发系列一：并发基础与模拟工具"
+./push.sh "[blog] Java高并发系列二：线程安全性"
