@@ -3,7 +3,7 @@ layout: post
 title: "记一次性能优化探索-Nginx有什么用"
 date: 2017-01-08 18:32:58 +0800
 comments: true
-categories: 后台技术
+categories: 后台
 ---
 
 "这张卡马上做完了,赶紧desk check,我们先把测试环境准备好".我高高兴兴地跟洲说,随手修改了一下配置文件中的微服务访问路径,然后重启服务器,一切看起来那么的一帆风顺.  
