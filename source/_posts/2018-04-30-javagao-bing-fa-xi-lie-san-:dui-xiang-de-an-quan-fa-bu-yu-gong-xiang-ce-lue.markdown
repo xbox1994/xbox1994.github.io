@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Java高并发系列三：对象的安全发布与共享策略"
+title: "Java多线程与高并发(三):对象的安全发布与共享策略"
 date: 2018-04-30 21:10:40 +0800
 comments: true
 categories: 后台 
@@ -233,6 +233,8 @@ public class ImmutableExample3 {
 ## 使用线程安全的类
 * StringBuilder -> StringBuffer  
 * SimpleDateFormat -> JodaTime  
-* ArrayList -> Vector, Stack  
-* HashMap -> HashTable, ConcurrentHashMap, Collections.synchroinzedXXX(List, Set, Map)
-
+* ArrayList -> Vector, Stack, [CopyOnWriteArrayList](https://www.cnblogs.com/dolphin0520/p/3938914.html)
+* HashSet -> Collections.synchronizedSet(new HashSet()), CopyOnWriteArraySet
+* TreeSet -> Collections.synchronizedSortedSet(new TreeSet()), [ConcurrentSkipListSet](https://blog.csdn.net/guangcigeyun/article/details/8278349)
+* HashMap -> HashTable, ConcurrentHashMap, Collections.synchronizedMap(new HashMap())
+* TreeMap -> ConcurrentSkipListMap, Collections.synchronizedSortedMap(new TreeMap())

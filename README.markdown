@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["Java高并发系列三：对象的安全发布与共享策略"]
+rake new_post["Java高并发(四):java.util.concurrent包"]
 rake preview
 
-./push.sh "[blog] Java高并发系列三：对象的安全发布与共享策略"
+./push.sh "[blog] Java高并发(四):java.util.concurrent包(上)"
