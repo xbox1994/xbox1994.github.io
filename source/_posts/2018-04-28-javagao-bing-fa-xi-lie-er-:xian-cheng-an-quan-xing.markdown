@@ -36,12 +36,12 @@ public final int getAndAddInt(Object var1, long var2, int var4) {
 
 首先这个方法通过getIntVolatile方法，使用**对象的引用与值的偏移量得到当前值**，然后调用compareAndSwapInt检测如果obj内的value和expect相等，就证明没有其他线程改变过这个变量，那么就更新它为update，如果这一步的CAS没有成功，那就采用**自旋**的方式继续进行CAS操作。
 
-在赋值的时候保证原子操作的原理是通过CPU的cmpxchgl与lock指令的支持来实现AtomicInteger的CAS操作一定程度上的原子性，具体可参考这里，https://juejin.im/post/5a73cbbff265da4e807783f5
+在赋值的时候保证原子操作的原理是通过CPU的cmpxchgl与lock指令的支持来实现AtomicInteger的CAS操作的原子性，具体可参考这里，https://juejin.im/post/5a73cbbff265da4e807783f5
 
 疑问：这个方法是先得到值，再更新值，所以必须保证更新的值是在原来的基础上更新的，所以采用CAS进行更新，那么为什么不使用直接更新值然后返回值的方式来做呢？因为更新值的前提是获取值，这是两部汇编级别的操作，仅仅更新值是无法获取到值的。
 
 ### ABA问题
-上面提到过lock指令，它能保证其他CPU无法参与进来，但是无法保证单个CPU的另一个线程执行更新操作。所以如果一个值原来是A，变成了B，又变成了A，那么使用CAS进行检查时会发现它的值没有发生变化，但是实际上却变化了。这就是CAS的ABA问题。
+如果一个值原来是A，变成了B，又变成了A，那么使用CAS进行检查时会发现它的值没有发生变化，但是实际上却变化了。这就是CAS的ABA问题。
 
 常见的解决思路是使用版本号。在变量前面追加上版本号，每次变量更新的时候把版本号加一，那么A-B-A 就会变成1A-2B-3A。
 
