@@ -6,6 +6,8 @@ comments: true
 categories: 后台
 ---
 
+面试官：你能说说什么是线程安全吗？
+
 <!-- more -->
 
 # 线程安全性
@@ -84,15 +86,23 @@ public class Main {
 
 ## 对比
 ### synchronized
-不可中断；同步不激烈时，synchronized是很合适的，因为编译程序通常会尽可能的进行优化synchronize；同步激烈时，synchronized的性能会下降；可读性非常好
+不可中断  
+同步不激烈时，synchronized是很合适的，因为编译程序通常会尽可能的进行优化synchronize  
+同步激烈时，synchronized的性能会下降  
+编码难度低，可读性非常好
 
 ### ReentrantLock
-可中断；同步不激烈时，性能稍微比synchronized差点；同步激烈时，维持常态；提供了多样化的同步，比如有时间限制的同步，可以被Interrupt的同步（synchronized的同步是不能Interrupt的）等
+可中断  
+同步不激烈时，性能稍微比synchronized差点  
+同步激烈时，维持常态  
+提供了多样化的同步，比如有时间限制的同步，可以被Interrupt的同步（synchronized的同步是不能Interrupt的）等
 
 ### Atomic
-同步不激烈时，性能比synchronized差点；激烈的时候，维持常态，且优于ReentrantLock。只能同步一个值，一段代码中只能出现一个Atomic的变量，多于一个同步无效
+同步不激烈时，性能比synchronized差点  
+激烈的时候，维持常态，且优于ReentrantLock  
+只能同步一个值，一段代码中只能出现一个Atomic的变量，多于一个同步无效
 
-所以，我们写同步的时候，优先考虑synchronized，如果有特殊需要，再进一步优化。ReentrantLock和Atomic如果用的不好，不仅不能提高性能，还可能带来灾难。
+所以，我们写同步的时候，**优先考虑synchronized，如果有特殊需要，再进一步优化**。ReentrantLock和Atomic如果用的不好，不仅不能提高性能，还可能带来灾难。
 # 可见性
 
 ## 共享变量在线程间不可见的原因
@@ -102,7 +112,7 @@ public class Main {
 
 ## synchronized
 
-JMM中的规定提供了**可见性**：
+JMM的规范中提供了synchronized具备的**可见性**：
 
 * 线程解锁前，必须把共享变量的最新值刷新到主内存
 * 线程加锁时，将清空工作内存中共享变量的值，从主内存中读取最新的值
