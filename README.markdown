@@ -7,4 +7,4 @@ rake new_page[about]
 rake new_post["Java高并发(四):java.util.concurrent包"]
 rake preview
 
-./push.sh "[blog] Java高并发(四):java.util.concurrent包(上)"
+./push.sh "[blog] Java高并发(四):java.util.concurrent包(下)"

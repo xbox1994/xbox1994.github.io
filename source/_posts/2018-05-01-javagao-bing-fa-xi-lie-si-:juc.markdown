@@ -153,4 +153,229 @@ final int nonfairTryAcquireShared(int acquires) {
 数据库连接并发数，如果超过并发数，等待（acqiure）或者抛出异常（tryAcquire）
 
 # CyclicBarrier
-这几天有点异常高产，先回顾一下之前写的文章，不能一次写太多导致为了写而写。
+可以让一组线程相互等待，当每个线程都准备好之后，所有线程才继续执行的工具类
+
+## 使用
+```
+import java.util.concurrent.*;
+
+public class CyclicBarrierTest {
+    private static CyclicBarrier cyclicBarrier = new CyclicBarrier(5, () -> {
+        System.out.println("ready done callback!");
+    });
+
+    public static void main(String[] args) throws InterruptedException {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        for (int i = 0; i < 100; i++) {
+            int finalI = i;
+            Thread.sleep(1000);
+            executorService.execute(() -> {
+                try {
+                    System.out.println(finalI + "ready!");
+                    cyclicBarrier.await();
+//                    cyclicBarrier.await(2000, TimeUnit.MILLISECONDS); // 如果某个线程等待超过2秒就报错
+                    System.out.println(finalI + "go!");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+        }
+    }
+}
+```
+
+## 原理
+
+{% img /images/blog/2018-05-01_2.png 'image' %}
+
+与CountDownLatch类似，都是通过计数器实现的，当某个线程调用await之后，计数器减1，当计数器大于0时将等待的线程包装成AQS的Node放入等待队列中，当计数器为0时将等待队列中的Node拿出来执行。
+
+与CountDownLatch的区别：  
+
+1. CDL是一个线程等其他线程，CB是多个线程相互等待
+2. CB的计数器能重复使用，调用多次
+
+## 使用场景
+1. CyclicBarrier可以用于多线程计算数据，最后合并计算结果的应用场景。比如我们用一个Excel保存了用户所有银行流水，每个Sheet保存一个帐户近一年的每笔银行流水，现在需要统计用户的日均银行流水，先用多线程处理每个sheet里的银行流水，都执行完之后，得到每个sheet的日均银行流水，最后，再用barrierAction用这些线程的计算结果，计算出整个Excel的日均银行流水。
+2. 有四个游戏玩家玩游戏，游戏有三个关卡，每个关卡必须要所有玩家都到达后才能允许通过。其实这个场景里的玩家中如果有玩家A先到了关卡1，他必须等到其他所有玩家都到达关卡1时才能通过，也就是说线程之间需要相互等待。
+
+# ReentrantLock
+名为可重入锁，其实synchronized也可重入，是JDK层级上的一个并发控制工具
+
+## 使用
+```
+public class ConcurrencyTest {
+    private static final int THREAD_COUNT = 5000;
+    private static final int CONCURRENT_COUNT = 200;
+    private static int count = 0;
+    private static Lock lock = new ReentrantLock();
+
+    public static void main(String[] args) throws InterruptedException {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        Semaphore semaphore = new Semaphore(CONCURRENT_COUNT);
+        CountDownLatch countDownLatch = new CountDownLatch(THREAD_COUNT);
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            executorService.execute(() -> {
+                try {
+                    semaphore.acquire();
+                    add();
+                    semaphore.release();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                countDownLatch.countDown();
+            });
+        }
+        countDownLatch.await();
+        executorService.shutdown();
+        System.out.println(count);
+    }
+
+
+    private static void add() {
+        lock.lock();
+        try {
+            count++;
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+```
+
+## 原理
+参考：[https://www.jianshu.com/p/fe027772e156](https://www.jianshu.com/p/fe027772e156)
+
+```
+// 以公平锁为例，从lock.lock()开始研究
+final void lock() { acquire(1);}
+
+public final void acquire(int arg) {
+    if (!tryAcquire(arg) && // 首先通过公平或者非公平方式尝试获取锁
+        acquireQueued(addWaiter(Node.EXCLUSIVE), arg)) // 然后构建一个Node放入队列中并等待执行的时机
+        selfInterrupt();
+}
+
+// 公平锁设置锁执行状态的逻辑
+protected final boolean tryAcquire(int acquires) {
+    final Thread current = Thread.currentThread();
+    int c = getState();
+    if (c == 0) { //如果state是0，就是当前的锁没有人占有
+        if (!hasQueuedPredecessors() && // 公平锁的核心逻辑，判断队列是否有排在前面的线程在等待锁，非公平锁就没这个条件判断
+            compareAndSetState(0, acquires)) { // 如果队列没有前面的线程，使用CAS的方式修改state
+            setExclusiveOwnerThread(current); // 将线程记录为独占锁的线程
+            return true;
+        }
+    }
+    else if (current == getExclusiveOwnerThread()) { // 因为ReentrantLock是可重入的，线程可以不停地lock来增加state的值，对应地需要unlock来解锁，直到state为零
+        int nextc = c + acquires;
+        if (nextc < 0)
+            throw new Error("Maximum lock count exceeded");
+        setState(nextc);
+        return true;
+    }
+    return false;
+}
+
+// 接下来要执行的acquireQueued如下
+final boolean acquireQueued(final Node node, int arg) {
+    boolean failed = true;
+    try {
+        boolean interrupted = false;
+        for (;;) {
+            final Node p = node.predecessor();
+            if (p == head && tryAcquire(arg)) { // 再次使用公平锁逻辑判断是否将Node作为头结点立即执行
+                setHead(node);
+                p.next = null; // help GC
+                failed = false;
+                return interrupted;
+            }
+            if (shouldParkAfterFailedAcquire(p, node) &&
+                parkAndCheckInterrupt())
+                interrupted = true;
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+
+```
+
+## 与synchronized的区别
+1. 用法。synchronized既可以很方便的加在方法上，也可以加载特定代码块上，而lock需要显示地指定起始位置和终止位置。
+2. 实现。synchronized是依赖于JVM实现的，而ReentrantLock是JDK实现的
+3. 性能。synchronized和lock其实已经相差无几，其底层实现已经差不多了。但是如果你是Android开发者，使用synchronized还是需要考虑其性能差距的。
+4. 功能。ReentrantLock功能更强大。  
+4.1 ReentrantLock可以指定是公平锁还是非公平锁，而synchronized只能是非公平锁，所谓的公平锁就是先等待的线程先获得锁  
+4.2 ReentrantLock提供了一个Condition（条件）类，用来实现分组唤醒需要唤醒的线程们，而不是像synchronized要么随机唤醒一个线程要么唤醒全部线程  
+4.3 ReentrantLock提供了一种能够中断等待锁的线程的机制，通过lock.lockInterruptibly()来实现这个机制
+                                                                                             
+我们控制线程同步的时候，**优先考虑synchronized，如果有特殊需要，再进一步优化**。ReentrantLock如果用的不好，不仅不能提高性能，还可能带来灾难。
+
+# Condition
+条件对象的意义在于对于一个已经获取锁的线程，如果还需要等待其他条件才能继续执行的情况下，才会使用Condition条件对象。
+
+与ReentrantLock结合使用，类似wait与notify。
+
+## 使用
+```
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ConditionTest {
+
+    public static void main(String[] args) {
+        ReentrantLock lock = new ReentrantLock();
+        Condition condition = lock.newCondition();
+        Thread thread1 = new Thread(() -> {
+            lock.lock();
+            try {
+                System.out.println(Thread.currentThread().getName() + " run");
+                System.out.println(Thread.currentThread().getName() + " wait for condition");
+                try {
+                    condition.await(); // 1.将线程1放入到Condition队列中等待被唤醒，且立即释放锁
+                    System.out.println(Thread.currentThread().getName() + " continue"); // 3.线程2执行完毕释放锁，此时线程1已经在AQS等待队列中，则立即执行
+                } catch (InterruptedException e) {
+                    System.err.println(Thread.currentThread().getName() + " interrupted");
+                    Thread.currentThread().interrupt();
+                }
+            } finally {
+                lock.unlock();
+            }
+        });
+        Thread thread2 = new Thread(() -> {
+            lock.lock();
+            try {
+                System.out.println(Thread.currentThread().getName() + " run");
+                System.out.println(Thread.currentThread().getName() + " sleep 1 secs");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    System.err.println(Thread.currentThread().getName() + " interrupted");
+                    Thread.currentThread().interrupt();
+                }
+                condition.signalAll(); // 2.线程2获得锁，signalAll将Condition中的等待队列全部取出并加入到AQS中
+            } finally {
+                lock.unlock();
+            }
+        });
+        thread1.start();
+        thread2.start();
+    }
+
+}
+```
+
+输出结果为
+```
+Thread-0 run
+Thread-0 wait for condition
+Thread-1 run
+Thread-1 sleep 1 secs
+Thread-0 continue
+```
+
+## 使用场景
+可参看第一篇中PDF资料中《线程间通信》一节
