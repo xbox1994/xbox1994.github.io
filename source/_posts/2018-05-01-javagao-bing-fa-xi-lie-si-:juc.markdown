@@ -379,3 +379,128 @@ Thread-0 continue
 
 ## 使用场景
 可参看第一篇中PDF资料中《线程间通信》一节
+
+# Future、FutureTask
+不是AQS的子类，但是能拿到线程执行的结果非常有用。
+
+## Callable与Runnable
+### java.lang.Runnable
+```
+public interface Runnable {
+    public abstract void run();
+}
+```
+
+由于run()方法返回值为void类型，所以在执行完任务之后无法返回任何结果
+
+要使用的话直接实现就可以了
+
+### java.util.concurrent.Callable
+
+```
+@FunctionalInterface
+public interface Callable<V> {
+    V call() throws Exception;
+}
+```
+
+泛型接口，call()函数返回的类型就是传递进来的V类型，同时能结合lambda使用
+
+要使用的话要结合ExecutorService的如下方法使用
+
+```
+<T> Future<T> submit(Callable<T> task);
+<T> Future<T> submit(Runnable task, T result);
+Future<?> submit(Runnable task);
+```
+
+## Future接口
+`FutureTask<V> implements RunnableFuture<V>`  
+`RunnableFuture<V> extends Runnable, Future<V>`
+
+Future是Java 5添加的类，用来描述一个异步计算的结果。你可以使用isDone方法检查计算是否完成，或者使用get阻塞住调用线程，直到计算完成返回结果，你也可以使用cancel方法停止任务的执行。  
+
+```
+public class FutureTest {
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        Future<String> future = executorService.submit(() -> {
+            try {
+                System.out.println("doing");
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "done";
+        });
+        System.out.println(future.get());
+    }
+}
+```
+
+接口毕竟是接口，只能被赋值，不能直接new出来，所以可以new FutureTask直接来创建Future任务
+## FutureTask类
+```
+public class FutureTaskTest {
+
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        FutureTask<String> futureTask = new FutureTask<>(() -> {
+            System.out.println("doing");
+            Thread.sleep(1000);
+            return "down";
+        });
+        executorService.submit(futureTask);
+
+//        new Thread(futureTask).start();
+        System.out.println(futureTask.get());
+        executorService.shutdown();
+    }
+}
+```
+
+## CompletableFuture类
+但其实在项目中使用到最多的Future类是1.8提供的这个类，因为[虽然Future以及相关使用方法提供了异步执行任务的能力，但是对于结果的获取却是很不方便，只能通过阻塞方式得到任务的结果，阻塞的方式显然和我们的异步编程的初衷相违背。](http://colobu.com/2016/02/29/Java-CompletableFuture/#)
+
+其实简单来说，原理就是通过自己维护一套线程同步与等待的机制与线程池去实现这样的异步任务处理机制，下面的例子是开发中最经常用到的，等待所有任务完成，继续处理数据的例子。还有异步任务依赖的例子请参看上文连接。
+
+```
+public class CompletableFutureTest {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        CompletableFuture<String> string1Future = CompletableFuture.supplyAsync(() -> {
+            System.out.println("doing string1");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("done string1");
+            return "string1";
+        });
+        CompletableFuture<String> string2Future = CompletableFuture.supplyAsync(() -> {
+            System.out.println("doing string2");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("done string2");
+            return "string2";
+        });
+
+        CompletableFuture.allOf(string1Future, string2Future).join();
+        System.out.println(string1Future.get() + "and" + string2Future.get());
+    }
+}
+```
+
+# BlockingQueue
+假设我们有若干生产者线程，另外又有若干个消费者线程。如果生产者线程需要把准备好的数据共享给消费者线程，利用队列的方式来传递数据，就可以很方便地解决他们之间的数据共享问题。  
+但如果生产者和消费者在某个时间段内，万一发生数据处理速度不匹配的情况呢？理想情况下，如果生产者产出数据的速度大于消费者消费的速度，并且当生产出来的数据累积到一定程度的时候，那么生产者暂停等待一下（阻塞生产者线程）或者继续将产品放入队列中。    
+然而，在concurrent包发布以前，在多线程环境下，我们每个程序员都必须去自己控制这些细节，尤其还要兼顾效率和线程安全，而这会给我们的程序带来不小的复杂度
+
+在后文的线程池相关内容中会提到，线程池也使用到了这个工具完成不同需求。
+
+使用方式、子类的详细介绍参看[这里](http://wsmajunfeng.iteye.com/blog/1629354)
