@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["Java高并发(四):java.util.concurrent包"]
+rake new_post["Java多线程与高并发(五):线程池"]
 rake preview
 
-./push.sh "[blog] Java高并发(四):java.util.concurrent包(下)"
+./push.sh "[blog] Java多线程与高并发(五):线程池"
