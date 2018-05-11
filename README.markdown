@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["Java面试连环炮(一)：搜索引擎"]
+rake new_post["Java多线程与高并发(六):高并发解决思路"]
 rake preview
 
-./push.sh "[blog] Java面试连环炮(一)：搜索引擎"
+./push.sh "[blog] Java多线程与高并发(六):高并发解决思路 1"
