@@ -113,3 +113,7 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 
 网上有一种观点是：设计模式是从已经写好的代码中提炼出来的，不是在还没写代码的时候设计出来的。
 在没有需求没有代码的时候讨论设计模式的好处是完全没有意义的。后半句我非常赞同，但是前半句不敢苟同，设计模式确实是从以前写出来的代码中提炼出来的，但是我已经学习到了一些设计模式，那么在我以后将要但是还没写代码的时候就可以按照需求去使用相应的设计模式去进行代码设计，有何不可呢。
+
+## 号外号外
+最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  
+地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)

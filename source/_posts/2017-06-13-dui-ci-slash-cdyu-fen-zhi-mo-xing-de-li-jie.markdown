@@ -131,3 +131,7 @@ https://martinfowler.com/delivery.html
 https://martinfowler.com/bliki/FeatureBranch.html
 http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html
 http://www.mindtheproduct.com/2016/02/what-the-hell-are-ci-cd-and-devops-a-cheatsheet-for-the-rest-of-us/
+
+## 号外号外
+最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  
+地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)

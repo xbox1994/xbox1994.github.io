@@ -104,3 +104,7 @@ Eureka客户端 - 查询DNS来发现服务器的网络位置。然而，如果�
 在一些部署环境中你需要用服务注册表来设置自己的服务发现基础设施比如 Netflix Eureka, etcd, or Apache Zookeeper。在其他部署环境，服务注册表是内置的。比如 Kubernetes and Marathon。他们还在扮演服务端发现路由器角色的每个集群主机上运行代理。
 
 HTTP反向代理和负载均衡器比如NGINX能当做服务端发现的服务在均衡器。服务注册表可以推路由信息给NGINX并且触发流畅的配置更新。
+
+## 号外号外
+最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  
+地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)

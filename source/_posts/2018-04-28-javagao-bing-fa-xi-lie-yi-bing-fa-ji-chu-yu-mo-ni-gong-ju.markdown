@@ -180,3 +180,7 @@ public class ConcurrencyTest {
 ```
 
 执行结果可能是5000可能小于5000。从而证明add方法的写法是线程不安全的写法。
+
+## 号外号外
+最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  
+地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)

@@ -124,6 +124,12 @@ task :new_post, :title do |t, args|
     post.puts "comments: true"
     post.puts "categories: "
     post.puts "---"
+    post.puts ""
+    post.puts "<!-- more -->"
+    post.puts ""
+    post.puts "## 号外号外"
+    post.puts "最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  "
+    post.puts "地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)"
   end
 end
 

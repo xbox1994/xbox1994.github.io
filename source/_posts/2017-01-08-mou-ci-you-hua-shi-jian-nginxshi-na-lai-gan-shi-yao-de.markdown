@@ -80,3 +80,7 @@ Nginx是负责接收/返回请求与转发/返回请求的,在这个过程中会
 3.对于页面重新加载速度过慢的问题,使用多线程配置解决,已经解决.  
 4.对于大资源加载问题,考虑使用Nginx压缩处理,grunt ddev已经解决.  
 5.对于以后可能出现的请求数量过多问题采用Nginx+Unicorn负载均衡,已经解决.
+
+## 号外号外
+最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  
+地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)

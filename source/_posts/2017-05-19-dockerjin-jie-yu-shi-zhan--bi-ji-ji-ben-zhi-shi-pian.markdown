@@ -228,3 +228,7 @@ Parent：该layer的父层，这样就可以找到某个image的所有layer
 * image难以加密。image是共享的，加密会导致难以共享。有notary的镜像签名机制。
 * image分层之后有大量元数据。分布式存储对小文件的支持不好。
 * image制作完成之后无法修改。Dockre不提供修改或合并层的指令。
+
+## 号外号外
+最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  
+地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)

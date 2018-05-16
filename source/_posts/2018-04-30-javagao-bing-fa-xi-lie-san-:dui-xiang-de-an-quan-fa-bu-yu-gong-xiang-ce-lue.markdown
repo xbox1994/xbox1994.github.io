@@ -240,3 +240,7 @@ public class ImmutableExample3 {
 * TreeSet -> Collections.synchronizedSortedSet(new TreeSet()), [ConcurrentSkipListSet](https://blog.csdn.net/guangcigeyun/article/details/8278349)
 * HashMap -> HashTable, ConcurrentHashMap, Collections.synchronizedMap(new HashMap())
 * TreeMap -> ConcurrentSkipListMap, Collections.synchronizedSortedMap(new TreeMap())
+
+## 号外号外
+最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  
+地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)

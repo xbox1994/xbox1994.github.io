@@ -504,3 +504,7 @@ node{
 ```
 
 这个文件定义了Jenkins中这个项目的Pipeline里应该如何被执行，每一步都做些什么操作，如定义了4个stage分别对应拉代码、测试、构建、部署，其中部署脚本执行的就是使用`scp`命令执行的。当然这个是最简单的Pipeline任务定义，你可以参考[https://jenkins.io/doc/book/pipeline/jenkinsfile/](https://jenkins.io/doc/book/pipeline/jenkinsfile/)来使用更方便的功能如“when”语句来检测上一个stage是否成功完成。
+
+## 号外号外
+最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  
+地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)

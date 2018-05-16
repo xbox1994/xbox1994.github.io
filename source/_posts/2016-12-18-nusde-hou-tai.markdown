@@ -103,3 +103,7 @@ Sinatra is a DSL for quickly creating web applications in Ruby with minimal ef
 
 其他：Nginx+Unicorn+Sinatra部署方案
 http://recipes.sinatrarb.com/p/deployment/nginx_proxied_to_unicorn
+
+## 号外号外
+最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  
+地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)
