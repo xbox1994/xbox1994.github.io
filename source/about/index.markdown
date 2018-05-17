@@ -6,7 +6,7 @@ comments: true
 sharing: true
 footer: false
 ---
-王天一，94年人，现居武汉，曾工作于ThoughtWorks，现工作于青云。
+王天一，94年人，现居武汉，曾工作于ThoughtWorks，现工作于青云。需要这两家公司内推的朋友请联系我~
 
 爱好吃鸡唱歌LOL炉石，报名过2017、2018武汉马拉松未中签。
 
@@ -30,9 +30,8 @@ ThoughtWorks提供了一个平台让我们能做一些分享与活动组织的�
 曾任ThoughtWorks武汉分公司DevOps社区负责人  
 ***
 ##联系方式
-微信：
-{% img /images/about_weixin.jpeg 'image' %}
+邮箱：tywang666@gmail.com
 
-邮箱：282503846@qq.com
+[GitHub](https://github.com/xbox1994/)
 ***
 随机更新博客，平均1月1篇
