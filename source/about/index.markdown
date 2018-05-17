@@ -6,7 +6,7 @@ comments: true
 sharing: true
 footer: false
 ---
-王天一，94年人，现居武汉，工作于ThoughtWorks.
+王天一，94年人，现居武汉，曾工作于ThoughtWorks，现工作于青云。
 
 爱好吃鸡唱歌LOL炉石，报名过2017、2018武汉马拉松未中签。
 
@@ -14,6 +14,7 @@ footer: false
 ##开源项目
 * 本博客：https://github.com/xbox1994/xbox1994.github.io
 * Devops吃鸡项目：https://github.com/tw-wh-devops-community/cooking-chicken
+* 2018最新Java面试宝典：https://github.com/xbox1994/2018-Java-Interview
 ***
 ##参与过的活动
 ThoughtWorks提供了一个平台让我们能做一些分享与活动组织的机会，大大提高了我的演讲、写作、活动组织能力。
@@ -23,7 +24,7 @@ ThoughtWorks提供了一个平台让我们能做一些分享与活动组织的�
 发表ThoughtWorks洞见[《从URL开始，定位世界》](http://insights.thoughtworks.cn/url-locates-the-world/)
 
 * 2018年     
-现任ThoughtWorks武汉分公司DevOps社区负责人  
+曾任ThoughtWorks武汉分公司DevOps社区负责人  
 ***
 ##联系方式
 微信：

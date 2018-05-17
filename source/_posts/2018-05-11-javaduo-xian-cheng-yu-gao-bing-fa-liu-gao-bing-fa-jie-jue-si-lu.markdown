@@ -6,7 +6,7 @@ comments: true
 categories: 后台
 ---
 
-本系列的最后一篇，现在草草地把这个系列结束了，期待日后对内容的丰富。
+本系列的最后一篇，主要提供一些高并发场景的解决思路，实现的细节虽然需要在实战中学习，但解决的思路一定要有。
 
 <!-- more -->
 
@@ -92,6 +92,8 @@ LRU(Least Recently Used)：最近最少使用，基于访问时间，在被访�
 最简单的消息队列就是一个消息转发器，基本功能只有三个：消息存储、消息发送、消息删除，可使用LinkedBlockingQueue、ConcurrentLinkedQueue实现
 
 # [应用拆分](http://www.wangtianyi.top/blog/2017/06/01/yi-microservies-7-jiang-ju-wu-ba-zhong-gou-cheng-wei-fu-wu/)
+之前翻译过的一篇博文已经提到，如何将已经存在的巨无霸单体应用重构成微服务，点击上面链接即可
+
 # 限流
 {% img /images/blog/2018-05-11_5.png 'image' %}
 
