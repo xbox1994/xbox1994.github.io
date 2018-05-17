@@ -21,7 +21,7 @@ categories: 后台
 #先分类(dian cai)吧
 我把异常根据意义成三种：业务、系统、代码异常，不同的异常采用不同的处理方式。
 ##业务异常
-```
+```java
 @GetMapping("/{id}")
 public ReservationDetail getDetail(@PathVariable String id) {
     ReservationDetail result = applicationService.getReservationDetail(id);
@@ -36,7 +36,7 @@ public ReservationDetail getDetail(@PathVariable String id) {
 
 将所有业务异常抛出，并通过Spring提供的接口进行统一处理，要注意的是，返回码也是需要分别标示的，对于意义不同的业务异常，对应的错误返回码也是需要被指定的：
 
-```
+```java
 @RestControllerAdvice
 public class ControllerAdvice {
 
@@ -81,7 +81,7 @@ public class ControllerAdvice {
 
 **那么问题来了，这些异常可以与其他异常分类统一格式返回给前端吗？**
 
-```
+```java
 @ExceptionHandler(Throwable.class)
 ```
 这行代码捕捉了所有的异常，包括Error级别的，这是根据特定项目需求来确定的，所以即使是Error也需要记录下来，出错之后方便错误的排查。

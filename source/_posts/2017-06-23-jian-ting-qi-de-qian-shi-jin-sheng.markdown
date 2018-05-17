@@ -27,7 +27,7 @@ categories: 后台
 ##源码中的原始用法
 要使用Spring中监听器的功能，需要实现ApplicationListener，具体如何实现请自行百度。源码中Rod对这个接口讲解的很清楚，根据观察者模式实现，在3.0中监听器可以声明感兴趣的事件等等。
 
-```
+```java
 
 /**
  * Interface to be implemented by application event listeners.
@@ -59,7 +59,7 @@ public interface ApplicationListener<E extends ApplicationEvent> extends EventLi
 
 下面的代码位于SimpleApplicationEventMulticaster，在这个方法执行前，我们加上了@Component的监听器会被Spring框架读取并添加到监听器的集合中，在这个方法里会将每个之前注册过的每个监听器都开启一条线程，通知所有注册了此event的监听器执行方法。
 
-```
+```java
 public void multicastEvent(final ApplicationEvent event, ResolvableType eventType) {
 		ResolvableType type = (eventType != null ? eventType : resolveDefaultEventType(event));
 		for (final ApplicationListener<?> listener : getApplicationListeners(event, type)) {
@@ -81,58 +81,7 @@ public void multicastEvent(final ApplicationEvent event, ResolvableType eventTyp
 
 在使用SpringApplication.run时，会调用multicastEvent(new ApplicationStartedEvent())方法调用所有注册了ApplicationStartedEvent的监听器，还有其他官方提供的监听事件可从[Spring官方文档](https://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#context-functionality-events)找到。
 
-##结合JPA监听器
-Spring中存在另一种监听器：JPA监听器。首先我们要明确JPA监听器的意义，JPA是针对数据模型的监听，当数据模型被修改的时候可以触发，具体参见[这里](https://docs.jboss.org/hibernate/orm/4.0/hem/en-US/html/listeners.html)。Spring应用监听器是对于框架内部流程与自定义事件的监听。
-
-通过在JPA实体中注册一个JPA监听器，然后在该监听器中publish事件给Spring框架，最后让Spring将该事件广播给所有注册过该事件的监听器。无图无XX，请叫我灵魂画师。
-
-{% img /images/blog/2017-06-23_2.png 'image' %}
-
-实体类TodoTask：
-
-```
-@Entity
-@Table(name = "todo_task")
-@EntityListeners({TodoTaskEntityListener.class})
-```
-
-JPA监听器TodoTaskEntityListener：
-
-```
-@Configurable
-public class TodoTaskEntityListener {
-
-    @PostPersist
-    public void onPostPersist(TodoTask task) {
-        logger.info("publish todo task created event");
-        EventPublisher.publish(new TodoTaskCreatedEvent(task));
-    }
-}
-
-```
-
-事件监听器TodoTaskCreatedEventListener：
-
-```
-@Component
-public class TodoTaskDoneEventListener implements ApplicationListener<TodoTaskDoneEvent> {
-    @Autowired
-    TodoTaskRepository todoTaskRepository;
-
-    @Override
-    public void onApplicationEvent(TodoTaskDoneEvent event) {
-        logger.info("activity request successful, {}", activity);
-        todoTaskRepository.save(task);
-	}
-}
-```
-之后，就可以使用EventPublisher.publish(new Event())来发布自定义的事件，用在数据库的增删改查前后的操作比较方便。
-
-这里至于为什么绕一个大圈子来处理而不是直接在TodoTaskEntityListener中写业务代码，因为解耦、分层。Task所在的数据持久层的监听器不应该替代业务逻辑层应该做的事情。下面的使用场景里会提到。
-
 ###使用场景
-JPA监听器的使用场景与Spring应用监听器的使用场景有一定差异。可以把JPA监听器看作持久层之内，但区别于数据模型的一层。
-
 使用场景：
 
 * 很多情况下，数据库中的数据和真实想要使用的数据不同，可以把数据清洗、包装

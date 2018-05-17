@@ -52,7 +52,7 @@ categories: 后台
 
 然后在AccountServiceImpl中提供set方式就能这样用到Spring帮我们创建的bean了：
 
-```
+```java
 @Test
 public void testByXml() throws Exception {
     ApplicationContext applicationContext=new ClassPathXmlApplicationContext("spring/spring-ioc.xml");
@@ -64,7 +64,7 @@ public void testByXml() throws Exception {
 
 Spring对每个被管理的类默认生成的是单例，并且对每个类都会生成特定的单例工厂对象，然后调用DefaultSingletonBeanRegistry中的double check lock方式得到需要的产品对象。
 
-```
+```java
 protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 		Object singletonObject = this.singletonObjects.get(beanName);
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {

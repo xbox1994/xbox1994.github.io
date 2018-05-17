@@ -56,7 +56,7 @@ categories: 后台
 
 ### 例子
 
-```
+```java
 public class PossibleReordering {
     private static int x = 0, y = 0;
     private static int a = 0, b = 0;
@@ -147,7 +147,7 @@ public class PossibleReordering {
 信号量是一个能阻塞线程且能控制统一时间请求的并发量的工具。比如能保证同时执行的线程最多200个，模拟出稳定的并发量。深入了解请参看第四篇文章。
 
 #### 模拟工具
-```
+```java
 public class ConcurrencyTest {
     private static final int THREAD_COUNT = 5000;
     private static final int CONCURRENT_COUNT = 200;

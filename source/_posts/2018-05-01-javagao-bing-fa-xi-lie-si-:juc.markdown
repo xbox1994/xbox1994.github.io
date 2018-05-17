@@ -41,7 +41,7 @@ AbstractQueuedSynchronizer，即队列同步器。它是构建锁或者其他同
 
 ## 使用
 
-```
+```java
 public class CountDownLatchTest {
 
     private static final int COUNT = 1000;
@@ -86,7 +86,7 @@ public class CountDownLatchTest {
 
 ## 使用
 
-```
+```java
 public class CountDownLatchTest {
 
     public static void main(String[] args) {
@@ -115,7 +115,7 @@ public class CountDownLatchTest {
 ## 原理
 new Semaphore(3)传入的3就是AQS中state的值，也是许可数的总数，在调用acquire时，检测此时许可数如果小于0，就将被阻塞，然后将线程构建Node进入AQS队列
 
-```
+```java
 //AQS的骨架，其中tryAcquireShared将调用到Semaphore中的nonfairTryAcquireShared
 //一般常用非公平的信号量，非公平信号量是指在获取许可时直接循环获取，如果获取失败，才会入列
 //公平的信号量在获取许可时首先要查看等待队列中是否已有线程，如果有则将线程入列等待
@@ -166,7 +166,7 @@ final int nonfairTryAcquireShared(int acquires) {
 可以让一组线程相互等待，当每个线程都准备好之后，所有线程才继续执行的工具类
 
 ## 使用
-```
+```java
 import java.util.concurrent.*;
 
 public class CyclicBarrierTest {
@@ -214,7 +214,7 @@ public class CyclicBarrierTest {
 名为可重入锁，其实synchronized也可重入，是JDK层级上的一个并发控制工具
 
 ## 使用
-```
+```java
 public class ConcurrencyTest {
     private static final int THREAD_COUNT = 5000;
     private static final int CONCURRENT_COUNT = 200;
@@ -257,7 +257,7 @@ public class ConcurrencyTest {
 ## 原理
 参考：[https://www.jianshu.com/p/fe027772e156](https://www.jianshu.com/p/fe027772e156)
 
-```
+```java
 // 以公平锁为例，从lock.lock()开始研究
 final void lock() { acquire(1);}
 
@@ -330,7 +330,7 @@ final boolean acquireQueued(final Node node, int arg) {
 与ReentrantLock结合使用，类似wait与notify。
 
 ## 使用
-```
+```java
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -395,7 +395,7 @@ Thread-0 continue
 
 ## Callable与Runnable
 ### java.lang.Runnable
-```
+```java
 public interface Runnable {
     public abstract void run();
 }
@@ -407,7 +407,7 @@ public interface Runnable {
 
 ### java.util.concurrent.Callable
 
-```
+```java
 @FunctionalInterface
 public interface Callable<V> {
     V call() throws Exception;
@@ -418,7 +418,7 @@ public interface Callable<V> {
 
 要使用的话要结合ExecutorService的如下方法使用
 
-```
+```java
 <T> Future<T> submit(Callable<T> task);
 <T> Future<T> submit(Runnable task, T result);
 Future<?> submit(Runnable task);
@@ -430,7 +430,7 @@ Future<?> submit(Runnable task);
 
 Future是Java 5添加的类，用来描述一个异步计算的结果。你可以使用isDone方法检查计算是否完成，或者使用get阻塞住调用线程，直到计算完成返回结果，你也可以使用cancel方法停止任务的执行。  
 
-```
+```java
 public class FutureTest {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
@@ -451,7 +451,7 @@ public class FutureTest {
 
 接口毕竟是接口，只能被赋值，不能直接new出来，所以可以new FutureTask直接来创建Future任务
 ## FutureTask类
-```
+```java
 public class FutureTaskTest {
 
 
@@ -476,7 +476,7 @@ public class FutureTaskTest {
 
 其实简单来说，原理就是通过自己维护一套线程同步与等待的机制与线程池去实现这样的异步任务处理机制，下面的例子是开发中最经常用到的，等待所有任务完成，继续处理数据的例子。还有异步任务依赖的例子请参看上文连接。
 
-```
+```java
 public class CompletableFutureTest {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         CompletableFuture<String> string1Future = CompletableFuture.supplyAsync(() -> {

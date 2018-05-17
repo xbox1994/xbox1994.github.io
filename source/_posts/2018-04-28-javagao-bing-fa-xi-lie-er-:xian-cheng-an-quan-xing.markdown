@@ -22,7 +22,7 @@ categories: 后台
 ### AtomicInteger
 AtomicInteger中的incrementAndGet方法就是乐观锁的一个实现，使用自旋（循环检测更新）的方式来更新内存中的值并通过底层CPU执行来保证是更新操作是原子操作。方法如下：
 
-```
+```java
 public final int getAndAddInt(Object var1, long var2, int var4) {
     int var5;
     do {
@@ -58,7 +58,7 @@ AtomicStampedReference来解决ABA问题。这个类的compareAndSet方法作用
 
 可以用以下代码试试
 
-```
+```java
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -137,7 +137,7 @@ volatile变量具有 synchronized 的**可见性**特性，但是**不具备原�
 
 比如以下就是通过变量的值通知另一个线程要执行相关任务：
 
-```
+```java
 volatile boolean inited = false;
 
 //线程1

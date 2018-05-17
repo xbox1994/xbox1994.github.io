@@ -13,7 +13,7 @@ categories: 后台
 **发布对象：使一个对象能够被其他线程、其他作用域的代码所使用。** 
 
 ## 变量逸出原有作用域
-```
+```java
 import java.util.Arrays;
 
 public class Main {
@@ -39,7 +39,7 @@ public class Main {
 
 以下代码发布了一个未完成构造的对象到另一个对象中：
 
-```
+```java
 public class Main {
 
     public Main() {
@@ -64,7 +64,7 @@ public class Main {
 
 this引用被线程t共享，故线程t的发布将导致Main对象的发布，由于Main对象被发布时可能还未构造完成，这将导致Main对象逸出（在构造函数中创建线程是可以的，但是不要在构造函数执行完之前启动线程）。
 
-```
+```java
 public class Main {
     private Thread t;
 
@@ -98,7 +98,7 @@ public class Main {
 安全地发布对象是保证对象在其他线程可见之前一定是完成初始化的。那么我们要做的就是控制初始化过程，首先就需要将构造器私有化，接下来就通过不同的方式来完成对象初始化。
 
 ## 将对象的引用在静态初始化函数中初始化
-```
+```java
 public class Singleton {
     private static Singleton instance = new Singleton();
 
@@ -115,7 +115,7 @@ public class Singleton {
 
 ## 将对象的初始化手动同步处理
 
-```
+```java
 public class Singleton {
     private static Singleton instance;
 
@@ -133,7 +133,7 @@ public class Singleton {
 
 ## 使用volidate修饰变量
 
-```
+```java
 public class Singleton {
     private static volatile Singleton instance;
 
@@ -165,7 +165,7 @@ public class Singleton {
 * 局部变量封闭：局部变量的固有属性之一就是封闭在执行线程内，无法被外界引用，所以尽量使用局部变量可以减少逸出的发生
 * ThreadLocal：是一个能提供线程私有变量的工具类。基于每个Thread对象中保存了ThreadLocalMap对象，ThreadLocal类就在get和set方法中通过<ThreadLocal, value>键值对操作ThreadLocalMap，推荐。通常使用在传递每个线程（请求）的上下文。
 
-```
+```java
 public class ThreadLocalTest {
     private ThreadLocal<String> localString = new ThreadLocal<>();
 
@@ -188,7 +188,7 @@ final的对象的状态只有一种状态，并且该状态由其构造器控制
 
 但引用的变量的内容还是能被修改，仅仅保证了引用不能被修改，如下：
 
-```
+```java
 public class ImmutableExample1 {
 
     private final static Integer a = 1;
@@ -213,7 +213,7 @@ public class ImmutableExample1 {
 
 Collections.unmodifiableMap(map)则可以将可修改的map转换为不可修改的map，或者使用使用com.google.guava中的ImmutableXXX集合类可以的禁止对集合修改的操作：
 
-```
+```java
 public class ImmutableExample3 {
 
     private final static ImmutableList<Integer> list = ImmutableList.of(1, 2, 3);

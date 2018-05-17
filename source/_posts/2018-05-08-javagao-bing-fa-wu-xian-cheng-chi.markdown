@@ -16,7 +16,7 @@ categories: 后台
 # ThreadPoolExecutor
 ## 核心变量
 在创建线程池时需要传入的参数
-```
+```java
 public static ExecutorService newFixedThreadPool(int nThreads, ThreadFactory threadFactory) {
 return new ThreadPoolExecutor(nThreads, nThreads,
                               0L, TimeUnit.MILLISECONDS,
@@ -81,7 +81,7 @@ corePoolSize为1的ScheduledThreadPool
 创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行
 
 # 例子
-```
+```java
 public class ThreadPoolTest {
     public static void main(String[] args) {
         ExecutorService executorService = Executors.newCachedThreadPool();
@@ -96,7 +96,7 @@ public class ThreadPoolTest {
 
 以上代码将非顺序输出0~9，类似于fixed，但single的将顺序输出0~9
 
-```
+```java
 public class ThreadPoolTest {
     public static void main(String[] args) {
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(3);
