@@ -241,6 +241,10 @@ public class ImmutableExample3 {
 * HashMap -> HashTable, ConcurrentHashMap, Collections.synchronizedMap(new HashMap())
 * TreeMap -> ConcurrentSkipListMap, Collections.synchronizedSortedMap(new TreeMap())
 
+## 参考
+http://coding.imooc.com/class/195.html    
+以及其他超连接引用
+
 ## 号外号外
 最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  
 地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)

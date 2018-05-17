@@ -520,6 +520,10 @@ fork join框架是JDK7中出现的一款高效的工具，Java开发人员可以
 
 但这样会要额外地对任务分派线程进行管理，无形地会增加管理的难度和复杂度，还可能碰到资源竞争导致的同步操作与性能损耗
 
+## 参考
+http://coding.imooc.com/class/195.html    
+以及其他超连接引用
+
 ## 号外号外
 最近在总结一些针对**Java**面试相关的知识点，感兴趣的朋友可以一起维护~  
 地址：[https://github.com/xbox1994/2018-Java-Interview](https://github.com/xbox1994/2018-Java-Interview)
