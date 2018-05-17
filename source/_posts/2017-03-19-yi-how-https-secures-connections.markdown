@@ -97,45 +97,48 @@ _**B的计算：（A的混合体<sup>B的私钥</sup>)%素数**_
 
 译者Java实现：
 
+```java
 	import java.math.BigInteger;
 
-	public class Main {
-	    //公开的A和B都知道的素数和素数的原根
-	    public static final BigInteger ROOT = BigInteger.valueOf(5);
-	    public static final BigInteger PRIME = BigInteger.valueOf(97);
-	
-	    public static void main(String[] args) {
-	        ShyMan a = new ShyMan(111);
-	        int mixtureA = a.getMixture();
-	        ShyMan b = new ShyMan(222);
-	        int mixtureB = b.getMixture();
-	
-	        //mixtureA and mixtureB will be transmitted in network, but it is meaningless for anyone
-	        System.out.println(mixtureA);
-	        System.out.println(mixtureB);
-	
-	        //Alice and Bob will get the same key number from each other
-	        System.out.println(a.getCommonKey(mixtureB));
-	        System.out.println(b.getCommonKey(mixtureA));
-	    }
-	}
-	
-	class ShyMan {
-	    //自己的私有密值,不会告诉任何人
-	    private int private_key_number;
-	
-	    public ShyMan(int private_key_number) {
-	        this.private_key_number = private_key_number;
-	    }
-	
-	    public int getMixture() {
-	        return Main.ROOT.pow(private_key_number).mod(Main.PRIME).intValue();
-	    }
-	
-	    public int getCommonKey(int mixture) {
-	        return BigInteger.valueOf(mixture).pow(private_key_number).mod(Main.PRIME).intValue();
-	    }
-	}
+public class Main {
+    //公开的A和B都知道的素数和素数的原根
+    public static final BigInteger ROOT = BigInteger.valueOf(5);
+    public static final BigInteger PRIME = BigInteger.valueOf(97);
+
+    public static void main(String[] args) {
+        ShyMan a = new ShyMan(111);
+        int mixtureA = a.getMixture();
+        ShyMan b = new ShyMan(222);
+        int mixtureB = b.getMixture();
+
+        //mixtureA and mixtureB will be transmitted in network, but it is meaningless for anyone
+        System.out.println(mixtureA);
+        System.out.println(mixtureB);
+
+        //Alice and Bob will get the same key number from each other
+        System.out.println(a.getCommonKey(mixtureB));
+        System.out.println(b.getCommonKey(mixtureA));
+    }
+}
+
+class ShyMan {
+    //自己的私有密值,不会告诉任何人
+    private int private_key_number;
+
+    public ShyMan(int private_key_number) {
+        this.private_key_number = private_key_number;
+    }
+
+    public int getMixture() {
+        return Main.ROOT.pow(private_key_number).mod(Main.PRIME).intValue();
+    }
+
+    public int getCommonKey(int mixture) {
+        return BigInteger.valueOf(mixture).pow(private_key_number).mod(Main.PRIME).intValue();
+    }
+}
+```
+
 ##对称密钥加密
 公钥交换在每次会话中仅需要发生一次，就是在客户端和服务端连接的时候。一旦他们确认使用这个公钥，客户端和服务端用[对称密钥加密系统](https://en.wikipedia.org/wiki/Symmetric-key_algorithm)，这更有利于高效的通信因为它在每次通信中都节省了一次往返。
 
