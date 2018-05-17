@@ -11,6 +11,9 @@ footer: false
 爱好吃鸡唱歌LOL炉石，报名过2017、2018武汉马拉松未中签。
 
 ***
+##正在运营
+开发者头条独家号[《Java吃鸡之路》](https://toutiao.io/subjects/342253)
+
 ##开源项目
 * 本博客：https://github.com/xbox1994/xbox1994.github.io
 * Devops吃鸡项目：https://github.com/tw-wh-devops-community/cooking-chicken
