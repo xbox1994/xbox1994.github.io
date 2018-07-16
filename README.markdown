@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["Java多线程与高并发(六):高并发解决思路"]
+rake new_post["独自带大一个功能模块是怎样的体验"]
 rake preview
 
 ./push.sh "[blog] 号外号外"
