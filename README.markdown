@@ -7,4 +7,4 @@ rake new_page[about]
 rake new_post["独自带大一个功能模块是怎样的体验"]
 rake preview
 
-./push.sh "[blog] 号外号外"
+./push.sh "[blog] Java生产环境下问题排查"
