@@ -32,6 +32,8 @@ Non-default VM flags: -XX:CICompilerCount=3 -XX:InitialHeapSize=132120576 -XX:Ma
 Command line:  -Dspring.config.location=application.properties -Dspring.profiles.active=staging
 ```
 
+`java -XX:+PrintFlagsFinal -version` 查看当前虚拟机默认JVM参数
+
 ### 查看即时GC状态
 `jstat -gc PID 1000 10` 每秒查看一次gc信息，共10次
 
