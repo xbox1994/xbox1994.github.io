@@ -3,7 +3,7 @@ layout: post
 title: "手把手教你实现一个基于Redis的分布式锁"
 date: 2018-06-24 19:32:29 +0800
 comments: true
-categories: 
+categories: 后台
 ---
 
 源码在此：https://github.com/xbox1994/distributed-lock-redis

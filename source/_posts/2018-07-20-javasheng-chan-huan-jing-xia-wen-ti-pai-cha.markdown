@@ -3,7 +3,7 @@ layout: post
 title: "Java生产环境下问题排查"
 date: 2018-07-20 10:23:41 +0800
 comments: true
-categories: 
+categories: 后台
 ---
 
 在生产环境中，我们无法通过断点调试、新增log、可视化工具去立马查看当前的运行状态和拿到错误信息，此时，借助Java自带的命令行工具以及相关dump分析工具以及一些小技巧，可以大大提升我们排查问题的效率
