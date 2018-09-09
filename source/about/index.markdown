@@ -1,12 +1,12 @@
 ---
 layout: page
-title: "关于DmC"
+title: "关于作者"
 date: 2016-12-18 17:02
 comments: true
 sharing: true
 footer: false
 ---
-王天一，94年，秭归人，现居武汉，曾工作于ThoughtWorks，现工作于青云
+王天一，94年，秭归人，现居武汉，曾工作于ThoughtWorks，现工作于金山软件
 
 爱好吃鸡唱歌撸啊撸炉石，报名2017、2018武汉马拉松未中签。
 
