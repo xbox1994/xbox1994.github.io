@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post["系统设计面试题：综合考察面试者的大招"]
+rake new_post[""]
 rake preview
 
-./push.sh "[blog] 系统设计面试题：综合考察面试者的大招"
+./push.sh "[blog] 基于Go Micro的微服务架构本地实战 + 从Java极速入门Go"
