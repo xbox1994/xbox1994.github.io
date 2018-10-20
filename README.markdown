@@ -4,7 +4,7 @@ rake generate
 rake deploy
 
 rake new_page[about]
-rake new_post[""]
+rake new_post
 rake preview
 
-./push.sh "[blog] 基于Go Micro的微服务架构本地实战 + 从Java极速入门Go"
+./push.sh "[blog] 为团队构建DevOps体系"
