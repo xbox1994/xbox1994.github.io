@@ -7,4 +7,4 @@ rake new_page[about]
 rake new_post
 rake preview
 
-./push.sh "[blog] 为团队构建DevOps体系"
+./push.sh "[about] update"
