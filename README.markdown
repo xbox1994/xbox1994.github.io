@@ -7,4 +7,4 @@ rake new_page[about]
 rake new_post
 rake preview
 
-./push.sh "[blog] update"
+./push.sh "[about] update"
