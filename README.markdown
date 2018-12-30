@@ -7,4 +7,4 @@ rake new_page[about]
 rake new_post
 rake preview
 
-./push.sh "[blog] 一次简单通用的压测调优实战"
+./push.sh "[blog] OAuth2原理与LinkedIn的第三方分享实战"
