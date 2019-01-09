@@ -37,13 +37,7 @@ end
 desc "Deploy website via s3cmd"
 task :s3 do
   puts "## Deploying website via s3cmd"
-  if system("s3cmd sync --acl-public --reduced-redundancy --add-header \"Cache-Control: max-age=#{s3_cache_secs}\"  public/* s3://#{s3_bucket}/")
-    puts "ok"
-  elsif system("python C:\\Users\\win\\Downloads\\s3cmd\\s3cmd-2.0.2\\s3cmd sync --acl-public --reduced-redundancy --add-header \"Cache-Control: max-age=#{s3_cache_secs}\"  C:\\Users\\win\\src\\xbox1994.github.io\\public s3://#{s3_bucket}/")
-    puts "ok"
-  else
-    puts "fail"
-  end
+  ok_failed system("s3cmd sync --acl-public --reduced-redundancy --add-header \"Cache-Control: max-age=#{s3_cache_secs}\"  public/* s3://#{s3_bucket}/")
 end
 
 desc "Initial setup for Octopress: copies the default theme into the path of Jekyll's generator. Rake install defaults to rake install[classic] to install a different theme run rake install[some_theme_name]"
@@ -272,7 +266,7 @@ desc "deploy public directory to github pages"
 multitask :push do
   puts "## Deploying branch to Github Pages "
   puts "## Pulling any updates from Github Pages "
-  cd "#{deploy_dir}" do
+  cd "#{deploy_dir}" do 
     Bundler.with_clean_env { system "git pull origin master" }
   end
   (Dir["#{deploy_dir}/*"]).each { |f| rm_rf(f) }
