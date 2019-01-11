@@ -7,4 +7,4 @@ rake new_page[about]
 rake new_post
 rake preview
 
-./push.sh "[about] update"
+./push.sh "[blog] 【架构入门系列】从业务到平台的思维转变"
