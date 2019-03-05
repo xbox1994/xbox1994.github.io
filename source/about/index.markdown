@@ -15,11 +15,10 @@ footer: false
 [91Code技术分享平台](http://www.91code.info/)  
 
 ##社区贡献
-* 2018最新Java面试宝典：https://github.com/xbox1994/2018-Java-Interview
-* 基于Redis的分布式锁：https://github.com/xbox1994/distributed-lock-redis
+* Java面试宝典：https://github.com/xbox1994/2018-Java-Interview
+* Redis的分布式锁教程：https://github.com/xbox1994/distributed-lock-redis
 * Go配置读取工具：https://github.com/xbox1994/xviper  
 * Go Micro微服务实战：https://github.com/xbox1994/GoMicroExample  
-* Go项目脚手架工具：https://github.com/xbox1994/gpb
 
 ***
 ##参与过的活动
