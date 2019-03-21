@@ -9,9 +9,7 @@ ssh_port       = "22"
 document_root  = "~/website.com/"
 rsync_delete   = false
 rsync_args     = ""  # Any extra arguments to pass to rsync
-deploy_default = "s3"
-s3_bucket = "www.wangtianyi.top"
-s3_cache_secs = 3600
+deploy_default = "push"
 
 # This will be configured for you when you run config_deploy
 deploy_branch  = "master"
@@ -32,12 +30,6 @@ server_port     = "4000"      # port for preview server eg. localhost:4000
 if (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
   puts '## Set the codepage to 65001 for Windows machines'
   `chcp 65001`
-end
-
-desc "Deploy website via s3cmd"
-task :s3 do
-  puts "## Deploying website via s3cmd"
-  ok_failed system("s3cmd sync --acl-public --reduced-redundancy --add-header \"Cache-Control: max-age=#{s3_cache_secs}\"  public/* s3://#{s3_bucket}/")
 end
 
 desc "Initial setup for Octopress: copies the default theme into the path of Jekyll's generator. Rake install defaults to rake install[classic] to install a different theme run rake install[some_theme_name]"
