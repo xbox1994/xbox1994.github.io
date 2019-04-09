@@ -91,7 +91,7 @@ consul提供的负载均衡能力太弱，只有作为DNS查询的时候可以�
 1. 根据服务名称去查询consul得到所有该服务的节点列表（micro/go-micro/registry/consul_registry.go GetService方法）
 2. 根据选择器策略从节点列表中选择一个节点并发送请求（micro/go-micro/client/rpc_client.go next方法）
 
-可以参考[这里](https://github.com/micro/examples/blob/master/client/selector/selector.go)实现自己的selector，本项目中不包含选择器的实现
+默认使用的是`micro/go-micro/selector/strategy.go`中的Random算法随机选择节点，也可以自行定义算法选择节点，可以参考[这里](https://github.com/micro/examples/blob/master/client/selector/selector.go)实现自己的selector，本项目中不包含选择器的实现
 
 ## API 网关
 API Gateway 是随着微服务概念一起兴起的一种架构模式，它用于解决微服务过于分散，没有一个统一的出入口进行流量管理的问题。它类似于面向对象的外观模式。流量管理的具体问题包括：封装了内部系统架构并且提供了每个客户端定制的API、身份验证、监控、负载均衡、缓存、数据通信协议转换、统一维护流量路由表。
@@ -311,11 +311,6 @@ greeterService := micro.NewService(
 4. UserService根据header中得到的id查询数据库得到具体的用户信息并返回
 
 在服务间请求调用过程中，会有Hystrix来提供服务容错机制。在所有服务启动之前，会请求Config Service来获得对应服务的对应环境的配置信息。
-
-## TODO
-以上仅仅是在本地搭建的一个微服务架构，而线上环境则需要更多服务节点以及更健壮的架构支持，比如API Gateway可能有多个，需要在前面再加一层Nginx进行负载均衡，那么如何让可能动态改变的API Gateway服务地址写入到Nginx的静态配置文件中？此时就需要结合consul-template，动态将地址更新Nginx的配置文件中。还有比如添加EFK、Zipkin、Promethus等日志监控机制。还有与Docker、容器编排工具结合来实施自动化可伸缩动态部署。
-
-最后一个问题是流水线自动化部署，使用Jenkins或GoCD工具将部署流程给自动化起来，比如在build阶段生成docker image然后push到registry中，在deploy阶段调用容器编排工具触发容器自动更新image重启服务。
 
 ## 参考
 https://gocn.vip/question/1999  
