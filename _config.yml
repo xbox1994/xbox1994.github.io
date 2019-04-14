@@ -3,8 +3,8 @@
 # ----------------------- #
 
 url: http://www.wangtianyi.top
-title: 不要吵到这里的Bug
-subtitle: 嘘！
+title: 干掉这里的Bug
+subtitle:
 author: Tianyi Wang
 simple_search: https://www.google.com/search
 description:
@@ -19,7 +19,7 @@ date_format: "ordinal"
 subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
-email: tywang@thoughtworks.com
+email:
 
 # ----------------------- #
 #    Jekyll & Plugins     #
@@ -71,7 +71,7 @@ github_skip_forks: true
 
 # Twitter
 twitter_user:
-twitter_tweet_button: true
+twitter_tweet_button: false
 
 # Google +1
 google_plus_one: false
@@ -91,8 +91,8 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name: tywang
-disqus_show_comment_count: true
+disqus_short_name:
+disqus_show_comment_count: false
 
 # Google Analytics
 google_analytics_tracking_id: UA-118277423-1
