@@ -1,10 +1,12 @@
-rake install
-rake setup_github_pages
-rake generate
-rake deploy
+bundle exec rake install
+bundle exec rake setup_github_pages
 
-rake new_page[about]
-rake new_post
-rake preview
+bundle exec rake new_page[about]
+bundle exec rake new_post
+bundle exec rake preview
 
-./push.sh "[config] google adsense"
+bundle exec rake generate
+bundle exec rake deploy
+git add .
+git commit -m "jiagou3"
+git push origin source

@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "【架构入门系列】什么是架构"
+title: "【架构入门】什么是架构"
 date: 2019-04-09 10:01:59 +0800
 comments: true
-categories: 
+categories: 架构
 ---
 
 对于想要入门架构的小白来说，我们必须要了解以下问题：

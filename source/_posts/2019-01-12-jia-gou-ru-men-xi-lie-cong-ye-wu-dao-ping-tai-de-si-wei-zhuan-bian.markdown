@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "【架构入门系列】从业务到平台的思维转变"
+title: "【架构入门】从业务到平台的思维转变"
 date: 2019-01-12 00:37:37 +0800
 comments: true
 categories: 架构
