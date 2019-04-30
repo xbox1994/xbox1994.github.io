@@ -8,5 +8,5 @@ bundle exec rake preview
 bundle exec rake generate
 bundle exec rake deploy
 git add .
-git commit -m "🥚男"
+git commit -m "[文章]架构-数据库 1"
 git push origin source
