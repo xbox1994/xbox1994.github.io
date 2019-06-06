@@ -8,5 +8,5 @@ bundle exec rake preview
 bundle exec rake generate
 bundle exec rake deploy
 git add .
-git commit -m "[广告]修复"
+git commit -m "[广告]adx.txt"
 git push origin source
