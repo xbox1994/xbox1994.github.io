@@ -15,7 +15,7 @@ Google发起的Linux基金会旗下的原生云基金会（Cloud Native Computin
 
 随着 Kubernetes 在容器调度和管理上确定领头羊的地位，Prometheus 也成为 Kubernetes 容器监控的标配
 
-#### 优点
+### 优点
 * 提供多维度数据模型和灵活的查询方式，通过将监控指标关联多个tag，来将监控数据进行任意维度的组合，并且提供简单的PromQL查询方式，还提供HTTP查询接口，可以很方便地结合Grafana等GUI组件展示数据
 * 支持服务器节点的本地存储，通过Prometheus自带的时序数据库，可以完成每秒千万级的数据存储；在保存大量历史数据的场景中，Prometheus可以对接第三方时序数据库如OpenTSDB
 * 定义了开放指标数据标准，以基于HTTP的Pull方式采集时序数据，只有实现了Prometheus监控数据格式的监控数据才可以被Prometheus采集、汇总，并支持以Push方式向中间网关推送时序列数据
@@ -23,15 +23,10 @@ Google发起的Linux基金会旗下的原生云基金会（Cloud Native Computin
 * 易于维护，可以通过二进制文件直接启动，并且提供了容器化部署镜像
 * 支持数据的分区采样和联邦部署，支持大规模集群监控
 
-#### 架构
+### 架构
 基本原理：通过HTTP周期性抓取被监控组件的状态，任意组件只要提供对应的 HTTP 接口并且符合 Prometheus 定义的数据格式，就可以接入Prometheus监控
 
 {% img /images/blog/2019-06-10_1.png 'image' %}
-
-Pull方式的优势：
-
-1. 降低耦合。推送系统中很容易出现因为向监控系统推送数据失败而导致被监控系统瘫痪的问题，所以通过Pull方式，被采集端无须感知监控系统的存在，完全独立于监控系统之外，提供接口暴露数据即可
-2. 提升可控性。数据的采集完全由监控系统控制，只需要向配置好的目标查询数据即可，如果需要更改数据采集配置也是在监控系统中修改
 
 Prometheus获取监控对象的方式：
 
@@ -47,7 +42,7 @@ Prometheus获取监控对象的方式：
 * Pushgateway。对于某些场景Prometheus无法直接拉取监控数据，Pushgateway的作用就在于提供了中间代理，例如我们可以在应用程序中定时将监控metrics数据提交到Pushgateway。而Prometheus Server定时从Pushgateway的/metrics接口采集数据。
 
 ## 设计
-#### 指标
+### 指标
 **一、定义**
 
 Prometheus的所有监控指标（Metric）被统一定义为：
@@ -74,7 +69,7 @@ Prometheus采集的数据样本都是以时间序列保存的。每个样本都�
 
 可以将一个指标的样本数据保存到一起，横轴代表时间，纵轴代表指标序列。如图所示的每一行都代表由一个指标组成的时间序列，每个点都代表一个监控数值，这些时序数据首先被保存在内存中，然后被批量刷新到磁盘
 
-#### 数据采集
+### 数据采集
 **一、采集方式**
 
 和采用Push方式采集监控数据不同，Prometheus采用 Pull方式采集监控数据。为了兼容 Push方式，Prometheus 提供了 Pushgateway组件
@@ -116,11 +111,108 @@ Prometheus采用统一的Restful API方式获取数据，具体来说是调用HT
 
 在修改了采集的时间间隔后，Prometheus通常通过调用Prometheus的reload接口进行配置更新
 
-#### 数据处理
-
-**一、重新定义标签**
+### 数据处理
 
 Prometheus 支持数据处理，主要包括 relabel、replace、keep、drop 等操作，提供过滤数据或者修改样本的维度信息等功能。
 
+**一、重新定义标签**
 
+在需要添加或者替换一个标签时需要重新定义标签
 
+通过 replace 或者 labelmap 的方式可以针对这些内部使用的标签进行重命名或者将多个标签的内容进行组合。
+
+**二、标签筛选**
+
+Prometheus会从 target中获取所有暴露的数据，但某些数据对 Prometheus是无用的，如果直接保存这些数据，则不仅浪费空间，还会降低系统的吞吐量
+
+* 如果设置了keep 机制。会保留所有匹配标签的数据
+* 如果设置了drop机制。会丢弃匹配标签的数据，从而完成数据过滤
+
+除了处理 keep或 drop,Prometheus还支持 Hash的分区采集，通过对 target地址计算 Hash值，然后取模匹配 Prometheus设定的值，便可以过滤该Prometheus负责采集的 target，这也是一种服务端负载均衡的方案，从而扩展 Prometheus 的采集能力。下面是一种通过Hash取模的经典用法：
+
+{% img /images/blog/2019-06-10_5.png 'image' %}
+
+### 数据存储
+
+**一、本地存储**
+
+Prometheus的本地时间序列数据库以自定义格式在磁盘上存储时间序列数据
+
+其中wal目录记录的是监控数据的WAL；每个block是一个目录，该目录下的chunks用来保存具体的监控数据，meta.json用来记录元数据，index则记录索引。具体内容会在有关存储的章节中详细介绍
+
+```text
+./data
+├── 01BKGV7JBM69T2G1BGBGM6KB12
+│   └── meta.json
+├── 01BKGTZQ1SYQJTR4PB43C8PD98
+│   ├── chunks
+│   │   └── 000001
+│   ├── tombstones
+│   ├── index
+│   └── meta.json
+├── 01BKGTZQ1HHWHV8FBJXW1Y3W0K
+│   └── meta.json
+├── 01BKGV7JC0RY8A6MACW02A2PJD
+│   ├── chunks
+│   │   └── 000001
+│   ├── tombstones
+│   ├── index
+│   └── meta.json
+└── wal
+    ├── 00000002
+    └── checkpoint.000001
+```
+
+**二、远程存储**
+
+为了提高对大量历史数据持久化存储的能力，Prometheus 在1.6版本后支持远程存储，Adapter需要实现Prometheus的read接口和write接口，并且将read和write转化为每种数据库各自的协议
+
+{% img /images/blog/2019-06-10_6.png 'image' %}
+
+在用户查询数据时，Prometheus会通过配置的查询接口发送 HTTP请求，查询开始时间、结束时间及指标属性等，Adapter会返回相应的时序数据；相应地，在用户写入数据时，HTTP请求Adapter的消息体会包含时序数组（样本数据）。
+
+### 数据查询
+Prometheus提供了一种名为PromQL（Prometheus查询语言）的函数查询语言，用户可以实时选择和汇总时间序列数据
+
+这里先介绍PromQL的使用方式。例如，在查询主机CPU的使用率时可以使用：
+
+`100 * （ 1 - avg (irate(node_cpu(mode='idle')[5m])) by(job) )`
+
+可以看到，PromQL不仅可以做指标运算，还支持各种如 sum、avg等的函数。Prometheus 通过解析引擎将查询语句转化为 QUERY 请求，然后通过时序数据库找到具体的数据块，在数据返回后再通过支持内置的函数处理数据，最终将结果返回到前端
+
+{% img /images/blog/2019-06-10_7.png 'image' %}
+
+Prometheus支持Grafana等开源显示面板，通过自定义PromQL可以制作丰富的监控视图。Prometheus本身也提供了一个简单的 Web查询控制台，如图2-14所示，Web控制台包含三个主要模块：Graph指标查询，Alerts告警查询、Status状态查询
+
+### 告警
+Prometheus可以根据采集的数据设定告警规则，例如针对 HTTP请求延迟设置的告警规则如下：
+
+`request_latency_seconds:mean5m(job="myjob") > 0.5`
+
+Prometheus 通过预先定义的 global.evaluation_interval 定时执行这些 PromQL，如果查询的结果符合上面的告警规则，则会产生一条告警记录，但不会立即发出这条告警记录，而需要经过一个评估时间，如果在评估时间段内每个周期（Prometheus 启动时设置）都触发了该告警规则，则会向外发出这条告警
+
+Prometheus 本身对不会对告警进行处理，需要借助另一个组件 AlertManager，主要功能：
+
+* 告警分组。将多条告警合并到一起发送
+* 告警抑制。当告警已经发出时，停止发送由此告警触发的其他错误告警
+* 告警静默。在一个时间段内不发出重复的告警
+
+### 集群
+
+**一、联邦**
+
+多个 Prometheus节点组成两层联邦结构，如图所示。上面一层是联邦节点，负责定时从下面的Prometheus节点获取数据并汇总，部署多个联邦节点是为了实现高可用；下层的 Prometheus 节点又分别负责不同区域的数据采集，在多机房的事件部署中，下层的每个Prometheus节点都可以被部署到单独的一个机房，充当代理。
+
+{% img /images/blog/2019-06-10_8.png 'image' %}
+
+这种架构不仅降低了单个Prometheus的采集负载，而且通过联邦节点汇聚核心数据，也降低了本地存储的压力。为了避免下层Prometheus的单点故障，也可以部署多套 Prometheus 节点，只是在效率上会差很多，每个监控对象都会被重复采集，数据会被重复保存
+
+**二、Thanos**
+
+针对Prometheus这些不足，Improbable开源了他们的Prometheus高可用解决方案 Thanos。Thanos和 Prometheus无缝集成，并为 Prometheus带来了全局视图和不受限制的历史数据存储能力
+
+## Prometheus并非监控银弹
+
+* Prometheus只针对性能和可用性监控，并不具备日志监控等功能，并不能通过Prometheus解决所有监控问题
+* 由于对监控数据的查询通常都是最近几天的，所以 Prometheus 的本地存储的设计初衷只是存储短期（一个月）数据，并非存储大量历史数据
+* Prometheus的监控数据没有对单位进行定义，这里需要使用者自己区分或者事先定义好所有监控数据单位，避免发生数据缺少单位的情况
