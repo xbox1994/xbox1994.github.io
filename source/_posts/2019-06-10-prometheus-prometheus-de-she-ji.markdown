@@ -116,8 +116,11 @@ Prometheus采用统一的Restful API方式获取数据，具体来说是调用HT
 
 在修改了采集的时间间隔后，Prometheus通常通过调用Prometheus的reload接口进行配置更新
 
+#### 数据处理
 
+**一、重新定义标签**
 
+Prometheus 支持数据处理，主要包括 relabel、replace、keep、drop 等操作，提供过滤数据或者修改样本的维度信息等功能。
 
 
 
