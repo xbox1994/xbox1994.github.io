@@ -9,8 +9,6 @@ categories: 生活绝非编码
 
 <!-- more -->
 
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=500 height=86 src="//music.163.com/outchain/player?type=2&id=25706285&auto=1&height=66"></iframe>
-
 #习惯性博客
 > 写博客真是一件容易上瘾的事情。
 

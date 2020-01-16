@@ -21,9 +21,6 @@ Note：Music自动播放哦~
 所以看第二季的时候我已经不太关心男主这次会碰到什么危机了，反正一拳解决不了就两拳，更关注的反而是在一个强者身边发生的事情
 
 ### 英雄的代价
-***
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=400 height=86 src="//music.163.com/outchain/player?type=2&id=41632457&auto=1&height=66"></iframe>
-***
 
 🥚男的造型是我画过最熟练的，因为就一个🥚，非常易于传播，从而造就影响力
 
