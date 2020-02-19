@@ -6,8 +6,9 @@ comments: true
 sharing: true
 footer: false
 ---
-94年生，现居武汉，曾工作于ThoughtWorks，现工作于金山软件。  
-在海外运营、汽车售后企业中担任过开发、DevOps角色，拥有To B与To C的后台开发经验、微服务架构、自动化、容器编排部署、敏捷开发、小型团队管理经验。
+湖北宜昌人，现居北京，快手高级软件工程师
+
+在国际业务、汽车售后企业中担任过开发、DevOps角色，拥有敏捷开发、To B与To C的后台开发经验、微服务架构、CI/CD、容器编排部署经验。目前专注于为团队提升研发效能
 
 ***
 
@@ -30,4 +31,5 @@ ThoughtWorks提供了一个平台让我们能做一些分享与活动组织的�
 
 ***
 ##联系方式
-https://github.com/xbox1994
+tywang666@gmail.com  
+https://github.com/xbox1994  
