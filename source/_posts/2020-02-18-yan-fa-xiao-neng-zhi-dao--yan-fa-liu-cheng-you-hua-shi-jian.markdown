@@ -3,7 +3,7 @@ layout: post
 title: "【研发效能之道】研发流程优化实践"
 date: 2020-02-18 15:21:28 +0800
 comments: true
-categories: 
+categories: DevOps
 ---
 
 接下来会以**提高用户价值的流动效率**为核心，列出一些具体的研发流程优化实践
