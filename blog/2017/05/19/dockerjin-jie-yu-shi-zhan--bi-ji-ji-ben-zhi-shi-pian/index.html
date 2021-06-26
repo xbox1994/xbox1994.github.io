@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>干掉这里的Bug</title>
+  <title>《Docker进阶与实战》笔记-基本知识篇 - 干掉这里的Bug</title>
   <meta name="author" content="Tianyi Wang">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.wangtianyi.top/">
+  <link rel="canonical" href="http://www.wangtianyi.top/blog/2017/05/19/dockerjin-jie-yu-shi-zhan--bi-ji-ji-ben-zhi-shi-pian/">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="干掉这里的Bug" type="application/atom+xml">
 
   <!-- http://opengraphprotocol="-co.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://www.wangtianyi.top/">
-  <meta property="og:title" content="干掉这里的Bug">
+  <meta property="og:url" content="http://www.wangtianyi.top/blog/2017/05/19/dockerjin-jie-yu-shi-zhan--bi-ji-ji-ben-zhi-shi-pian/">
+  <meta property="og:title" content="《Docker进阶与实战》笔记-基本知识篇 - 干掉这里的Bug">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -64,24 +64,46 @@
     <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
     <div id="wrap">
       
-      <div id="banner-image">
-        <div class="layer" style="text-align:center;">
-          <div id="banner-text">
-            <h1 class="page-title">干掉这里的Bug</h1>
-            <p class="page-desc">
-              <br>
-            </p>
-            <br>
-            <br>
-            <div class="page-links center">
-              <ul class="index-nav">
-                  <li ><a href="/blog/archives">All</a></li>
-<li ><a href="/about">About</a></li>
-              </ul>
-            </div>
-          </div>
+        <header role="banner">
+          <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">干掉这里的Bug</a>
         </div>
-      </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/blog/archives">All</a></li>
+<li ><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="www.wangtianyi.top">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+        </header>
       
       <div id="main" role="main" class="container">
         <div id="content">
@@ -95,16 +117,12 @@
             </script>
           </div>
           <div class="row">
-  <div class="page-content">
-    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+  <div class="page-content" itemscope itemtype="http://schema.org/Blog">
     <meta itemprop="name" content="干掉这里的Bug" />
     
     <meta itemprop="url" content="http://www.wangtianyi.top" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
   <header class="page-header">
     
       <p class="meta text-muted text-uppercase">
@@ -113,342 +131,497 @@
 
 
 
-Feb 26th, 2020
+May 19th, 2017
         
       </p>
     
     
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/26/liu-cheng-xing-si-kao/" itemprop="url">流程性思考</a></h2>
+    <h1 class="entry-title" itemprop="name headline">
+        《Docker进阶与实战》笔记-基本知识篇
+        
+    </h1>
     
   </header>
 
 
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>貌似解决了困扰我多年的一个问题</p>
+<div class="entry-content clearfix" itemprop="articleBody description"><!--more-->
 
+
+<h1>Docker简介</h1>
+
+<h2>历史与发展</h2>
+
+<p>2013年dotCloutd的PaaS服务商将内部项目Docker开源。这家公司随后出售PaaS，改名为Docker.Inc，专注Docker的开发与推广</p>
+
+<p>Docker是一个开源的容器引擎，得益于容器技术带来的轻量级虚拟化，以及Docker在分层镜像应用上的创新，Docker在磁盘占用、性能和效率方面比传统虚拟化都有非常明显的提高，开始蚕食传统虚拟化的市场</p>
+
+<p>加入Linux基金会，遵循Apache2.0协议，代码托管在GitHub</p>
+
+<p>Docker省去传统虚拟化中的Hypervisor层，基于内核的Cgroup和Namespace技术与内核深度结合，性能与物理机接近</p>
+
+<p>Docker不会直接与内核交互，通过Libcontainer交互，它才是真正的容器引擎</p>
+
+<p><img src="/images/blog/Docker1.jpeg" title="'image'" ></p>
+
+<h2>功能与组件</h2>
+
+<h3>Docker客户端</h3>
+
+<p>Docker是C/S架构，Docker客户端通过command或REST API发起请求</p>
+
+<h3>Docker daemon</h3>
+
+<p>Docker server/Docker engine。驱动整个Docker功能的核心引擎。</p>
+
+<p>接受客户端的请求并实现功能，涉及容器、镜像、存储，复杂的内部机制。</p>
+
+<h3>Docker容器</h3>
+
+<p>功能上，通过Libcontainer实现对容器生命周期的管理。</p>
+
+<p>概念上，容器诠释了Docker集装箱的概念，可以存放任何货物，运到世界各地。</p>
+
+<p>容器不是新的概念，牛逼的是Docker把容器封装之后，与集装箱的概念对应起来，是Docker把容器推广到全世界。</p>
+
+<h3>Docker镜像</h3>
+
+<p>与容器的动态对应，镜像是运行环境的静态体现。</p>
+
+<p>相对于IOS镜像，轻量化，分层化，提供Dockerfile创建。</p>
+
+<h3>Registry</h3>
+
+<p>存放镜像的仓库，实现了镜像的传输中转站与版本管理。</p>
+
+<p>官方Registry是Docker Hub，Registry是开源项目，自己可以搭建自己的Hub或二次开发。</p>
+
+<h2>概念澄清</h2>
+
+<h3>Docker与LXC的关系</h3>
+
+<p>LXC（Linux Container）：Docker 1.9之前使用的内核容器技术</p>
+
+<p>Docker在LXC（Cgroup和Namespace）的基础上提供更高层的控制工具。包含以下重要特性：</p>
+
+<ul>
+<li>跨主机部署。LXC受限于机器的特定配置，Docker镜像定义了可移植的镜像。</li>
+<li>以应用为中心。简化应用的部署过程，在API、文档（这个真的要赞，Docker的文档是笔者读过最舒服的文档）、Dockerfile有体现。</li>
+<li>版本管理。类似于Git，镜像支持提交新的版本，回退版本，追踪镜像版本的功能。镜像的增量上传下载功能。</li>
+<li>组件重用。任何容器都可以用作生成另一个组件的镜像。</li>
+<li>共享。Registry。</li>
+<li>工具生态链。定义了API来定制容器创建和部署。非常多的工具能与Docker协作，扩展能力。</li>
+</ul>
+
+
+<p>Libcontainer：Docker强大之后定义容器标准，在1.10之后用的内核容器技术库</p>
+
+<h3>Docker容器与虚拟机有什么区别</h3>
+
+<p>硬件虚拟化技术VS操作系统虚拟化技术</p>
+
+<p>Hypervisor层VSCgroup和Namespace</p>
+
+<p>容器与主机共享内核，不同容器之间可以共享部分系统资源。虚拟机独占分配给自己的资源，各个虚拟机之间完全隔离，因此更加重量级并更消耗资源。</p>
+
+<p>启动速度：秒与数十秒</p>
+
+<p>请根据具体需求判断使用相应的隔离方式</p>
+
+<h1>容器技术</h1>
+
+<p>相对独立的运行环境：进程的资源控制+访问隔离</p>
+
+<h2>一分钟理解容器</h2>
+
+<h3>组成</h3>
+
+<p>容器 = Cgroup + Namespace + rootfs + 容器引擎（用户态工具）</p>
+
+<h3>Cgroup</h3>
+
+<p>control group，内核的特性，限制和隔离一组进程对系统资源（CPU、内存、IO、网络）的使用。</p>
+
+<h3>Namespace</h3>
+
+<p>将内核的全局资源做封装，使每个Namespace都有一份独立的资源，因此不同的进程在各自的Namespace内对同一种资源的使用不会相互干扰。</p>
+
+<h2>容器造就Docker</h2>
+
+<p>Docker的核心技术：容器？分层镜像？统一应用的打包与部署方式？“Build, Ship and Run"？</p>
+
+<ul>
+<li>微服务的设计艺术：轻量级虚拟化、与内核无缝结合的运行效率优势与极小的系统开销；将各个组件单独部署的思想。</li>
+<li>基于LXC容器技术的完善、加强、应用化</li>
+</ul>
+
+
+<h1>Docker镜像</h1>
+
+<h2>Docker image概念</h2>
+
+<p>启动容器的只读模板</p>
+
+<p>Docker image表示法：远程Registry地址/命名空间/仓库名:标签</p>
+
+<p><img src="/images/blog/Docker2.jpeg" title="'image'" ></p>
+
+<h2>Docker image的组织结构</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant@workshop:/var/lib/docker$ ll
+</span><span class='line'>total 76
+</span><span class='line'>drwxr-xr-x   9 root root  4096 May 18 15:16 ./
+</span><span class='line'>drwxr-xr-x  52 root root  4096 Nov 22  2015 ../
+</span><span class='line'>drwxr-xr-x   5 root root  4096 Nov 22  2015 aufs/
+</span><span class='line'>drwx------   3 root root  4096 May 18 15:16 containers/
+</span><span class='line'>drwx------ 258 root root 28672 May 17 15:51 graph/               #image各层的元数据
+</span><span class='line'>-rw-r--r--   1 root root  5120 May 18 15:16 linkgraph.db
+</span><span class='line'>drwxr-x---   3 root root  4096 Nov 22  2015 network/
+</span><span class='line'>-rw-------   1 root root  2015 May 17 15:51 repositories-aufs    #image总体信息
+</span><span class='line'>drwx------   2 root root  4096 May 18 13:59 tmp/
+</span><span class='line'>drwx------   2 root root  4096 Nov 22  2015 trust/
+</span><span class='line'>drwx------   3 root root  4096 May 17 15:39 volumes/</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>总体信息</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant@workshop:/var/lib/docker$ sudo cat repositories-aufs | python -m json.tool
+</span><span class='line'>{
+</span><span class='line'>    "Repositories": {
+</span><span class='line'>        "busybox": {
+</span><span class='line'>            "latest": "3d5bcd78e074f6f77b820bf4c6db0e05d522e24c855f3c2a3bbf3b1c8f967ba8"
+</span><span class='line'>        },</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>数据与元数据</h3>
+
+<p>graph目录包含本地镜像库中所有元数据与数据信息。对于busybox</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>root@workshop:/var/lib/docker/graph/3d5bcd78e074f6f77b820bf4c6db0e05d522e24c855f3c2a3bbf3b1c8f967ba8# ll
+</span><span class='line'>total 48
+</span><span class='line'>drwx------   2 root root  4096 Nov 22  2015 ./
+</span><span class='line'>drwx------ 258 root root 28672 May 17 15:51 ../
+</span><span class='line'>-rw-------   1 root root  1074 Nov 22  2015 json
+</span><span class='line'>-rw-------   1 root root     1 Nov 22  2015 layersize
+</span><span class='line'>-rw-------   1 root root    82 Nov 22  2015 tar-data.json.gz</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Docker daemon可以通过这些信息还原出Docker image：先通过repositories-aufs获取image对应的layer ID，再根据layer对应的元数据梳理出image包含的所有层、层与层之间的关系，然后使用联合挂载技术还原出容器启动所需要的rootfs。</p>
+
+<h3>数据的组织</h3>
+
+<p>docker inspect对元数据（上个控制台输出的名称为json的文件）进行了整理</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>root@workshop:/var/lib/docker/graph/3d5bcd78e074f6f77b820bf4c6db0e05d522e24c855f3c2a3bbf3b1c8f967ba8# docker inspect busybox
+</span><span class='line'>[
+</span><span class='line'>{
+</span><span class='line'>    "Id": "3d5bcd78e074f6f77b820bf4c6db0e05d522e24c855f3c2a3bbf3b1c8f967ba8",
+</span><span class='line'>    "RepoTags": [
+</span><span class='line'>        "busybox:latest"
+</span><span class='line'>    ],
+</span><span class='line'>    "RepoDigests": [],
+</span><span class='line'>    "Parent": "bf0f46991aed1fa45508683e740601df23a2395c47f793883e4b0160ab906c1e",
+</span><span class='line'>    "Comment": "",
+</span><span class='line'>    "Created": "2015-10-20T21:56:30.211245109Z",
+</span><span class='line'>    "Container": "e97e35122eefe587151947c737439860e06866ae6b5a5da785ec76caaa46441f",
+</span><span class='line'>    "ContainerConfig": {
+</span><span class='line'>        "Hostname": "3e10a20c1b67",
+</span><span class='line'>        "Domainname": "",
+</span><span class='line'>        "User": "",
+</span><span class='line'>        "AttachStdin": false,
+</span><span class='line'>        "AttachStdout": false,
+</span><span class='line'>        "AttachStderr": false,
+</span><span class='line'>        "Tty": false,
+</span><span class='line'>        "OpenStdin": false,
+</span><span class='line'>        "StdinOnce": false,
+</span><span class='line'>        "Env": null,
+</span><span class='line'>        "Cmd": [
+</span><span class='line'>            "/bin/sh",
+</span><span class='line'>            "-c",
+</span><span class='line'>            "#(nop) CMD [\"sh\"]"
+</span><span class='line'>        ],
+</span><span class='line'>        "Image": "bf0f46991aed1fa45508683e740601df23a2395c47f793883e4b0160ab906c1e",
+</span><span class='line'>        "Volumes": null,
+</span><span class='line'>        "WorkingDir": "",
+</span><span class='line'>        "Entrypoint": null,
+</span><span class='line'>        "OnBuild": null,
+</span><span class='line'>        "Labels": null
+</span><span class='line'>    },
+</span><span class='line'>    "DockerVersion": "1.8.2",
+</span><span class='line'>    "Author": "",
+</span><span class='line'>    "Config": {
+</span><span class='line'>        "Hostname": "3e10a20c1b67",
+</span><span class='line'>        "Domainname": "",
+</span><span class='line'>        "User": "",
+</span><span class='line'>        "AttachStdin": false,
+</span><span class='line'>        "AttachStdout": false,
+</span><span class='line'>        "AttachStderr": false,
+</span><span class='line'>        "Tty": false,
+</span><span class='line'>        "OpenStdin": false,
+</span><span class='line'>        "StdinOnce": false,
+</span><span class='line'>        "Env": null,
+</span><span class='line'>        "Cmd": [
+</span><span class='line'>            "sh"
+</span><span class='line'>        ],
+</span><span class='line'>        "Image": "bf0f46991aed1fa45508683e740601df23a2395c47f793883e4b0160ab906c1e",
+</span><span class='line'>        "Volumes": null,
+</span><span class='line'>        "WorkingDir": "",
+</span><span class='line'>        "Entrypoint": null,
+</span><span class='line'>        "OnBuild": null,
+</span><span class='line'>        "Labels": null
+</span><span class='line'>    },
+</span><span class='line'>    "Architecture": "amd64",
+</span><span class='line'>    "Os": "linux",
+</span><span class='line'>    "Size": 0,
+</span><span class='line'>    "VirtualSize": 1112855,
+</span><span class='line'>    "GraphDriver": {
+</span><span class='line'>        "Name": "aufs",
+</span><span class='line'>        "Data": null
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Id：最上层的layerID
+Parent：该layer的父层，这样就可以找到某个image的所有layer</p>
+
+<h2>Docker image扩展知识</h2>
+
+<h3>联合挂载</h3>
+
+<p>把多个目录挂载到同一个目录，对外呈现这些目录的联合</p>
+
+<p>只有OverlayFS在2014年合入Linxu主线，aufs只有ubuntu支持，Redhat和Suse采用devicemapper，请根据实际情况选择后端存储驱动</p>
+
+<h3>写时复制</h3>
+
+<p>操作系统的fork：当父进程fork子进程，内核不会马上分配内存，而是让父子进程共享内存。当两者之一修改共享内存时，会触发一次缺页异常导致真正的内存分配。加速了创建速度与减少了内存的消耗。</p>
+
+<p>所有的容器共享某个image的文件系统，所有数据都从image中读取，只有当要对文件进行写操作时，才从image里把要写的文件复制到自己的文件系统进行修改。从而提高加载速度并节省空间</p>
+
+<h2>存在的问题</h2>
+
+<ul>
+<li>image难以加密。image是共享的，加密会导致难以共享。有notary的镜像签名机制。</li>
+<li>image分层之后有大量元数据。分布式存储对小文件的支持不好。</li>
+<li>image制作完成之后无法修改。Dockre不提供修改或合并层的指令。</li>
+</ul>
+
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
 </div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/26/liu-cheng-xing-si-kao/">阅读全文 &rarr;</a>
-    </footer>
-  
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      <footer class="post-footer">
+        <p class="meta text-muted">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 19th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/" itemprop="url">【研发效能之道】个人效能实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>程序员个体如何高效地进行开发工作</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
   
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
 
+<figure class="author-image">
+    <span class="img" href="/about" style="background-image: url(/images/avatar.jpg)"><span class="hidden">Picture</span></span>
+</figure>
 
+<section class="author">
+    <h4><span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="fn" itemprop="name">Tianyi Wang</span></span></h4>
 
-
-Feb 18th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/" itemprop="url">【研发效能之道】研发流程优化实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>接下来会以<strong>提高用户价值的流动效率</strong>为核心，列出一些具体的研发流程优化实践</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 17th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/" itemprop="url">【研发效能之道】研发流程优化理论</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在再次开始一个新的系列，【研发效能之道】，主要参考《极客时间|研发效率破局之道》，系列内容为其读书笔记与自己的理解、总结</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 10th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/" itemprop="url">【Prometheus】Prometheus的设计</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/" itemprop="url">【Prometheus】监控系统概述</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在开始一个新的系列，【Prometheus】，主要参考《深入浅出Prometheus》，基本为其读书笔记加上部分自己的理解</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/jia-gou-ru-men-end/" itemprop="url">【架构入门】思维导图</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/jia-gou-ru-men-end/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 18th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/" itemprop="url">【架构入门 - 可扩展篇】</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>随着服务的壮大，使用人数的增多，业务的递增，服务的扩展性尤为关键，在不影响现有架构的情况下如何增加机器、扩展功能？</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 15th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/" itemprop="url">【架构入门 - 高可用篇】计算高可用</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 5th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" itemprop="url">【架构入门 - 高性能篇】数据库高性能</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
+    <div class="author-meta">
+        <span class="author-link icon-link"><i class="fa fa-link" aria-hidden="true"></i> <a href="http://www.wangtianyi.top">http://www.wangtianyi.top</a></span>
     </div>
+</section>
 
-    <ul class="pager">
-      
-        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
+<hr>
+
+<section class="share">
+    
+    <h4>Share this post</h4>
+    
+    <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?url=http://www.wangtianyi.top/blog/2017/05/19/dockerjin-jie-yu-shi-zhan--bi-ji-ji-ben-zhi-shi-pian/;" 
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.wangtianyi.top/blog/2017/05/19/dockerjin-jie-yu-shi-zhan--bi-ji-ji-ben-zhi-shi-pian/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.wangtianyi.top/blog/2017/05/19/dockerjin-jie-yu-shi-zhan--bi-ji-ji-ben-zhi-shi-pian/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+    
+</section>
+
+
+
+
+<!--
+<footer class="post-footer">
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Instant%20Movie%20Streamer%20v3%20Release&amp;url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+
+-->
+          
+
+
+
+
+May 19th, 2017
+          <br>
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/devops/'>devops</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="pager">
+            
+            
+              
+                <a href="/blog/2017/05/15/zai-wei-fu-wu-jia-gou-zhong-de-fu-wu-fa-xian-ji-zhi/" class="col-xs-12 col-md-4 btn btn-default" title="Previous Post: [译][MicroService 4]在微服务架构中的服务发现机制"> 
+                  <div class="text-muted">
+                    <small>Previous Post</small>
+                  </div>
+                  <div class="pager-title">
+                    <h4>[译][MicroService 4]在微服务架构中的服务发现机制</h4>
+                  </div>
+                </a>
+              
+            
+            
+            
+              
+              <a href="/blog/2017/06/01/yi-microservies-7-jiang-ju-wu-ba-zhong-gou-cheng-wei-fu-wu/" class="col-xs-12 col-md-4 btn btn-default pull-right" title="Next Post: [译][MicroService 7]将巨无霸重构成微服务">
+                <div class="text-muted">
+                  <small>Next Post</small>
+                </div>
+                <div class="pager-title">
+                  <h4>[译][MicroService 7]将巨无霸重构成微服务</h4>
+                </div>
+              </a>
+              
+            
+            
+          </div>
+        
+      </footer>
+    </article>
+    
   </div>
 </div>
 

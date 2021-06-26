@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>干掉这里的Bug</title>
+  <title>独自带大一个功能模块是怎样的体验 - 干掉这里的Bug</title>
   <meta name="author" content="Tianyi Wang">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.wangtianyi.top/">
+  <link rel="canonical" href="http://www.wangtianyi.top/blog/2018/07/13/du-zi-dai-da-yi-ge-gong-neng-mo-kuai-shi-zen-yang-de-ti-yan/">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="干掉这里的Bug" type="application/atom+xml">
 
   <!-- http://opengraphprotocol="-co.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://www.wangtianyi.top/">
-  <meta property="og:title" content="干掉这里的Bug">
+  <meta property="og:url" content="http://www.wangtianyi.top/blog/2018/07/13/du-zi-dai-da-yi-ge-gong-neng-mo-kuai-shi-zen-yang-de-ti-yan/">
+  <meta property="og:title" content="独自带大一个功能模块是怎样的体验 - 干掉这里的Bug">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -64,24 +64,46 @@
     <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
     <div id="wrap">
       
-      <div id="banner-image">
-        <div class="layer" style="text-align:center;">
-          <div id="banner-text">
-            <h1 class="page-title">干掉这里的Bug</h1>
-            <p class="page-desc">
-              <br>
-            </p>
-            <br>
-            <br>
-            <div class="page-links center">
-              <ul class="index-nav">
-                  <li ><a href="/blog/archives">All</a></li>
-<li ><a href="/about">About</a></li>
-              </ul>
-            </div>
-          </div>
+        <header role="banner">
+          <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">干掉这里的Bug</a>
         </div>
-      </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/blog/archives">All</a></li>
+<li ><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="www.wangtianyi.top">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+        </header>
       
       <div id="main" role="main" class="container">
         <div id="content">
@@ -95,16 +117,12 @@
             </script>
           </div>
           <div class="row">
-  <div class="page-content">
-    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+  <div class="page-content" itemscope itemtype="http://schema.org/Blog">
     <meta itemprop="name" content="干掉这里的Bug" />
     
     <meta itemprop="url" content="http://www.wangtianyi.top" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
   <header class="page-header">
     
       <p class="meta text-muted text-uppercase">
@@ -113,342 +131,269 @@
 
 
 
-Feb 26th, 2020
+Jul 13th, 2018
         
       </p>
     
     
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/26/liu-cheng-xing-si-kao/" itemprop="url">流程性思考</a></h2>
+    <h1 class="entry-title" itemprop="name headline">
+        独自带大一个功能模块是怎样的体验
+        
+    </h1>
     
   </header>
 
 
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>貌似解决了困扰我多年的一个问题</p>
+<div class="entry-content clearfix" itemprop="articleBody description"><p>最近被安排了，要实现一个脚本任务功能，还要能让已存在的模块复用上。现在来完整的记录和总结一下历时两个月完成它的过程，提供给自己复习以及初学者入门。</p>
 
+<!-- more -->
+
+
+<h1>背景</h1>
+
+<p>本项目是一个云平台异构纳管平台，愿景是将客户所使用的所有的云平台的资源通过我们的平台管理起来，同时提供部门管理功能方便权限控制。这次要实现的功能是：脚本任务管理。</p>
+
+<p>你可以访问<a href="http://www.nicescale.com/">nicescale</a>来感受一下类似的功能。脚本任务管理的确看起来不算一个复杂的功能，但是涉及到的内容还不少，比如脚本管理、任务管理、执行目标管理、代理节点管理。其中复杂的地方在于四个资源之间的相互查询、执行任务的实现方式与任务结果的通信方式、在执行目标上执行SSH命令的方式。</p>
+
+<h1>需求分析与设计阶段</h1>
+
+<p>在一开始，我们便开了一次同步需求的会议，产品经理将功能的需求原因、核心价值、需要的功能、简单的UI设计讲给我们听，要实现哪些大的功能，随后进入设计阶段。</p>
+
+<h2>功能角度上的功能与数据库设计</h2>
+
+<p>思路：<br/>
+（一）：需求分析：理清整个大功能的所有小功能，比如脚本管理、任务管理、执行目标管理。还要分析出各个小功能中的所有具体功能，并列出输入与输出。直到能画出一张能展示出各个小功能之间的关系的图即可，比如</p>
+
+<p><img src="/images/blog/2018-07-13_1.png" title="'image'" ></p>
+
+<p>（二）：逻辑设计：理性且细致地分析出每个功能需要的表有哪些，关联查询的话关联表有哪些，特别是一对多，多对多关系要想的非常清楚，使用<strong>ER图</strong>进行逻辑建模，宁愿多花时间在这一步，也不要到开发的时候才发现有问题。这样才能对你自己设计的表负责，大大减少重新设计的可能，值得一提的是，设计与调研阶段花了一个月才完成，开发阶段仅仅花了两周就基本完成。<br/>
+（三）：物理设计：根据ER图的关系，遵循<a href="http://linusrush.blog.163.com/blog/static/14073829020110903958457/">数据库三个范式</a>的要求，将所有表的字段与关系设计出来。要注意不一定全部使用外键关联的方式来建表，如果该表是以快照的方式存储的话，就不能使用外键关联其他表而是将其他表的字段放到这个表中，比如脚本任务管理功能中的任务日志。</p>
+
+<p>对于具体的字段如何选择，那么从空间以及性能上考虑的原则是<strong>当一个列可以选择多个数据类型时，应当优先选择数字类型其次是日期或二进制类型，最后是字符类型；对于相同级别的数据类型，应当优先选择占用空间小的数据类型。</strong> 但是从项目初期的开发便利与灵活性上来说，<strong>尽量使用VARCHAR与DATETIME来存储</strong>即可，在日后调优的过程中考虑性能和空间的因素。</p>
+
+<p>完成之后将所有表的关系图用MySQLWorkbench中的【Reverse Engineer&hellip;】画出来，将所有的需求串起来在脑海里模拟一遍，看有没有哪里进行增删改查的时候不太顺畅、表之间的关联关系太复杂的地方。</p>
+
+<h2>工程角度上代码模块的设计</h2>
+
+<p>思路：<br/>
+（一）：单一职责。用这样的方式设计出不同的功能模块，让他们专注于自己的功能即可，也方便日后优化。比如将涉及到业务的部分使用消息这个数据结构去承载并且提供返回结果处理接口而不是写到执行模块与调度模块中
+（二）：保持松耦合。使用消息队列将任务的执行、收集执行结果与业务模块解耦，不用等待消息的立即返回</p>
+
+<p>所以我对将该功能拆成三个相对独立的模块，分别提供不同的服务。总的来说，模块的拆分是为了：系统之间的解耦、已存在功能的复用、独立优化各个不同模块的性能。</p>
+
+<h3>三个模块</h3>
+
+<p>业务模块：<br/>
+脚本管理、任务管理、执行目标管理、代理节点管理之间单独的增删改查以及相互的连接查询<br/>
+提供用户创建任务的接口以及监听执行结果返回的消息队列</p>
+
+<p>执行模块：<br/>
+线程池执行方式：可配置<br/>
+避免重复消费：幂等性、记录消息ID如果已经处理过就抛弃<br/>
+监听待执行消息队列，提供任务执行方式：SSH命令、直接调用某个服务</p>
+
+<p>调度模块：<br/>
+封装quartz，定义消息通信结构：任务名、组、目标地点、任务内容、定时类型、定时表达式、开始时间<br/>
+提供业务模块调用REST接口</p>
+
+<p><img src="/images/blog/2018-07-13_3.png" title="'image'" ></p>
+
+<p>整个流程：<br/>
+（一）：业务模块接到创建任务的指令，通过REST请求发送任务信息到调度模块创建调度任务。<br/>
+（二）：当到达任务执行时间时，调度模块会执行该任务，将任务发送到某个消息队列中，期待业务或者功能模块消费<br/>
+（三）：执行模块从消息队列中拿到任务之后，执行具体的任务，将任务的结果发送到执行结果返回的队列<br/>
+（四）：业务模块拿到消息之后将返回结果记录到表中，为前端提供查询逻辑</p>
+
+<h3>问题</h3>
+
+<p>大量任务同时执行的并发问题：使用消息队列在调度模块与执行模块中进行通信，执行模块返回执行结果到业务模块也是。</p>
+
+<p>任务执行超时不返回结果问题：执行模块中限制超时时间，超出时间返回错误消息，同时尽量保证执行模块与消息队列的稳定行；定时任务去清理无返回结果的异常任务</p>
+
+<h1>调研阶段</h1>
+
+<p>上面是功能上的设计、数据库里表的设计，但是有很多地方需要调研才有把握，比如调度任务模块、SSH在代理节点上执行命令、提供在执行目标中信任本系统的方式。</p>
+
+<p>下面举几个例子，这些都<strong>必须自己写出符合业务场景的Demo出来能让之后实现的时候直接或间接调用</strong>：</p>
+
+<ul>
+<li>基础执行功能：使用JSch实现，能分别获得stderr和stdout的输出</li>
+<li>调度任务模块：使用quartz实现，数据库方面需要创建一些quartz的特定表，同时维护自己的任务管理表</li>
+<li>将公钥放到执行目标里：在用户填写完需要的字段之后，还需要让用户填写SSH密码来把CMP的public key放到执行目标上，或者告知用户在执行目标上执行如下命令：<code>【PUBLIC KEY】 &gt;&gt; $auth_keyfile</code></li>
+</ul>
+
+
+<h1>开发阶段</h1>
+
+<p>要是设计阶段与调研阶段做的比较完善的话，开发阶段反而轻松很多，因为基本上所有的问题已经在设计与调研阶段问题与答案弄清楚了，开发阶段仅仅是把答案写下来而已。</p>
+
+<p>这个阶段需要关心的是能否使用符合当前代码风格，使用简单优雅的方式实现代码，不一定写到完美，可以放到日后重构。</p>
+
+<p>另外，在增删改查的时候除了把查询的逻辑理清楚之外，还要考虑修改和删除操作会不会影响已经存在的资源，比如脚本被删除/修改或执行目标被删除/修改之后，当前正在执行的任务应当如何执行？当前数据库中，任务与脚本、执行目标的关联字段是否被更新。</p>
+
+<h1>测试阶段</h1>
+
+<p>本测试阶段仅涉及手动测试，自动化测试不涉及，或应包含在开发阶段。</p>
+
+<p>严格来说，首先需要写出测试用例，然后一条一条进行手动测试，将通过与不通过的用例标识出来反馈给开发人员。我们也来写一次测试用例。</p>
+
+<p>关于测试用例的写法有太多太多，建议自行学习，本人也不是专业的测试人员，<strong>但作为一个专业的开发人员，会写基本的测试用例也是必须要掌握的。同时请尊重自己的劳动成果，珍惜测试人员的辛勤劳动，把握住提升自己测试能力与逻辑能力的机会。</strong></p>
+
+<p>下面是这个功能模块的测试用例，能力有限，写的一般，但基本涵盖所有操作与业务逻辑，且用例的设计逻辑清晰，性价比比较高，便于快速高效测试。</p>
+
+<p>设计要点在于：<br/>
+（一）：用例要包含所有界面上的直接操作<br/>
+（二）：从业务上理解功能的意义，从而能涵盖到一些组合操作与隐藏逻辑<br/>
+（三）：要有异常测试的意识，比如同时操作、边界测试、并发情况<br/>
+（四）：对修改与删除操作进行关联性测试，删除某资源引用的另一个资源或者该资源会不会导致该资源不可用</p>
+
+<p><img src="/images/blog/2018-07-13_2.png" title="'image'" ></p>
+
+<p>写完这些测试用例我就拿去测试了一遍，后面标注为红色的状态的就是测试不通过的一些，你看效果多明显，比自己随心所欲地乱测有条理多了，覆盖面也会更加完善。当然，除了我写出来的基本功能的测试用例，压力/性能测试、用户权限测试、并发测试、浏览器兼容测试也是非常有必要的，这里不多说了，感兴趣的同志请关注ThoughtWorks公众号，上面有很多测试方面的文章。</p>
+
+<h1>优化阶段</h1>
+
+<h2>代码重构</h2>
+
+<p>为了完成项目赶进度也是常有的事情，为了交付代码写得烂也是可以理解，作为有追求的程序猿，重构这一步实在是太重要了，这是一个非常难得的一个提升自己编码能力、优化代码结构的机会。</p>
+
+<p>《代码整洁之道》写的非常不错，建议当做入门级重构教材学习，会帮你建立起一个重构的意识，有了意识便很好了，接下来通过优化自己的代码来实践吧。另外，很多重构的做法已经在你所在的项目代码里存在了，看看别人是怎么写的吧，同时记得多google来优化你的想法。</p>
+
+<h2>优化功能</h2>
+
+<p>在功能上，能否进一步强化从而带来更多的业务价值、商业机会？比如在执行目标上能否支持除了shell之外的更多语言（python）？能否提供一些常用功能的脚本让用户去选择而不是用户自己去写？能否提供自动失败之后重试机制？提供脚本、执行目标、任务的分组便于管理？提供脚本的历史版本以供用户参考？将当前任务执行状态进行可视化？</p>
+
+<p>在性能上，能否进一步优化？用Redis将常用数据缓存起来？优化大量任务同时返回结果时的数据库操作？</p>
+
+<h1>总结</h1>
+
+<p>敏捷开发：以用户的需求进化为核心，采用迭代、循序渐进的方法进行软件开发。<br/>
+瀑布模型：是最典型的预见性的方法，严格遵循预先计划的需求、分析、设计、编码、测试的步骤顺序进行。<br/>
+总的来说，本文写的像是介绍瀑布模型的一个案例，因为一个功能的从无到有比较偏向于严格的流程与设计。但并不是这样，文章里没有写到的是，我们功能的上线思路是将最核心的功能完成，立即交付于用户使用体验，拿到实际场景中的不足之后持续快速修改，发布新版本，这又是敏捷开发的核心。所以<strong>开发方式的定义不重要，重要的是选用符合当前团队与业务场景的开发方式</strong>。</p>
+
+<p>在做的过程中，主要在设计与调研阶段中犯过不少问题，比如设计阶段对于数据库的关联关系考虑的不全面，在调研的时候遗漏过关键问题，导致开发的时候修改数据库结构与以前调研过的实现方式，这是因为没有经验与套路导致的，那么本文也主要是总结这些套路，让自己在以后有一套比较<strong>系统</strong>的解决问题的方式。</p>
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
 </div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/26/liu-cheng-xing-si-kao/">阅读全文 &rarr;</a>
-    </footer>
-  
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      <footer class="post-footer">
+        <p class="meta text-muted">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 19th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/" itemprop="url">【研发效能之道】个人效能实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>程序员个体如何高效地进行开发工作</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
   
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
 
+<figure class="author-image">
+    <span class="img" href="/about" style="background-image: url(/images/avatar.jpg)"><span class="hidden">Picture</span></span>
+</figure>
 
+<section class="author">
+    <h4><span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="fn" itemprop="name">Tianyi Wang</span></span></h4>
 
-
-Feb 18th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/" itemprop="url">【研发效能之道】研发流程优化实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>接下来会以<strong>提高用户价值的流动效率</strong>为核心，列出一些具体的研发流程优化实践</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 17th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/" itemprop="url">【研发效能之道】研发流程优化理论</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在再次开始一个新的系列，【研发效能之道】，主要参考《极客时间|研发效率破局之道》，系列内容为其读书笔记与自己的理解、总结</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 10th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/" itemprop="url">【Prometheus】Prometheus的设计</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/" itemprop="url">【Prometheus】监控系统概述</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在开始一个新的系列，【Prometheus】，主要参考《深入浅出Prometheus》，基本为其读书笔记加上部分自己的理解</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/jia-gou-ru-men-end/" itemprop="url">【架构入门】思维导图</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/jia-gou-ru-men-end/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 18th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/" itemprop="url">【架构入门 - 可扩展篇】</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>随着服务的壮大，使用人数的增多，业务的递增，服务的扩展性尤为关键，在不影响现有架构的情况下如何增加机器、扩展功能？</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 15th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/" itemprop="url">【架构入门 - 高可用篇】计算高可用</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 5th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" itemprop="url">【架构入门 - 高性能篇】数据库高性能</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
+    <div class="author-meta">
+        <span class="author-link icon-link"><i class="fa fa-link" aria-hidden="true"></i> <a href="http://www.wangtianyi.top">http://www.wangtianyi.top</a></span>
     </div>
+</section>
 
-    <ul class="pager">
-      
-        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
+<hr>
+
+<section class="share">
+    
+    <h4>Share this post</h4>
+    
+    <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?url=http://www.wangtianyi.top/blog/2018/07/13/du-zi-dai-da-yi-ge-gong-neng-mo-kuai-shi-zen-yang-de-ti-yan/;" 
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.wangtianyi.top/blog/2018/07/13/du-zi-dai-da-yi-ge-gong-neng-mo-kuai-shi-zen-yang-de-ti-yan/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.wangtianyi.top/blog/2018/07/13/du-zi-dai-da-yi-ge-gong-neng-mo-kuai-shi-zen-yang-de-ti-yan/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+    
+</section>
+
+
+
+
+<!--
+<footer class="post-footer">
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Instant%20Movie%20Streamer%20v3%20Release&amp;url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+
+-->
+          
+
+
+
+
+Jul 13th, 2018
+          <br>
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/hou-tai/'>后台</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="pager">
+            
+            
+              
+                <a href="/blog/2018/06/24/shou-ba-shou-jiao-ni-she-ji-bing-shi-xian-yi-ge-ji-yu-redisde-fen-bu-shi-suo/" class="col-xs-12 col-md-4 btn btn-default" title="Previous Post: 手把手教你实现一个基于Redis的分布式锁"> 
+                  <div class="text-muted">
+                    <small>Previous Post</small>
+                  </div>
+                  <div class="pager-title">
+                    <h4>手把手教你实现一个基于Redis的分布式锁</h4>
+                  </div>
+                </a>
+              
+            
+            
+            
+              
+              <a href="/blog/2018/07/20/javasheng-chan-huan-jing-xia-wen-ti-pai-cha/" class="col-xs-12 col-md-4 btn btn-default pull-right" title="Next Post: Java生产环境下问题排查">
+                <div class="text-muted">
+                  <small>Next Post</small>
+                </div>
+                <div class="pager-title">
+                  <h4>Java生产环境下问题排查</h4>
+                </div>
+              </a>
+              
+            
+            
+          </div>
+        
+      </footer>
+    </article>
+    
   </div>
 </div>
 

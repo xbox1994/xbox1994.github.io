@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>干掉这里的Bug</title>
+  <title>记一次性能优化探索-Nginx有什么用 - 干掉这里的Bug</title>
   <meta name="author" content="Tianyi Wang">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.wangtianyi.top/">
+  <link rel="canonical" href="http://www.wangtianyi.top/blog/2017/01/08/mou-ci-you-hua-shi-jian-nginxshi-na-lai-gan-shi-yao-de/">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="干掉这里的Bug" type="application/atom+xml">
 
   <!-- http://opengraphprotocol="-co.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://www.wangtianyi.top/">
-  <meta property="og:title" content="干掉这里的Bug">
+  <meta property="og:url" content="http://www.wangtianyi.top/blog/2017/01/08/mou-ci-you-hua-shi-jian-nginxshi-na-lai-gan-shi-yao-de/">
+  <meta property="og:title" content="记一次性能优化探索-Nginx有什么用 - 干掉这里的Bug">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -64,24 +64,46 @@
     <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
     <div id="wrap">
       
-      <div id="banner-image">
-        <div class="layer" style="text-align:center;">
-          <div id="banner-text">
-            <h1 class="page-title">干掉这里的Bug</h1>
-            <p class="page-desc">
-              <br>
-            </p>
-            <br>
-            <br>
-            <div class="page-links center">
-              <ul class="index-nav">
-                  <li ><a href="/blog/archives">All</a></li>
-<li ><a href="/about">About</a></li>
-              </ul>
-            </div>
-          </div>
+        <header role="banner">
+          <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">干掉这里的Bug</a>
         </div>
-      </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/blog/archives">All</a></li>
+<li ><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="www.wangtianyi.top">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+        </header>
       
       <div id="main" role="main" class="container">
         <div id="content">
@@ -95,16 +117,12 @@
             </script>
           </div>
           <div class="row">
-  <div class="page-content">
-    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+  <div class="page-content" itemscope itemtype="http://schema.org/Blog">
     <meta itemprop="name" content="干掉这里的Bug" />
     
     <meta itemprop="url" content="http://www.wangtianyi.top" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
   <header class="page-header">
     
       <p class="meta text-muted text-uppercase">
@@ -113,342 +131,233 @@
 
 
 
-Feb 26th, 2020
+Jan 8th, 2017
         
       </p>
     
     
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/26/liu-cheng-xing-si-kao/" itemprop="url">流程性思考</a></h2>
+    <h1 class="entry-title" itemprop="name headline">
+        记一次性能优化探索-Nginx有什么用
+        
+    </h1>
     
   </header>
 
 
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>貌似解决了困扰我多年的一个问题</p>
+<div class="entry-content clearfix" itemprop="articleBody description"><p>&ldquo;这张卡马上做完了,赶紧desk check,我们先把测试环境准备好&rdquo;.我高高兴兴地跟洲说,随手修改了一下配置文件中的微服务访问路径,然后重启服务器,一切看起来那么的一帆风顺.<br/>
+&ldquo;好的,页面开始Loading啦&rdquo;&hellip;10分钟之后&hellip;&ldquo;我受不了了&rdquo;</p>
 
+<!--more-->
+
+
+<h2>问题</h2>
+
+<p>1.本地环境开启的应用访问EC2上的某微服务速度慢,但在EC2环境开启的应用访问该微服务速度快.</p>
+
+<p>2.本地环境加载某一个页面的过程中刷新,会很长时间内没有回应</p>
+
+<h2>区别</h2>
+
+<p>本地应用环境与EC2真实环境局别如下:<br/>
+1.本地与EC2其他微服务的连接是外网通信,运行应用的EC2实例与其他微服务的连接是内网通信<br/>
+2.本地Web Server使用的是Thin,EC2服务器使用的是Unicorn+Nginx</p>
+
+<h2>猜测</h2>
+
+<p>首先我们觉得是网络环境的问题,因为我们同时发现上午网速确实比下午网速快,所以忍耐了很长时间没有下功夫在这方面,直到最近洲回来了,对这个访问速度感到很是愤怒.
+在连接上VPN之后,发现速度什么的都不是问题,但是加载数据量较大的资源时还是比较慢</p>
+
+<h2>研究</h2>
+
+<p>问题1:</p>
+
+<p>所以开始研究第二个区别,本地测试三种环境如下图:<br/>
+1)Thin<br/>
+<img src="/images/blog/home_thin.png" title="image" alt="images">
+2)Unicorn<br/>
+<img src="/images/blog/home_unicorn.png" title="image" alt="images">
+3)Unicorn+Nginx
+<img src="/images/blog/home_nginx+unicorn.png" title="image" alt="images"></p>
+
+<p>可以看出:<br/>
+1.对于Thin和Unicorn服务器来说,资源不论大小,他们的耗时是基本相同的.<br/>
+2.拿有Nginx的Unicorn服务器与没有Nginx的Unicorn服务器来说,数据量小的资源会稍慢一些,但数据量大的资源速度提升明显.<br/>
+3.Nginx将数据进行大幅度压缩,导致Size远小于Content</p>
+
+<p>问题2:</p>
+
+<p>经过测试,1)和2)都存在这个问题,但3)不存在,很明显是默认配置的服务器无法同时处理多个请求,可以通过
+1.&ndash;threaded开启Thin多线程模式<br/>
+2.Nginx与多进程模式Unicorn的配合<br/>
+均可以使得不用等待上一个请求结束而直接请求另一个服务器并立马得到回应.</p>
+
+<h2>服务器通信级别的原因</h2>
+
+<h3>Nginx对请求的压缩处理</h3>
+
+<p>具体解释与参数配置在<br/>
+<a href="https://www.nginx.com/resources/admin-guide/compression-and-decompression/">https://www.nginx.com/resources/admin-guide/compression-and-decompression/</a></p>
+
+<p>gzip是默认配置在nginx.conf内的,所以默认开启,如果不对数据量要求特别精细的话,默认配置完全可以满足基本需求</p>
+
+<p>上图的2.5MB大文件显然被压缩成几百K的小文件在网络上进行传输,大大减轻了应用的网络负载</p>
+
+<h3>Nginx对请求的合并处理</h3>
+
+<p>先回顾一下Nginx反向代理的原理:正向代理是将自己要访问的资源告诉Proxy,让Proxy帮你拿到数据返回给你,Proxy服务于Client,常用于翻墙和跨权限操作;反向代理也是将自己要访问的资源告诉Proxy,让Proxy帮你拿到数据返回给你,但是Proxy服务于Server,它会将请求接受完毕之后发送给某一合适的Server,常用于负载均衡.</p>
+
+<p><img src="/images/blog/nginx_priciple.png" title="image" alt="images"></p>
+
+<p><strong><em>Proxy统一接收Client请求，接收完毕后才发给Server，提高Server处理效率</em></strong></p>
+
+<p>Using a reverse proxy server frees the application server from having to wait for users to interact with the web app and lets it concentrate on building pages for the reverse proxy server to send across the Internet<br/>
+<a href="https://www.nginx.com/blog/10-tips-for-10x-application-performance/">https://www.nginx.com/blog/10-tips-for-10x-application-performance/</a></p>
+
+<p>Nginx在其他方面也有好处,如直接返回静态文件,添加重定向与SSL证书,添加返回头,可参看这篇[NUS后台]</p>
+
+<h3>少量请求+单机运行Nginx的坏处</h3>
+
+<p>Nginx是负责接收/返回请求与转发/返回请求的,在这个过程中会涉及到资源的压缩处理,势必会拖慢请求处理速度并加重Nginx运行环境的负担;同时,在转发到Server和接受Server返回的资源的过程中是会进行TCP连接的,此段的开销会拖慢整体返回速度,所以可能会出现单个请求返回速度比不使用Nginx的速度慢.</p>
+
+<p>但是,在高并发情况下,才是Nginx的用武之地.如果1台实例无法处理成千上万个请求,那么就用集群吧,Nginx帮你负载均衡并添加一道隐形的安全防火墙,记住,一定要把Nginx放到一台独立的实例上而不要与其他服务共存,否则反而会影响整体处理速度.</p>
+
+<p>换句话说,使用Nginx的后台架构中的单个请求的处理速度可能会慢于不使用Nginx的后台架构,但在高并发环境下,不使用Nginx的后台可能会爆掉Out of memory..使用Nginx的后台依然坚挺,为了系统的稳定性与负载均衡,使用Nginx是非常明智的选择.</p>
+
+<h2>代码级别的原因</h2>
+
+<p>上面是针对已有代码进行的服务器通信阶段进行的分析,在代码内部实现,依然还有很多加快加载速度的方式,对于我们这个例子来说的话:<br/>
+1.前台不应该加载2.5MB这样巨大的文件,除非万不得已.在前台做数据的展现即可,不需要先拿到全部数据后做数据的查询.<br/>
+2.代码级别存在很多批处理请求,但发送的时候是单条发送,建议使用批量处理对应的API</p>
+
+<h2>结论</h2>
+
+<p>1.网络问题是影响本地加载速度最大的因素,本地网络暂时难以改变,不连接/连接VPN+添加防火墙规则解决.<br/>
+2.代码层级可以做适当优化,解决大资源加载以及请求发送策略,将要解决.<br/>
+3.对于页面重新加载速度过慢的问题,使用多线程配置解决,已经解决.<br/>
+4.对于大资源加载问题,考虑使用Nginx压缩处理,grunt ddev已经解决.<br/>
+5.对于以后可能出现的请求数量过多问题采用Nginx+Unicorn负载均衡,已经解决.</p>
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
 </div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/26/liu-cheng-xing-si-kao/">阅读全文 &rarr;</a>
-    </footer>
-  
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      <footer class="post-footer">
+        <p class="meta text-muted">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 19th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/" itemprop="url">【研发效能之道】个人效能实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>程序员个体如何高效地进行开发工作</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
   
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
 
+<figure class="author-image">
+    <span class="img" href="/about" style="background-image: url(/images/avatar.jpg)"><span class="hidden">Picture</span></span>
+</figure>
 
+<section class="author">
+    <h4><span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="fn" itemprop="name">Tianyi Wang</span></span></h4>
 
-
-Feb 18th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/" itemprop="url">【研发效能之道】研发流程优化实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>接下来会以<strong>提高用户价值的流动效率</strong>为核心，列出一些具体的研发流程优化实践</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 17th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/" itemprop="url">【研发效能之道】研发流程优化理论</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在再次开始一个新的系列，【研发效能之道】，主要参考《极客时间|研发效率破局之道》，系列内容为其读书笔记与自己的理解、总结</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 10th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/" itemprop="url">【Prometheus】Prometheus的设计</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/" itemprop="url">【Prometheus】监控系统概述</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在开始一个新的系列，【Prometheus】，主要参考《深入浅出Prometheus》，基本为其读书笔记加上部分自己的理解</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/jia-gou-ru-men-end/" itemprop="url">【架构入门】思维导图</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/jia-gou-ru-men-end/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 18th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/" itemprop="url">【架构入门 - 可扩展篇】</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>随着服务的壮大，使用人数的增多，业务的递增，服务的扩展性尤为关键，在不影响现有架构的情况下如何增加机器、扩展功能？</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 15th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/" itemprop="url">【架构入门 - 高可用篇】计算高可用</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 5th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" itemprop="url">【架构入门 - 高性能篇】数据库高性能</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
+    <div class="author-meta">
+        <span class="author-link icon-link"><i class="fa fa-link" aria-hidden="true"></i> <a href="http://www.wangtianyi.top">http://www.wangtianyi.top</a></span>
     </div>
+</section>
 
-    <ul class="pager">
-      
-        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
+<hr>
+
+<section class="share">
+    
+    <h4>Share this post</h4>
+    
+    <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?url=http://www.wangtianyi.top/blog/2017/01/08/mou-ci-you-hua-shi-jian-nginxshi-na-lai-gan-shi-yao-de/;" 
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.wangtianyi.top/blog/2017/01/08/mou-ci-you-hua-shi-jian-nginxshi-na-lai-gan-shi-yao-de/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.wangtianyi.top/blog/2017/01/08/mou-ci-you-hua-shi-jian-nginxshi-na-lai-gan-shi-yao-de/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+    
+</section>
+
+
+
+
+<!--
+<footer class="post-footer">
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Instant%20Movie%20Streamer%20v3%20Release&amp;url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+
+-->
+          
+
+
+
+
+Jan 8th, 2017
+          <br>
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/hou-tai/'>后台</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="pager">
+            
+            
+              
+                <a href="/blog/2016/12/31/learning-how-to-learn/" class="col-xs-12 col-md-4 btn btn-default" title="Previous Post: Learning how to Learn"> 
+                  <div class="text-muted">
+                    <small>Previous Post</small>
+                  </div>
+                  <div class="pager-title">
+                    <h4>Learning how to Learn</h4>
+                  </div>
+                </a>
+              
+            
+            
+            
+              
+              <a href="/blog/2017/01/16/sshdeng-lu-yuan-li-jian-jie/" class="col-xs-12 col-md-4 btn btn-default pull-right" title="Next Post: SSH登录原理简介">
+                <div class="text-muted">
+                  <small>Next Post</small>
+                </div>
+                <div class="pager-title">
+                  <h4>SSH登录原理简介</h4>
+                </div>
+              </a>
+              
+            
+            
+          </div>
+        
+      </footer>
+    </article>
+    
   </div>
 </div>
 

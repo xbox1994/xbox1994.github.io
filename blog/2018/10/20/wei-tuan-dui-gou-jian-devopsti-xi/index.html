@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>干掉这里的Bug</title>
+  <title>为团队构建DevOps体系 - 干掉这里的Bug</title>
   <meta name="author" content="Tianyi Wang">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.wangtianyi.top/">
+  <link rel="canonical" href="http://www.wangtianyi.top/blog/2018/10/20/wei-tuan-dui-gou-jian-devopsti-xi/">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="干掉这里的Bug" type="application/atom+xml">
 
   <!-- http://opengraphprotocol="-co.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://www.wangtianyi.top/">
-  <meta property="og:title" content="干掉这里的Bug">
+  <meta property="og:url" content="http://www.wangtianyi.top/blog/2018/10/20/wei-tuan-dui-gou-jian-devopsti-xi/">
+  <meta property="og:title" content="为团队构建DevOps体系 - 干掉这里的Bug">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -64,24 +64,46 @@
     <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
     <div id="wrap">
       
-      <div id="banner-image">
-        <div class="layer" style="text-align:center;">
-          <div id="banner-text">
-            <h1 class="page-title">干掉这里的Bug</h1>
-            <p class="page-desc">
-              <br>
-            </p>
-            <br>
-            <br>
-            <div class="page-links center">
-              <ul class="index-nav">
-                  <li ><a href="/blog/archives">All</a></li>
-<li ><a href="/about">About</a></li>
-              </ul>
-            </div>
-          </div>
+        <header role="banner">
+          <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">干掉这里的Bug</a>
         </div>
-      </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/blog/archives">All</a></li>
+<li ><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="www.wangtianyi.top">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+        </header>
       
       <div id="main" role="main" class="container">
         <div id="content">
@@ -95,16 +117,12 @@
             </script>
           </div>
           <div class="row">
-  <div class="page-content">
-    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+  <div class="page-content" itemscope itemtype="http://schema.org/Blog">
     <meta itemprop="name" content="干掉这里的Bug" />
     
     <meta itemprop="url" content="http://www.wangtianyi.top" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
   <header class="page-header">
     
       <p class="meta text-muted text-uppercase">
@@ -113,342 +131,284 @@
 
 
 
-Feb 26th, 2020
+Oct 20th, 2018
         
       </p>
     
     
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/26/liu-cheng-xing-si-kao/" itemprop="url">流程性思考</a></h2>
+    <h1 class="entry-title" itemprop="name headline">
+        为团队构建DevOps体系
+        
+    </h1>
     
   </header>
 
 
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>貌似解决了困扰我多年的一个问题</p>
+<div class="entry-content clearfix" itemprop="articleBody description"><p>在开发过程中，如果团队没有基本的DevOps体系来保证应用的稳定，便捷的自动部署，规范的部署流程，优良的开发环境，那么除了开发效率很可能是极为底下之外，团队成员也怕是会怨声载道，更别提应用的健壮性了。</p>
 
+<!-- more -->
+
+
+<h2>DevOps是什么</h2>
+
+<p>DevOps的定义众说纷纭，个人的理解是：</p>
+
+<ul>
+<li>从狭义上来说是一套实践、方法、工具，是提高交付应用程序和服务能力的一组最佳实践，为了在保证高质量的前提下缩短系统变更从提交到部署至生产环境的时间。</li>
+<li>从广义上来说是一个运动，一种文化，强调团队紧密合作，打破角色之间的隔阂从而达到提高最终交付价值。</li>
+</ul>
+
+
+<h2>为什么要构建DevOps体系</h2>
+
+<p><img src="/images/blog/2018-10-20_1.jpg" title="'image'" ></p>
+
+<p>所以，我们需要：</p>
+
+<ul>
+<li>将应用部署的流程自动化起来，只需要按一个按钮就能完成在任意环境上的部署</li>
+<li>将开发、测试、部署环境统一起来并管理起来</li>
+<li>缩短从代码提交到部署到生产环境之间的时间</li>
+<li>将所有过程可视化起来，让所有人知道当前的进展</li>
+<li>将异常及时反馈给负责人并有回滚方式</li>
+</ul>
+
+
+<h2>DevOps体系的思路与实践</h2>
+
+<p>思路：以提升开发部署效率这个结果为导向，以标准化、自动化、可视化为思想，以持续集成、持续交付、敏捷为核心来构建一套DevOps体系。</p>
+
+<p><img src="/images/blog/2018-10-20_2.png" title="'image'" ></p>
+
+<p>首先我们可以用上图中的内容与自己当前的工作环境进行对比，还差哪些部分，我们就补充哪些，依靠木桶效应，优先实现还未存在的部分，优先将体系的基础构建完成。</p>
+
+<p>当然图中的实践也不完整，可以参考下面的一些实践来开始。</p>
+
+<h4>自动化流水线（持续集成）</h4>
+
+<p>优先级：高</p>
+
+<p>通过使用自动化流水线构建工具将代码的构建、测试、部署的流程规范起来，将执行的操作固定下来，去除人为因素干扰构建流程，从代码的提交到部署形成一条生产线。</p>
+
+<p>前置条件：</p>
+
+<ul>
+<li>分支策略。流水线的构建方式是通过分支策略来定的，如果有master、dev、release分支，则可能需要构建出三套流水线来分别管理这三个分支</li>
+<li>提交策略。不论是否使用持续集成的方式提交，提交的信息必须统一，提交者的姓名、提交所属的功能、提交的内容这三块内容必须要有</li>
+<li>部署步骤。确定需要部署到哪些环境中，有几个构建的步骤，如test、build、deployDev、deployTest、deployProd</li>
+<li>多项目的结构。一个项目需要是一个能让git单独追踪的项目，才能避免在自动化中影响其他项目的构建</li>
+</ul>
+
+
+<p>准备好前置条件之后就可以开始构建第一条流水线了，具体的构建工具与构建步骤因团队而异，具体构建的过程就是将所有当前的部署流程整理进构建流水线中，并使用类似Jenkinsfile这样的Pipieline as code的形式将流水线当做整个项目的一部分管理起来，因此这是工作量最大的部分。构建完成后还需要完成流水线可视化，在团队工作区域的显眼位置放置一台显示器，将当前所有流水线的工作状态显示在上面。</p>
+
+<h4>各种环境的管理</h4>
+
+<p>优先级：高</p>
+
+<ul>
+<li>统一开发、测试、部署的环境。生产环境是什么样子，测试环境与开发环境就尽量保持一致。应用的架构方式、应用运行所在的系统版本、应用运行所在的机器配置都应当保持一致，使用Docker可以保证后两者没有问题，但架构方式在开发环境难以做到，优先级其实不高，可以暂时放下。</li>
+<li>使用Ansible将构建虚拟机上各种工具、环境的过程代码化从而实现Infrastructure as code，将部署的架构也体现在其中从而实现Platform as code，便于扩展机器、问题追溯、架构优化。</li>
+<li>依赖包的管理。Java非常方便，可以自己部署一个配置管理源，所有包都从这个源里下载，但Go不太方便，可以使用vender将项目依赖的特定版本的代码管理起来，但是会碰到被墙导致无法下载的问题，目前的方式是将项目的依赖提取到一个公共代码库中，然后将公共代码库放到GOPATH中，如果有一些依赖不适合放入公共代码库，则提交到项目根目录下的vendor中。</li>
+</ul>
+
+
+<h4>容器化编排（持续部署）</h4>
+
+<p>优先级：高</p>
+
+<p>将应用使用Docker容器化，同时结合容器注册表如Nexus、AWS ECR，容器编排工具如Rancher、K8S，则可以实现应用的自动部署、动态伸缩，解放需要无数次的SCP命令。</p>
+
+<h4>团队协作的纪律</h4>
+
+<p>优先级：中</p>
+
+<ul>
+<li>提交规范。根据分支策略拟定提交规范，主要是小步多次提交、提交信息要全面。</li>
+<li>快速反馈。在任何工作的过程中，如果觉得哪里不太高效或者有问题，需要及时提出反馈共同优化现状，被动收集反馈。</li>
+<li>长期反馈。定期召集团队成员举办retro，主动收集改进意见。</li>
+<li>高优先级修复问题。一旦流水线或监控或日志有异常，需要及时通知相关人员修复。</li>
+</ul>
+
+
+<h4>监控日志规范化（持续运维）</h4>
+
+<p>优先级：中</p>
+
+<p>监控：对于应用、数据库、虚拟机都应当有一套监控方式，一旦某个运行节点出现异常则需要通过一些方式通知相关人员</p>
+
+<p>日志：将所有应用的日志在容器内是收集，并上传到一个日志中心，并提供方便的查询工具便于全部人员查询</p>
+
+<h4>构建过程敏捷化（项目管理）</h4>
+
+<p>优先级：中（长期、穿插）</p>
+
+<p>前置条件：</p>
+
+<ul>
+<li>建立需求管理、文档中心，推荐TAPD。</li>
+</ul>
+
+
+<p>将构建的过程使用看板、迭代的方式管理起来，将实施的计划与进展展示在看板上，当做开发项目一样构建DevOps体系</p>
+
+<p>在构建的过程中，开发、部署步骤、系统架构的文档化也是必不可少的一环，让日后其他同事能够接收DevOps体系和已有的系统架构。文档化是穿插在各个地方的，每当完成一个任务就应当抽点时间补充一下文档。</p>
+
+<h4>部署结果可视化</h4>
+
+<p>优先级：低</p>
+
+<ul>
+<li>流水线可视化。流水线构建完成后，将所有流水线的状态用可视化工具与机器在团队内部展现出来。</li>
+<li>运维面板可视化。在测试、生产环境部署完成且监控系统到位之后，将运维面板通过可视化工具展现出来，可以实时观察当前系统运行状态。</li>
+<li>DevOps构建过程可视化。使用看板的方式将DevOps体系构建过程管理起来，先维护好TAPD电子看板，需要的话再加上物理看板。看板的资料可以查看<a href="http://www.wangtianyi.top/blog/2018/03/18/min-jie-zhong-de-kan-ban/">这里</a></li>
+</ul>
+
+
+<h2>落地计划</h2>
+
+<p>以上的实践可以说是需要落地的具体事情，把这些事情落地成功也需要一些方法。</p>
+
+<p>遵循渐进式的实施顺序：</p>
+
+<ol>
+<li>以任意一个项目为例，将整个DevOps体系实践根据优先级落实其中，当做一个示例规范化整个体系</li>
+<li>将已有的混乱开发部署方式以第一个项目为例逐步迁移到我们搭建的架构中来</li>
+<li>基本完成之后回过头来重新审视一遍已有的体系，继续改进</li>
+</ol>
+
+
+<p>在实施的过程中的建议：</p>
+
+<ol>
+<li>使用看板与迭代开发的方式将我们的实施任务分配清楚，计划制定成熟</li>
+<li>在过程中将DevOps体系当前构建进展同步给所有人，将所有人的意识规范起来</li>
+<li>让你的老大与团队其他成员意识到构建DevOps体系的必要性，为长期发展做好铺垫</li>
+<li>整个过程中最大的难点可能是已有的体系也比较庞大与混乱导致迁移难度大从而需要大量时间，所以必要的时候向你的老大申请更多时间与人员来</li>
+</ol>
+
+
+<h2>参考</h2>
+
+<p><a href="https://myslide.cn/slides/1218">https://myslide.cn/slides/1218</a><br/>
+<a href="https://blog.jsjs.org/?p=40">https://blog.jsjs.org/?p=40</a></p>
 </div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/26/liu-cheng-xing-si-kao/">阅读全文 &rarr;</a>
-    </footer>
-  
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      <footer class="post-footer">
+        <p class="meta text-muted">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 19th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/" itemprop="url">【研发效能之道】个人效能实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>程序员个体如何高效地进行开发工作</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
   
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
 
+<figure class="author-image">
+    <span class="img" href="/about" style="background-image: url(/images/avatar.jpg)"><span class="hidden">Picture</span></span>
+</figure>
 
+<section class="author">
+    <h4><span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="fn" itemprop="name">Tianyi Wang</span></span></h4>
 
-
-Feb 18th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/" itemprop="url">【研发效能之道】研发流程优化实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>接下来会以<strong>提高用户价值的流动效率</strong>为核心，列出一些具体的研发流程优化实践</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 17th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/" itemprop="url">【研发效能之道】研发流程优化理论</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在再次开始一个新的系列，【研发效能之道】，主要参考《极客时间|研发效率破局之道》，系列内容为其读书笔记与自己的理解、总结</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 10th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/" itemprop="url">【Prometheus】Prometheus的设计</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/" itemprop="url">【Prometheus】监控系统概述</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在开始一个新的系列，【Prometheus】，主要参考《深入浅出Prometheus》，基本为其读书笔记加上部分自己的理解</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/jia-gou-ru-men-end/" itemprop="url">【架构入门】思维导图</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/jia-gou-ru-men-end/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 18th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/" itemprop="url">【架构入门 - 可扩展篇】</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>随着服务的壮大，使用人数的增多，业务的递增，服务的扩展性尤为关键，在不影响现有架构的情况下如何增加机器、扩展功能？</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 15th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/" itemprop="url">【架构入门 - 高可用篇】计算高可用</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 5th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" itemprop="url">【架构入门 - 高性能篇】数据库高性能</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
+    <div class="author-meta">
+        <span class="author-link icon-link"><i class="fa fa-link" aria-hidden="true"></i> <a href="http://www.wangtianyi.top">http://www.wangtianyi.top</a></span>
     </div>
+</section>
 
-    <ul class="pager">
-      
-        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
+<hr>
+
+<section class="share">
+    
+    <h4>Share this post</h4>
+    
+    <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?url=http://www.wangtianyi.top/blog/2018/10/20/wei-tuan-dui-gou-jian-devopsti-xi/;" 
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.wangtianyi.top/blog/2018/10/20/wei-tuan-dui-gou-jian-devopsti-xi/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.wangtianyi.top/blog/2018/10/20/wei-tuan-dui-gou-jian-devopsti-xi/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+    
+</section>
+
+
+
+
+<!--
+<footer class="post-footer">
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Instant%20Movie%20Streamer%20v3%20Release&amp;url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+
+-->
+          
+
+
+
+
+Oct 20th, 2018
+          <br>
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/devops/'>devops</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="pager">
+            
+            
+              
+                <a href="/blog/2018/10/07/cong-javaji-su-ru-men-go/" class="col-xs-12 col-md-4 btn btn-default" title="Previous Post: 从Java极速入门Go"> 
+                  <div class="text-muted">
+                    <small>Previous Post</small>
+                  </div>
+                  <div class="pager-title">
+                    <h4>从Java极速入门Go</h4>
+                  </div>
+                </a>
+              
+            
+            
+            
+              
+              <a href="/blog/2018/12/08/yi-ci-ji-yu-wei-fu-wu-kuang-jia-de-tong-yong-ya-ce-diao-you-shi-zhan/" class="col-xs-12 col-md-4 btn btn-default pull-right" title="Next Post: 一次简单通用的压测调优实战">
+                <div class="text-muted">
+                  <small>Next Post</small>
+                </div>
+                <div class="pager-title">
+                  <h4>一次简单通用的压测调优实战</h4>
+                </div>
+              </a>
+              
+            
+            
+          </div>
+        
+      </footer>
+    </article>
+    
   </div>
 </div>
 

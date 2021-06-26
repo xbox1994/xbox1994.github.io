@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>干掉这里的Bug</title>
+  <title>玩转微服务测试 - 干掉这里的Bug</title>
   <meta name="author" content="Tianyi Wang">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.wangtianyi.top/">
+  <link rel="canonical" href="http://www.wangtianyi.top/blog/2017/07/08/wan-zhuan-wei-fu-wu-ce-shi/">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="干掉这里的Bug" type="application/atom+xml">
 
   <!-- http://opengraphprotocol="-co.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://www.wangtianyi.top/">
-  <meta property="og:title" content="干掉这里的Bug">
+  <meta property="og:url" content="http://www.wangtianyi.top/blog/2017/07/08/wan-zhuan-wei-fu-wu-ce-shi/">
+  <meta property="og:title" content="玩转微服务测试 - 干掉这里的Bug">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -64,24 +64,46 @@
     <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
     <div id="wrap">
       
-      <div id="banner-image">
-        <div class="layer" style="text-align:center;">
-          <div id="banner-text">
-            <h1 class="page-title">干掉这里的Bug</h1>
-            <p class="page-desc">
-              <br>
-            </p>
-            <br>
-            <br>
-            <div class="page-links center">
-              <ul class="index-nav">
-                  <li ><a href="/blog/archives">All</a></li>
-<li ><a href="/about">About</a></li>
-              </ul>
-            </div>
-          </div>
+        <header role="banner">
+          <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">干掉这里的Bug</a>
         </div>
-      </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/blog/archives">All</a></li>
+<li ><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="www.wangtianyi.top">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+        </header>
       
       <div id="main" role="main" class="container">
         <div id="content">
@@ -95,16 +117,12 @@
             </script>
           </div>
           <div class="row">
-  <div class="page-content">
-    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+  <div class="page-content" itemscope itemtype="http://schema.org/Blog">
     <meta itemprop="name" content="干掉这里的Bug" />
     
     <meta itemprop="url" content="http://www.wangtianyi.top" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
   <header class="page-header">
     
       <p class="meta text-muted text-uppercase">
@@ -113,342 +131,350 @@
 
 
 
-Feb 26th, 2020
+Jul 8th, 2017
         
       </p>
     
     
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/26/liu-cheng-xing-si-kao/" itemprop="url">流程性思考</a></h2>
+    <h1 class="entry-title" itemprop="name headline">
+        玩转微服务测试
+        
+    </h1>
     
   </header>
 
 
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>貌似解决了困扰我多年的一个问题</p>
+<div class="entry-content clearfix" itemprop="articleBody description"><p>本文会讲到在微服务中，测试如何在基于其意义的基础上如何配合微服务的特点被完成，不会涉及到类似测试技巧、测试性能等实现细节，但看完你会明白的是要写什么、为什么在微服务中这样写。</p>
 
+<p>与单体应用测试不同的是，微服务架构中服务之间的通信非常频繁，不同服务之间的接口变更亦是如此，所以契约测试会占更重要的地位，也是本文的重点。</p>
+
+<!--more-->
+
+
+<h1>单元测试如何写</h1>
+
+<p>首先一定要明白单元测试测的是什么。</p>
+
+<p><strong>最小可测试单元进行检查和验证，也就是单个函数内功能逻辑是否正确</strong></p>
+
+<p>那么这句话意味着只测单元内部的东西，不会依赖实际的外部系统，所以需要Mock出外部系统，清楚了这点下面的东西就好理解了。</p>
+
+<p>一个常见并且非常老的软件后台开发分层模式是数据持久层（DAO）、服务层（Service）、业务逻辑层（Controller），下面会具体分析我们应该如何写这三块的测试。对于DDD分层模型本文不予讲解，期待日后总结。</p>
+
+<h2>DAO</h2>
+
+<p>DAO层：分两种情况。</p>
+
+<ul>
+<li>不写。因为通常来说DAO层不应该包含复杂逻辑，逻辑在上两层已经留够空间去处理，应当仅是包含SQL语句的执行或者调用数据库对应的Template工具类，所以没有什么东西可以测。所以DAO层单元测试也不应该依赖外部系统，应该放到集成测试里写。<a href="https://www.petrikainulainen.net/programming/testing/writing-tests-for-data-access-code-unit-tests-are-waste/">这里</a>有篇比较极端的文章支持此观点。</li>
+<li>写。与不写的观点持反对意见的例外是，有一些复杂的查询调用或者复杂的SQL语句，在自己不能确保绝对正确的情况下，写DAO层的测试也是有必要的。</li>
+</ul>
+
+
+<h2>Service</h2>
+
+<p>Service层：</p>
+
+<ul>
+<li>一定要写。服务层一般拥有比较复杂的业务逻辑，可能调用到的其他服务请Mock出来。</li>
+</ul>
+
+
+<h2>其他（如Controller、Utils、Domain）</h2>
+
+<ul>
+<li>如果有<strong>比较复杂的逻辑</strong>则需要写。如果是测Controller中的业务逻辑会调用Service，那么请Mock Service。</li>
+</ul>
+
+
+<h1>集成测试如何写</h1>
+
+<p><strong>集成测试是将多个功能模块组合在一起进行的测试</strong>。有两种层级的集成测试：</p>
+
+<ul>
+<li>服务之间的集成测试。好处是能发现单元测试无法发现的问题，比如连接数据库端口问题、层级之间调用问题；缺点是测试经过的代码太多，难以追踪BUG所在并且花费的时间比单元测试长很多。</li>
+<li>单个服务内部的集成测试。与单元测试相同之处在于<strong>关注的是某个层级内部的实现</strong>单元测试关注的层级是方法级别，集成测试关注的级别是应用级别，换句话说就是系统内部的各个层级之间是否能正常协同工作。</li>
+</ul>
+
+
+<h2>当集成测试遇上微服务</h2>
+
+<p>微服务架构将一个应用程序划分成多个有自己业务或功能职责的小服务，服务之间相互协作、互相配合调用为整个应用提供服务支持，服务之间通常采用REST API通信，然而在微服务中，集成测试的"特点"被放大了很多倍：</p>
+
+<ul>
+<li>测试成本高。验证多个服务协作的功能时，每个服务的搭建与配置，每次测试时都需要保证多个服务的测试数据与服务状态是正常的。</li>
+<li>结果不稳定，调试困难。跨服务调用的网络延迟可能导致的超时。测试花费的时间太长导致调试困难。</li>
+</ul>
+
+
+<p>这些理由足够让你在微服务架构中少用集成测试而把注意力转向契约测试。</p>
+
+<p>所以我们Team现在采用的集成测试是：单个服务依赖的其他服务Mock出来，比如对于依赖的外部服务则需要Mock出来，数据库则使用类似的H2内存数据库代替MySQL进行测试，所以我们要写的测试就的是发送请求到本地服务器及内存数据库，在内存数据库增删改查。</p>
+
+<h1>契约测试如何写</h1>
+
+<h2>微服务中的契约测试</h2>
+
+<p>然而在关于微服务架构的测试中，契约测试有着至关重要的地位。<strong>契约测试的出现，将服务之间的集成测试模式一定程度上转换成服务内部的集成测试</strong>。</p>
+
+<p>在单体应用中，大部分功能层级之间的调用是函数方法的调用，属于在本地内存中通过Java虚拟机的实现方式的调用，如果与其他服务集成不多，那么契约测试将无用武之地。在微服务架构中，情况平衡了一些，一个服务会经常调用另外的一个服务获取或同步数据，业务一旦复杂起来，服务之间也会拥有较为复杂调用的关系，虽然BFF(Backend For Frontend)减缓了这个情况，但加强了BFF与服务之间的联系。</p>
+
+<h2>契约测试是什么</h2>
+
+<p>契约测试是验证Provider是否按照期望的方式与Consumer进行交互，简单的说是Consumer与Provider两两之间的集成，简单来说，测试的是<strong>双方是否通过相同的API格式进行交互</strong>。</p>
+
+<p>在一般的契约测试中，有三个模型需要被建立：</p>
+
+<ul>
+<li>Provider：服务的提供者，接收Consumer的请求。</li>
+<li>Consumer: 服务的消费者，是向Provider发起请求。</li>
+<li>Contract: 合同、契约，Provider与Consumer的交互方式。</li>
+</ul>
+
+
+<p>划重点！由于双方是根据生成的契约进行测试，从而可以达到<strong>独立测试</strong>的好处，不需要双方之间发生网络交互。</p>
+
+<p><code>消费者驱动契约模式</code>在2006年老马引用的<a href="https://martinfowler.com/articles/consumerDrivenContracts.html">这篇文章</a>中提出，在<a href="http://dius.com.au/2016/02/03/microservices-pact/">这篇文章</a>中解释的更接地气，是一种测试驱动开发的契约测试模式，携带着敏捷与TDD的好处，更重要的是<strong>将提供者开发API的局面扭转成消费者驱动开发</strong>，由于提供者开发时不清楚消费者具体需要什么，所以在集成的时候会非常难做。将文档化的API转换为契约测试依赖的数据。</p>
+
+<h2>如何开发</h2>
+
+<p>下图是CDC的开发模式，简单讲是消费者撰写契约和对应的契约测试让自己与提供者去分别跑契约测试，从而验证双方契约匹配。下面会根据具体开发流程讲到两个符合这种模式的工具来规范化我们的契约测试的开发，因为一些便捷的功能以及人们的约定总是不够优雅并且会被打破滴所以不得不借助工具。</p>
+
+<p><img src="/images/blog/2017-07-08_2.png" title="'image'" ></p>
+
+<p><img src="/images/blog/2017-07-08_3.png" title="'image'" ></p>
+
+<h2>Pact</h2>
+
+<p>Pact就是这样的测试工具，在技术雷达中提到过多次，作为CDC的实践，Pact名列前茅。Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pact Swift。参见<a href="https://docs.pact.io/">官网</a>获取样例。本文主要以SCC为例讲解。</p>
+
+<h2>Spring Cloud Contract</h2>
+
+<h3>简介</h3>
+
+<p>该项目于2015年开始创建核心代码，GitHub上Star虽然不多，但是功能比较强大，<a href="http://www.infoq.com/cn/news/2017/04/spring-cloud-contract">这里</a>有一篇关于作者的访谈文章，对于理解这个项目比较有帮助。</p>
+
+<h3>官方开发流程</h3>
+
+<p>官方开发流程在<a href="http://cloud.spring.io/spring-cloud-contract/spring-cloud-contract.html#_step_by_step_guide_to_cdc">这里</a>。下面是简化版本。</p>
+
+<p>Consumer端：</p>
+
+<ol>
+<li>在Consumer中使用TDD开发，编写好契约测试/集成测试的代码</li>
+<li>实现Consumer</li>
+<li>在Provider的代码库中定义并生成Contract</li>
+<li>把生成的契约文件交给Consumer当做WireMock服务器的契约规范来跑第一步中的测试验证Contract是否匹配</li>
+</ol>
+
+
+<p>Provider端：</p>
+
+<ol>
+<li>SCC会根据Consumer写的契约自动生成测试代码作为契约测试/集成测试，此时跑Provider的契约测试肯定是挂的</li>
+<li>实现Provider</li>
+<li>在跑测试之前在数据库中提供契约中匹配的数据</li>
+<li>运行SCC生成的测试</li>
+</ol>
+
+
+<h3>流程优化</h3>
+
+<p>官方开发流程中，作为Consumer端，契约测试是需要自己手写的，但如果某个服务属于前端的Provider又属于后端的Consumer时，SCC帮我们生成的Provider端的测试可以当做作为测Consumer的测试。所以在我们项目中开发流程是这样的：</p>
+
+<ol>
+<li>前端开发与后端开发确定契约，并写到BFF代码库中</li>
+<li>作为前端开发，使用此契约做为mock server的数据来源，开发调试前端</li>
+<li>作为后端开发，先实现Service层级的代码和契约供BFF的契约测试使用，然后再实现BFF中的代码与契约。</li>
+</ol>
+
+
+<h3>例子</h3>
+
+<p>官方有两个实现的例子，在<a href="http://cloud.spring.io/spring-cloud-contract/spring-cloud-contract.html#_step_by_step_guide_to_cdc">这里</a>，忍不住吐槽一下，这个项目都两年了才100多个星星，跟着Spring和Cloud两大标签走竟然还能这么少的星星，是后端技术人员的保守跟前端那种几个月上万颗星星的浮夸相反吗？还有要注意的是除了官方文档几乎没有任何资料可以查询，给的例子用的又是很多处于BUILD版本的库，这是使用它最大的难点。</p>
+
+<h3>消费者驱动？</h3>
+
+<p>你可能会误认为SCC使用的是提供者驱动契约模式，因为契约是写在Provider中，但其实并不是，向SCC的作者Grzejszczak确认了这一点，因为CDC的思想是消费者有需求的时候然后根据这个需求去开发提供者的API，注意第一步当我在Consumer开发的时候已经意识到需要什么API了，然后进行我作为Consumer跑到Provider的代码库中去写一个契约。原话是</p>
+
+<blockquote><p>It&rsquo;s the consumer that writes its expectations. The contracts are stored on the producer side cause from those contracts stubs are generated. That means that the source of truth in terms of contract validity is the provider side but what drives the change of the contract is the consumer</p></blockquote>
+
+<h3>其他语言怎么办？</h3>
+
+<p>SCC没有提供其他语言的测试框架，那么如何完成作为消费者的前端的契约测试呢？向作者讨要之后作者给了一个<a href="https://github.com/marcingrzejszczak/sc-contract-car-rental">例子</a>，具体做法README中有。</p>
+
+<p>优势：</p>
+
+<ol>
+<li>根据契约可以自动生成提供者端的单个API的内部集成测试代码，即覆盖到了提供者端的内部集成测试部分，也覆盖到了提供者端的契约测试部分</li>
+<li>Groovy DSL来定义契约，天生适合开发契约的语言</li>
+</ol>
+
+
+<p>劣势：</p>
+
+<ol>
+<li>支持语言太少，资料太少</li>
+<li>没有Pact的强制消费者驱动方式，如果我直接在SCC上开发提供者然后去写消费者是没问题的</li>
+</ol>
+
+
+<h2>E2E测试是什么</h2>
+
+<p>有请Cucumber、Capybara、QA登场</p>
+
+<p>未完待续</p>
+
+<h2>注</h2>
+
+<p>以上是本人总结，难免偏颇，不过本人会根据本人持续变化的理解持续更新。</p>
+
+<p>参考资料：</p>
+
+<ul>
+<li><a href="http://www.51testing.com/html/43/n-3718143.html">http://www.51testing.com/html/43/n-3718143.html</a></li>
+<li>公司内部文章</li>
+<li>Spring Cloud Contract官方文档</li>
+</ul>
+
+
+<hr />
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>V1.0：2017.07.07 发表
+</span><span class='line'>V1.1：2017.07.08 更新DAO层理解与SCC作者解释
+</span><span class='line'>V1.2：2017.07.10 更新集成测试的理解
+</span><span class='line'>V1.3：2017.07.14 更新SCC优势
+</span><span class='line'>V1.4：2017.08.16 补充所有测试说明
+</span><span class='line'>V1.5：2017.09.13 修改优势中表述不清之处，多谢楚欣妹子</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
 </div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/26/liu-cheng-xing-si-kao/">阅读全文 &rarr;</a>
-    </footer>
-  
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      <footer class="post-footer">
+        <p class="meta text-muted">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 19th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/" itemprop="url">【研发效能之道】个人效能实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>程序员个体如何高效地进行开发工作</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
   
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
 
+<figure class="author-image">
+    <span class="img" href="/about" style="background-image: url(/images/avatar.jpg)"><span class="hidden">Picture</span></span>
+</figure>
 
+<section class="author">
+    <h4><span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="fn" itemprop="name">Tianyi Wang</span></span></h4>
 
-
-Feb 18th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/" itemprop="url">【研发效能之道】研发流程优化实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>接下来会以<strong>提高用户价值的流动效率</strong>为核心，列出一些具体的研发流程优化实践</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 17th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/" itemprop="url">【研发效能之道】研发流程优化理论</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在再次开始一个新的系列，【研发效能之道】，主要参考《极客时间|研发效率破局之道》，系列内容为其读书笔记与自己的理解、总结</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 10th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/" itemprop="url">【Prometheus】Prometheus的设计</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/" itemprop="url">【Prometheus】监控系统概述</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在开始一个新的系列，【Prometheus】，主要参考《深入浅出Prometheus》，基本为其读书笔记加上部分自己的理解</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/jia-gou-ru-men-end/" itemprop="url">【架构入门】思维导图</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/jia-gou-ru-men-end/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 18th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/" itemprop="url">【架构入门 - 可扩展篇】</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>随着服务的壮大，使用人数的增多，业务的递增，服务的扩展性尤为关键，在不影响现有架构的情况下如何增加机器、扩展功能？</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 15th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/" itemprop="url">【架构入门 - 高可用篇】计算高可用</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 5th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" itemprop="url">【架构入门 - 高性能篇】数据库高性能</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
+    <div class="author-meta">
+        <span class="author-link icon-link"><i class="fa fa-link" aria-hidden="true"></i> <a href="http://www.wangtianyi.top">http://www.wangtianyi.top</a></span>
     </div>
+</section>
 
-    <ul class="pager">
-      
-        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
+<hr>
+
+<section class="share">
+    
+    <h4>Share this post</h4>
+    
+    <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?url=http://www.wangtianyi.top/blog/2017/07/08/wan-zhuan-wei-fu-wu-ce-shi/;" 
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.wangtianyi.top/blog/2017/07/08/wan-zhuan-wei-fu-wu-ce-shi/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.wangtianyi.top/blog/2017/07/08/wan-zhuan-wei-fu-wu-ce-shi/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+    
+</section>
+
+
+
+
+<!--
+<footer class="post-footer">
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Instant%20Movie%20Streamer%20v3%20Release&amp;url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+
+-->
+          
+
+
+
+
+Jul 8th, 2017
+          <br>
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/microservice/'>microservice</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="pager">
+            
+            
+              
+                <a href="/blog/2017/06/23/jian-ting-qi-de-qian-shi-jin-sheng/" class="col-xs-12 col-md-4 btn btn-default" title="Previous Post: 监听器的前世今生"> 
+                  <div class="text-muted">
+                    <small>Previous Post</small>
+                  </div>
+                  <div class="pager-title">
+                    <h4>监听器的前世今生</h4>
+                  </div>
+                </a>
+              
+            
+            
+            
+              
+              <a href="/blog/2017/07/16/yi-bei-zi-zuo-hao-yi-jian-shi/" class="col-xs-12 col-md-4 btn btn-default pull-right" title="Next Post: 一辈子做好一件事">
+                <div class="text-muted">
+                  <small>Next Post</small>
+                </div>
+                <div class="pager-title">
+                  <h4>一辈子做好一件事</h4>
+                </div>
+              </a>
+              
+            
+            
+          </div>
+        
+      </footer>
+    </article>
+    
   </div>
 </div>
 

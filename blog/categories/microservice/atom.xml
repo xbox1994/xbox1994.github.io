@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Microservice | 干掉这里的Bug]]></title>
+  <link href="http://www.wangtianyi.top/blog/categories/microservice/atom.xml" rel="self"/>
+  <link href="http://www.wangtianyi.top/"/>
+  <updated>2021-06-26T14:40:14+08:00</updated>
+  <id>http://www.wangtianyi.top/</id>
+  <author>
+    <name><![CDATA[Tianyi Wang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[玩转微服务测试]]></title>
+    <link href="http://www.wangtianyi.top/blog/2017/07/08/wan-zhuan-wei-fu-wu-ce-shi/"/>
+    <updated>2017-07-08T00:48:13+08:00</updated>
+    <id>http://www.wangtianyi.top/blog/2017/07/08/wan-zhuan-wei-fu-wu-ce-shi</id>
+    <content type="html"><![CDATA[<p>本文会讲到在微服务中，测试如何在基于其意义的基础上如何配合微服务的特点被完成，不会涉及到类似测试技巧、测试性能等实现细节，但看完你会明白的是要写什么、为什么在微服务中这样写。</p>
+
+<p>与单体应用测试不同的是，微服务架构中服务之间的通信非常频繁，不同服务之间的接口变更亦是如此，所以契约测试会占更重要的地位，也是本文的重点。</p>
+
+<!--more-->
+
+
+<h1>单元测试如何写</h1>
+
+<p>首先一定要明白单元测试测的是什么。</p>
+
+<p><strong>最小可测试单元进行检查和验证，也就是单个函数内功能逻辑是否正确</strong></p>
+
+<p>那么这句话意味着只测单元内部的东西，不会依赖实际的外部系统，所以需要Mock出外部系统，清楚了这点下面的东西就好理解了。</p>
+
+<p>一个常见并且非常老的软件后台开发分层模式是数据持久层（DAO）、服务层（Service）、业务逻辑层（Controller），下面会具体分析我们应该如何写这三块的测试。对于DDD分层模型本文不予讲解，期待日后总结。</p>
+
+<h2>DAO</h2>
+
+<p>DAO层：分两种情况。</p>
+
+<ul>
+<li>不写。因为通常来说DAO层不应该包含复杂逻辑，逻辑在上两层已经留够空间去处理，应当仅是包含SQL语句的执行或者调用数据库对应的Template工具类，所以没有什么东西可以测。所以DAO层单元测试也不应该依赖外部系统，应该放到集成测试里写。<a href="https://www.petrikainulainen.net/programming/testing/writing-tests-for-data-access-code-unit-tests-are-waste/">这里</a>有篇比较极端的文章支持此观点。</li>
+<li>写。与不写的观点持反对意见的例外是，有一些复杂的查询调用或者复杂的SQL语句，在自己不能确保绝对正确的情况下，写DAO层的测试也是有必要的。</li>
+</ul>
+
+
+<h2>Service</h2>
+
+<p>Service层：</p>
+
+<ul>
+<li>一定要写。服务层一般拥有比较复杂的业务逻辑，可能调用到的其他服务请Mock出来。</li>
+</ul>
+
+
+<h2>其他（如Controller、Utils、Domain）</h2>
+
+<ul>
+<li>如果有<strong>比较复杂的逻辑</strong>则需要写。如果是测Controller中的业务逻辑会调用Service，那么请Mock Service。</li>
+</ul>
+
+
+<h1>集成测试如何写</h1>
+
+<p><strong>集成测试是将多个功能模块组合在一起进行的测试</strong>。有两种层级的集成测试：</p>
+
+<ul>
+<li>服务之间的集成测试。好处是能发现单元测试无法发现的问题，比如连接数据库端口问题、层级之间调用问题；缺点是测试经过的代码太多，难以追踪BUG所在并且花费的时间比单元测试长很多。</li>
+<li>单个服务内部的集成测试。与单元测试相同之处在于<strong>关注的是某个层级内部的实现</strong>单元测试关注的层级是方法级别，集成测试关注的级别是应用级别，换句话说就是系统内部的各个层级之间是否能正常协同工作。</li>
+</ul>
+
+
+<h2>当集成测试遇上微服务</h2>
+
+<p>微服务架构将一个应用程序划分成多个有自己业务或功能职责的小服务，服务之间相互协作、互相配合调用为整个应用提供服务支持，服务之间通常采用REST API通信，然而在微服务中，集成测试的"特点"被放大了很多倍：</p>
+
+<ul>
+<li>测试成本高。验证多个服务协作的功能时，每个服务的搭建与配置，每次测试时都需要保证多个服务的测试数据与服务状态是正常的。</li>
+<li>结果不稳定，调试困难。跨服务调用的网络延迟可能导致的超时。测试花费的时间太长导致调试困难。</li>
+</ul>
+
+
+<p>这些理由足够让你在微服务架构中少用集成测试而把注意力转向契约测试。</p>
+
+<p>所以我们Team现在采用的集成测试是：单个服务依赖的其他服务Mock出来，比如对于依赖的外部服务则需要Mock出来，数据库则使用类似的H2内存数据库代替MySQL进行测试，所以我们要写的测试就的是发送请求到本地服务器及内存数据库，在内存数据库增删改查。</p>
+
+<h1>契约测试如何写</h1>
+
+<h2>微服务中的契约测试</h2>
+
+<p>然而在关于微服务架构的测试中，契约测试有着至关重要的地位。<strong>契约测试的出现，将服务之间的集成测试模式一定程度上转换成服务内部的集成测试</strong>。</p>
+
+<p>在单体应用中，大部分功能层级之间的调用是函数方法的调用，属于在本地内存中通过Java虚拟机的实现方式的调用，如果与其他服务集成不多，那么契约测试将无用武之地。在微服务架构中，情况平衡了一些，一个服务会经常调用另外的一个服务获取或同步数据，业务一旦复杂起来，服务之间也会拥有较为复杂调用的关系，虽然BFF(Backend For Frontend)减缓了这个情况，但加强了BFF与服务之间的联系。</p>
+
+<h2>契约测试是什么</h2>
+
+<p>契约测试是验证Provider是否按照期望的方式与Consumer进行交互，简单的说是Consumer与Provider两两之间的集成，简单来说，测试的是<strong>双方是否通过相同的API格式进行交互</strong>。</p>
+
+<p>在一般的契约测试中，有三个模型需要被建立：</p>
+
+<ul>
+<li>Provider：服务的提供者，接收Consumer的请求。</li>
+<li>Consumer: 服务的消费者，是向Provider发起请求。</li>
+<li>Contract: 合同、契约，Provider与Consumer的交互方式。</li>
+</ul>
+
+
+<p>划重点！由于双方是根据生成的契约进行测试，从而可以达到<strong>独立测试</strong>的好处，不需要双方之间发生网络交互。</p>
+
+<p><code>消费者驱动契约模式</code>在2006年老马引用的<a href="https://martinfowler.com/articles/consumerDrivenContracts.html">这篇文章</a>中提出，在<a href="http://dius.com.au/2016/02/03/microservices-pact/">这篇文章</a>中解释的更接地气，是一种测试驱动开发的契约测试模式，携带着敏捷与TDD的好处，更重要的是<strong>将提供者开发API的局面扭转成消费者驱动开发</strong>，由于提供者开发时不清楚消费者具体需要什么，所以在集成的时候会非常难做。将文档化的API转换为契约测试依赖的数据。</p>
+
+<h2>如何开发</h2>
+
+<p>下图是CDC的开发模式，简单讲是消费者撰写契约和对应的契约测试让自己与提供者去分别跑契约测试，从而验证双方契约匹配。下面会根据具体开发流程讲到两个符合这种模式的工具来规范化我们的契约测试的开发，因为一些便捷的功能以及人们的约定总是不够优雅并且会被打破滴所以不得不借助工具。</p>
+
+<p><img src="/images/blog/2017-07-08_2.png" title="&lsquo;image&rsquo;" ></p>
+
+<p><img src="/images/blog/2017-07-08_3.png" title="&lsquo;image&rsquo;" ></p>
+
+<h2>Pact</h2>
+
+<p>Pact就是这样的测试工具，在技术雷达中提到过多次，作为CDC的实践，Pact名列前茅。Pact支持很多语言，如Pact-JVM, Pact Ruby, Pact .NET, Pact Go, Pact.js, Pact Swift。参见<a href="https://docs.pact.io/">官网</a>获取样例。本文主要以SCC为例讲解。</p>
+
+<h2>Spring Cloud Contract</h2>
+
+<h3>简介</h3>
+
+<p>该项目于2015年开始创建核心代码，GitHub上Star虽然不多，但是功能比较强大，<a href="http://www.infoq.com/cn/news/2017/04/spring-cloud-contract">这里</a>有一篇关于作者的访谈文章，对于理解这个项目比较有帮助。</p>
+
+<h3>官方开发流程</h3>
+
+<p>官方开发流程在<a href="http://cloud.spring.io/spring-cloud-contract/spring-cloud-contract.html#_step_by_step_guide_to_cdc">这里</a>。下面是简化版本。</p>
+
+<p>Consumer端：</p>
+
+<ol>
+<li>在Consumer中使用TDD开发，编写好契约测试/集成测试的代码</li>
+<li>实现Consumer</li>
+<li>在Provider的代码库中定义并生成Contract</li>
+<li>把生成的契约文件交给Consumer当做WireMock服务器的契约规范来跑第一步中的测试验证Contract是否匹配</li>
+</ol>
+
+
+<p>Provider端：</p>
+
+<ol>
+<li>SCC会根据Consumer写的契约自动生成测试代码作为契约测试/集成测试，此时跑Provider的契约测试肯定是挂的</li>
+<li>实现Provider</li>
+<li>在跑测试之前在数据库中提供契约中匹配的数据</li>
+<li>运行SCC生成的测试</li>
+</ol>
+
+
+<h3>流程优化</h3>
+
+<p>官方开发流程中，作为Consumer端，契约测试是需要自己手写的，但如果某个服务属于前端的Provider又属于后端的Consumer时，SCC帮我们生成的Provider端的测试可以当做作为测Consumer的测试。所以在我们项目中开发流程是这样的：</p>
+
+<ol>
+<li>前端开发与后端开发确定契约，并写到BFF代码库中</li>
+<li>作为前端开发，使用此契约做为mock server的数据来源，开发调试前端</li>
+<li>作为后端开发，先实现Service层级的代码和契约供BFF的契约测试使用，然后再实现BFF中的代码与契约。</li>
+</ol>
+
+
+<h3>例子</h3>
+
+<p>官方有两个实现的例子，在<a href="http://cloud.spring.io/spring-cloud-contract/spring-cloud-contract.html#_step_by_step_guide_to_cdc">这里</a>，忍不住吐槽一下，这个项目都两年了才100多个星星，跟着Spring和Cloud两大标签走竟然还能这么少的星星，是后端技术人员的保守跟前端那种几个月上万颗星星的浮夸相反吗？还有要注意的是除了官方文档几乎没有任何资料可以查询，给的例子用的又是很多处于BUILD版本的库，这是使用它最大的难点。</p>
+
+<h3>消费者驱动？</h3>
+
+<p>你可能会误认为SCC使用的是提供者驱动契约模式，因为契约是写在Provider中，但其实并不是，向SCC的作者Grzejszczak确认了这一点，因为CDC的思想是消费者有需求的时候然后根据这个需求去开发提供者的API，注意第一步当我在Consumer开发的时候已经意识到需要什么API了，然后进行我作为Consumer跑到Provider的代码库中去写一个契约。原话是</p>
+
+<blockquote><p>It&rsquo;s the consumer that writes its expectations. The contracts are stored on the producer side cause from those contracts stubs are generated. That means that the source of truth in terms of contract validity is the provider side but what drives the change of the contract is the consumer</p></blockquote>
+
+<h3>其他语言怎么办？</h3>
+
+<p>SCC没有提供其他语言的测试框架，那么如何完成作为消费者的前端的契约测试呢？向作者讨要之后作者给了一个<a href="https://github.com/marcingrzejszczak/sc-contract-car-rental">例子</a>，具体做法README中有。</p>
+
+<p>优势：</p>
+
+<ol>
+<li>根据契约可以自动生成提供者端的单个API的内部集成测试代码，即覆盖到了提供者端的内部集成测试部分，也覆盖到了提供者端的契约测试部分</li>
+<li>Groovy DSL来定义契约，天生适合开发契约的语言</li>
+</ol>
+
+
+<p>劣势：</p>
+
+<ol>
+<li>支持语言太少，资料太少</li>
+<li>没有Pact的强制消费者驱动方式，如果我直接在SCC上开发提供者然后去写消费者是没问题的</li>
+</ol>
+
+
+<h2>E2E测试是什么</h2>
+
+<p>有请Cucumber、Capybara、QA登场</p>
+
+<p>未完待续</p>
+
+<h2>注</h2>
+
+<p>以上是本人总结，难免偏颇，不过本人会根据本人持续变化的理解持续更新。</p>
+
+<p>参考资料：</p>
+
+<ul>
+<li><a href="http://www.51testing.com/html/43/n-3718143.html">http://www.51testing.com/html/43/n-3718143.html</a></li>
+<li>公司内部文章</li>
+<li>Spring Cloud Contract官方文档</li>
+</ul>
+
+
+<hr />
+
+<pre><code>V1.0：2017.07.07 发表
+V1.1：2017.07.08 更新DAO层理解与SCC作者解释
+V1.2：2017.07.10 更新集成测试的理解
+V1.3：2017.07.14 更新SCC优势
+V1.4：2017.08.16 补充所有测试说明
+V1.5：2017.09.13 修改优势中表述不清之处，多谢楚欣妹子
+</code></pre>
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[译][MicroService 6]选择一个微服务部署策略]]></title>
+    <link href="http://www.wangtianyi.top/blog/2017/06/08/yi-microservies-6-xuan-ze-yi-ge-wei-fu-wu-bu-shu-ce-lue/"/>
+    <updated>2017-06-08T23:19:56+08:00</updated>
+    <id>http://www.wangtianyi.top/blog/2017/06/08/yi-microservies-6-xuan-ze-yi-ge-wei-fu-wu-bu-shu-ce-lue</id>
+    <content type="html"><![CDATA[<p>选择一个微服务部署策略</p>
+
+<!--more-->
+
+
+<h1>动机</h1>
+
+<p>部署一个单体应用意味着运行多个相同的单个副本，并且通常是比较大的应用。你通常配置N个服务器（物理或虚拟），并且在每个上面跑M个应用的实例。单体应用的部署不总是很简单的，但是比部署微服务简单多了。</p>
+
+<p>微服务包含很多服务。服务又可能是用不同的语言和框架写的。每个服务都是一个有自己特定部署、资源、缩放和监控需求的小型应用。比如你需要根据服务来为每个服务启动一定量的实例。每个服务必须被提供合适的CPU、内存和IO资源。更具挑战的是部署必须可靠和具有成本效益。</p>
+
+<h1>多服务单主机模式</h1>
+
+<p>每个服务实例跑在一个或多个主机上的知名端口上运行。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/02/Richardson-microservices-architecture-part6-host.png" alt="" /></p>
+
+<p>优点：</p>
+
+<ul>
+<li>资源使用率高。多个服务实例共享服务器和操作系统，如果进程或进程组运行多个服务实例则更加有效。比如多个web应用共享同一个Tomcat服务器和JVM。</li>
+<li>部署服务的速度快。只需要把服务复制到主机上并启动。如果是Java，复制JAR/WAR。其他语言就复制源代码。任何情况下通过网络复制的字节数相对比较小。</li>
+<li>启动服务的速度快。因为没有</li>
+</ul>
+
+
+<p>缺点：</p>
+
+<ul>
+<li>进程之间无隔离。当你可以准确监控每个服务实例的资源利用率时，不能限制每个实例使用的资源。可能会耗尽主机的所有内存和CPU。</li>
+<li>部署服务的团队必须知道如何执行部署的细节。</li>
+</ul>
+
+
+<h1>单服务单主机模式</h1>
+
+<p>当你使用这个模式，你把每个服务打包成一个虚拟机镜像就像AMI一样。每个服务实例都是使用这个镜像的一个虚拟机。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/02/Richardson-microservices-architecture-part6-vm.png" alt="" /></p>
+
+<p>这是Netflix用来部署其视频流服务的主要方法。 Netflix使用<a href="https://github.com/Netflix/aminator">Aminator</a>将其每个服务包装为EC2 AMI。每个正在运行的服务实例是EC2实例。</p>
+
+<p>您可以使用多种工具来构建自己的虚拟机。您可以配置您的持续集成（CI）服务器（例如Jenkins）来调用Aminator将服务打包为EC2 AMI。<a href="https://www.packer.io/">Packer.io</a>是自动化虚拟机映像创建的另一个选项。与Aminator不同，它支持各种虚拟化技术，包括EC2，DigitalOcean，VirtualBox和VMware。</p>
+
+<p>优点：</p>
+
+<ul>
+<li>每个实例完全隔离。有固定的CPU和内存，不能从其他服务窃取资源。</li>
+<li>利用成熟的云设施。比如AWS提供了有用的功能比如负载均衡和自动缩放。</li>
+<li>封装服务实现的技术。一旦一个服务被打包成一个虚拟机，它将成为一个黑盒子。虚拟机的管理API变成部署服务的API。部署变得更加简单和可靠。</li>
+</ul>
+
+
+<p>缺点：</p>
+
+<ul>
+<li>资源利用率低。每个服务都有整个虚拟机的开销。</li>
+<li>成本变高。IAAS通常不管实例是否空闲还是繁忙，都会收费。比如AWS提供自动缩放，但是<a href="http://techblog.netflix.com/2013/11/scryer-netflixs-predictive-auto-scaling.html">很难快速响应需求变化</a>。</li>
+<li>部署新版本慢。虚拟机镜像通常构建地很慢、很慢地实例化，还有他们的大小，操作系统的启动时间也是有的。但是并不普遍，也有轻量级虚拟机比如Boxfuse的。</li>
+</ul>
+
+
+<h1>单服务单容器模式</h1>
+
+<p>当你用这个模式，每个服务实例都跑在自己的容器。容器是操作系统级的虚拟化。容器包含沙箱中的一个或多个进程。从进程的角度来看，它们有自己的的命名空间和根文件系统。你可以限制容器的内存和CPU。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/02/Richardson-microservices-architecture-part6-container.png" alt="" /></p>
+
+<p>要使用这个模式，你需要打包你的服务成为一个容器镜像。容器镜像是一个包含了跑服务的应用和库的文件系统。一些容器镜像包含完整的Linux根文件系统。其他是轻量级的。为了部署Java，比如，你构建一个包含Java运行时环境，Tomcat服务器和你的Java应用的镜像就好了。</p>
+
+<p>一旦你打包你的服务成为容器镜像，你可以启动一个或者多个容器。你通常跑多个容器在每个无力主机或者虚拟主机上。你可以用Kubernetes或Marathon去管理你的容器。集群管理器把主机视为资源池。它根据容器容器所需的资源和每个主机上可用的资源来决定放置每个容器的位置。</p>
+
+<p>优点：</p>
+
+<ul>
+<li>便于监控每个服务的开销。因为每个服务之间是独立的服务容器。</li>
+<li>与虚拟机一样，封装服务。</li>
+<li>构建速度快与虚拟机镜像。比如在我的电脑上用docker只有5秒来打包Spring Boot应用。容器启动也非常快，因为没有冗长的操作系统启动机制。当容器开启之后，服务也会开启。</li>
+</ul>
+
+
+<p>缺点：</p>
+
+<ul>
+<li>不够成熟与安全。容器也不如虚拟机安全因为共享主机的内核。</li>
+<li>需要管理容器镜像与部署架构。除非你用托管容器解决方案比如 Google Container Engine or Amazon EC2 Container Service (ECS), 否则你必须管理运行服务的容器设施和虚拟机设施。</li>
+<li>过度的虚拟机花费。容器常被部署在按每个虚拟机价格收费的基础设施上，你可能会承担过度配置虚拟机的额外花费。</li>
+</ul>
+
+
+<p>有趣的是，容器和虚拟机之间的区别是模糊的。如前所述，Boxfuse VM可以很快构建和启动。<a href="https://clearlinux.org/features/clear-containers">Clear Containers</a>旨在创建轻量级虚拟机。Docker最近收购了Unikernel Systems。</p>
+
+<p>还有越来约受欢迎的无服务部署概念。这是一种避开在部署服务在容器还是虚拟机之间的选择的方法。下面我们来看看。</p>
+
+<h1>无服务部署</h1>
+
+<p>AWS Lambda是无服务部署技术。它支持Java，Node.js,和Python服务。为了部署微服务，你需要打包它并上传到AWS Lambda。你也提供元数据，其中指定调用处理请求的函数的名称。AWS Lambda自动跑足够微服务实例来处理请求。你可以基于内存使用和每个请求花的时间来计费。当然，恶魔在细节上，你将了解到AWS Lambda的限制。但是你和别人都不需要单行任何服务器、虚拟机或者容器方面的问题。</p>
+
+<p>AWS Lambda function是一个无状态的服务。它通常通过调用AWS服务来处理请求。比如当一个图像被传到S3时会触发一个AWS Lambda function，将图插入到DynamoDb图像表中并且将消息发布到Kinesis流中来触发图像处理。一个AWS Lambda function可以触发第三方web服务。</p>
+
+<p>有4个方法去触发一个AWS Lambda function：</p>
+
+<ol>
+<li>直接的，用一个web服务请求</li>
+<li>自动的，回应来自AWS服务比如S3，DynamoDB, Kinesis, or Simple Email Service的事件</li>
+<li>自动的，通过AWS API网关去处理来自客户端HTTP请求</li>
+<li>定期的，根据cron一样的时间表</li>
+</ol>
+
+
+<p>AWS Lambda是部署微服务的便捷方式。基于请求的定价意味着你只需支付服务执行的实际操作。并且因为你不需要为基础设施负责，你可以关注在你开发应用上来。</p>
+
+<p>然而有很多限制。不适于部署需要长时间运行的服务，比如从第三方消息代理那处理消息的服务。请求必须在300秒内往完成。服务必须是无状态的，所以理论上AWS Lambda会为每个不同的请求在不同的服务器上跑。他们必须用支持的语言来写。服务也必须很快被启动；因此请求可能超时和被终止。</p>
+
+<h1>总结</h1>
+
+<p>部署微服务是有挑战的。有用很多语言和框架的多种甚至上百种服务。每个都是有自己部署方式、资源、缩放和监控需求的小型应用。有多服务单主机、单服务单主机、单服务单容器、无服务微服务部署模式可供选择。</p>
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[译][MicroService 7]将巨无霸重构成微服务]]></title>
+    <link href="http://www.wangtianyi.top/blog/2017/06/01/yi-microservies-7-jiang-ju-wu-ba-zhong-gou-cheng-wei-fu-wu/"/>
+    <updated>2017-06-01T23:08:21+08:00</updated>
+    <id>http://www.wangtianyi.top/blog/2017/06/01/yi-microservies-7-jiang-ju-wu-ba-zhong-gou-cheng-wei-fu-wu</id>
+    <content type="html"><![CDATA[<!--more-->
+
+
+<h1>微服务重构概述</h1>
+
+<p>将单体应用程序转换成微服务的过程是<a href="https://en.wikipedia.org/wiki/Software_modernization">应用程序现代化</a>的一种形式。</p>
+
+<p>你应该逐步重构单体应用程序而不是重写。随着时间的推移，单体应用实现的功能量会减少，知道它完全消失或者成为另一个微服务。这种策略类似于在在高速上以70英里/小时驾驶汽车，但是比重写风险小多了。</p>
+
+<p>Martin Fowler将这种应用现代化策略看做<a href="http://www.martinfowler.com/bliki/StranglerApplication.html">扼杀者应用</a>。名字来源于热带雨林中发现的扼杀者藤蔓。一只藤蔓生在一棵树上为了得到森林冠层上方的阳光。有时，树死了，留下一棵树状的藤蔓。应用现代化就是这样。我们将构建一个新的应用，包含遗留应用周围的终将死掉的微服务。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/03/Richardson-microservices-part7-fig.png" alt="" /></p>
+
+<p>让我们看看不同的策略。</p>
+
+<h1>策略1 - 停止挖掘</h1>
+
+<p><a href="https://en.wikipedia.org/wiki/Law_of_holes">孔洞法则</a>是，每当你在一个洞里，你应该停止挖掘。当你的单体应用变得无法管理时，这是个很好的建议。换句话说，你应该停止让整体更大。这意味着当你实现新功能时你不应该像整体添加更多代码。而是应该将新的代码放到独立的微服务中。下图显示了应用这个方法之后的系统架构。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/03/Adding_a_secure_microservice_alongside_a_monolithic_application.png?_ga=2.40418021.633879600.1496325382-897858824.1491727609" alt="" /></p>
+
+<p>除了新服务和巨无霸，还有两个组件。第一个是<strong>请求路由器</strong>，处理收到的请求。路由器发送请求到对应的新服务上的新功能模块中。将以前的请求路由到巨无霸上。</p>
+
+<p>另一个组件是<strong>胶水代码</strong>，将服务与巨无霸集成。一个服务很少孤立存在，并且通常需要访问巨无霸拥有的数据。胶水代码在两者之间，服务与数据集成。抽离出来的服务使用胶水代码读取和写入由巨无霸拥有的数据。</p>
+
+<p>服务有三种方式访问巨无霸的数据：</p>
+
+<ul>
+<li>调用巨无霸提供的API</li>
+<li>访问巨无霸的数据库</li>
+<li>维护自己的数据副本，与巨无霸的数据库同步</li>
+</ul>
+
+
+<p>The glue code is sometimes called an anti‑corruption layer. That is because the glue code prevents the service, which has its own pristine domain model, from being polluted by concepts from the legacy monolith’s domain model. The glue code translates between the two different models. The term anti‑corruption layer first appeared in the must‑read book Domain Driven Design by Eric Evans and was then refined in a white paper. Developing an anti‑corruption layer can be a non‑trivial undertaking. But it is essential to create one if you want to grow your way out of monolithic hell.</p>
+
+<p>实现轻量级服务的好处：</p>
+
+<ul>
+<li>阻止巨无霸变得更难管理</li>
+<li>独立开发部署和扩展</li>
+</ul>
+
+
+<p>但是这种方法没有解决整体的问题。要分解整体，我们来看这样做的策略。</p>
+
+<h1>策略2 - 前后端分离</h1>
+
+<p>缩小巨无霸的策略是从业务逻辑和数据访问层中拆分出表示层。典型的企业应用程序包含至少三种不同的组件：</p>
+
+<ul>
+<li>表现层 - 来处理HTTP请求和实现基于Web UI的API。在具有复杂的用户界面的应用中，表现层通常有很多代码。</li>
+<li>业务逻辑层 - 作为应用核心并实现业务规则的组件。</li>
+<li>数据访问层 - 访问基础设施的组件比如数据库和消息代理。</li>
+</ul>
+
+
+<p>在表现层逻辑和业务和数据访问的逻辑之间有清晰的缝隙。业务层有由一个或者多个外观组成的粗粒度API，它封装了业务逻辑组件。这个API是一个天然的缝隙来让你分离巨无霸的。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part7-refactoring.png?_ga=2.120084943.633879600.1496325382-897858824.1491727609" alt="" /></p>
+
+<p>优点：</p>
+
+<ul>
+<li>独立开发部署和扩展。允许开发人员在表现层的快速迭代。</li>
+<li>暴露了一个可以由微服务滴啊用的远程API</li>
+</ul>
+
+
+<p>然而这个方式也仅仅是局部解决方案。一个或者两个应用依然是一个不可管理的巨无霸。最后用下面的方式来消除剩余的整体。</p>
+
+<h1>策略3 - 抽取服务</h1>
+
+<p>杀手锏是将庞大的现有模块转变为独立的微服务。每次你提取一个模块并且将它转成一个服务，巨无霸就会变小。一代你转换了足够多的谋爱，巨无霸将不在是一个问题。或者它完全消失，或者变成足够小的一个服务。</p>
+
+<h2>被转换模块的优先级</h2>
+
+<p>将模块转换成服务是耗时的，所以你应该排一下你从中得到收益的模块顺序。</p>
+
+<p>这些是明显有收益的一些模块：</p>
+
+<ul>
+<li>改动频繁的模块。</li>
+<li>对资源需求不同于其他模块的模块。比如将具有内存数据库的模块转换成服务之后就可以把它部署在有大内存的主机上。</li>
+<li>仅通过异步消息与应用通信的模块。容易且便宜，来积累经验。</li>
+</ul>
+
+
+<h2>如何抽取一个模块</h2>
+
+<h3>模块和巨无霸之间定义一个粗粒度的接口</h3>
+
+<p>它大多是双向API，因为巨无霸需要服务拥有的数据，反之亦然。但通常很难实现因为模块和应用的其他部分之间存在依赖关系和细粒度的交互模式。你经常需要进行重大的代码更改才能打破依赖关系。</p>
+
+<p>一旦实现了粗粒度的API，你就可以将模块变成独立的服务。还需要编写代码让服务与巨无霸通过IPC机制通信。下图是重构前后。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part7-extract-module.png" alt="" /></p>
+
+<p>Z需要被提取，但被X使用，Z又使用Y。第一部就是定义粗粒度的API。第一个接口是由X用来调用Z的入栈接口。第二个接口是Z来调用Y的出站接口。</p>
+
+<h3>将模块转换为独立服务</h3>
+
+<p>入站和出站的接口使用IPC机制编写代码。你很可能需要通过将Z和微服务<a href="http://microservices.io/patterns/microservice-chassis.html">Chassis</a>框架结合来处理比如服务发现的问题。</p>
+
+<p>一旦完成之后，模块将独立于其他模块。甚至可以从头开始重写服务；在这种情况下，API代码将成为两个领域模型之间转换的反腐层。每次你提取一个服务，你就向微服务方向迈出一步。随着时间推移，整体将会缩小并且你将拥有越来越多的微服务。</p>
+
+<h1>总结</h1>
+
+<p>将现有应用程序迁移到微服务时应用程序现代化的一种方式。你不应该通过重写应用来迁移到微服务。而是你应该增量重构你的代码，逐步替换成一系列微服务。有三种策略来满足你。随着微服务数量增长，你的开发团队的灵活性和速度将会增加。</p>
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[译][MicroService 4]在微服务架构中的服务发现机制]]></title>
+    <link href="http://www.wangtianyi.top/blog/2017/05/15/zai-wei-fu-wu-jia-gou-zhong-de-fu-wu-fa-xian-ji-zhi/"/>
+    <updated>2017-05-15T23:11:02+08:00</updated>
+    <id>http://www.wangtianyi.top/blog/2017/05/15/zai-wei-fu-wu-jia-gou-zhong-de-fu-wu-fa-xian-ji-zhi</id>
+    <content type="html"><![CDATA[<!--more-->
+
+
+<h2>为什么用服务发现</h2>
+
+<p>让我们想象你正在写调用有REST API或者Thrift API的代码。为了发送请求，你的代码需要知道网络地址（IP地址和端口）。在跑在物理硬件上运行的传统应用上，服务实例的网络地址是相对静止的。比如你的代码可以读取你本地的配置文件。</p>
+
+<p>在现代、基于云服务的应用，然而这是非常难以解决的问题，就像下面的图表：</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part4-1_difficult-service-discovery.png" alt="" /></p>
+
+<p>服务实例动态分配网络地址。一系列服务实例会因为自动缩放、失败或升级而动态改变。所以你的客户端代码需要用更精确的服务发现机制。</p>
+
+<p>有两种服务发现模式。</p>
+
+<h4>客户端发现模式</h4>
+
+<p>当使用客户端发现，客户端对可用服务实例和经过他们的负载均衡请求有着决定网络位置的责任。客户端查询可用服务实例注册数据库。客户端用负载均衡策略去选择一个可用的服务实例然后发送请求。</p>
+
+<p>下面的图标展示这个模式的结构。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part4-2_client-side-pattern.png" alt="" /></p>
+
+<p><a href="https://netflix.github.io/">Netflix OSS</a>提供一个客户端发现模式的很好的例子。<a href="https://github.com/Netflix/eureka">Netflix Eureka</a>是一个服务注册表。它提供REST API给管理服务实例的注册并且查询可用实例。<a href="https://github.com/Netflix/ribbon">Netflix Ribbon</a>是可以和Eureka配合使用的IPC客户端，可以处理在可用服务实例间的负载均衡。我们将在下片文章深入讨论Eureka。</p>
+
+<p>客户端发现模式有很多优缺点。这种模式是相对简单的，除了服务注册表，没有其他的移动部件。并且因为客户端知道可用的服务实例，所以它可以实现智能的<strong>基于特定应用的负载均衡策略</strong>，比如一致地使用散列。一个很大的<strong>缺点是需要将客户端和服务注册表结合。你必须实现客户端服务发现逻辑和框架</strong>。</p>
+
+<h4>服务端发现模式</h4>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part4-3_server-side-pattern.png" alt="" /></p>
+
+<p>客户端通过负载均衡器发送请求给服务。负载均衡器查询服务注册表并且路由每个请求到一个可用的服务实例。在客户端发现中，服务实例在服务注册表注册和注销。</p>
+
+<p>AWS ELB是一个服务端发现的例子。一个ELB是通常被用来平衡外部流量。然而你可以用ELB去均衡内部的。客户端发请求通过ELB和他的DNS名字。ELB在ECS和EC2的实例间平衡流量。没有单独的服务注册表，而是EC2和ECS容器被注册到ELB自身。</p>
+
+<p>HTTP服务器和负载均衡器可以用来当做服务端发现的负载均衡器。比如<a href="https://www.airpair.com/scalable-architecture-with-docker-consul-and-nginx">这篇博文</a>描述用Consul Template来动态配置Nginx反向代理。Consul Template是一个可以从Consul服务注册表中拿到数据来定期重新生成任意配置文件的工具。它会运行任意的shell命令每当文件更改。在博文的描述中Consul Template生成<strong>nginx.conf</strong>文件用来配置反向代理，然后告诉Nginx重新加载配置。</p>
+
+<p>一些部署环境比如Kubernetes和Marathon在每个主机上跑一个代理。代理充当服务端发现的负载均衡器。为了发送请求给服务端，客户端通过代理使用主机的IP地址和服务端分配的端口来路由请求。代理然后透明地转发请求到集群中某处可用的服务。</p>
+
+<p>好处：服务发现的细节从客户端抽象出来。客户端只需要简单地想负载均衡器发送请求。消除实现服务发现逻辑的需要。</p>
+
+<p>缺点：需要设置和管理的高可用系统组件。</p>
+
+<h2>服务注册表</h2>
+
+<p>包含服务实例的网络位置。服务注册表需要高可用并且保持最新。客户端可以从服务注册表缓存到网络位置。然而，当信息最终变得过期，客户端无法发现服务实例。所以，服务注册表包含使用复制协议去维护一致性的一组服务器构成。</p>
+
+<p>Netflix Eureka是一个服务注册表的好例子。提供了REST API来注册和查询服务实例。</p>
+
+<p>Netflix通过在每个EC2可用区运行一个或多个Eureka服务来实现高可用。每个Eureka服务器都有自己的弹性IP地址。DNS TEXT记录被用来存储Eureka集群的配置，这是可用于映射可用区到Eureka服务器的网络位置的列表。当Eureka服务启动后，查询DNS去接受Eureka集群的配置，分配IP。</p>
+
+<p>Eureka客户端 - 查询DNS来发现服务器的网络位置。然而，如果同一可用区没有服务器，客户端用另一个可用区的Eureka服务器。</p>
+
+<p>其他服务注册表的例子：</p>
+
+<ul>
+<li>etcd - 高可用，分布式，一致的键值存储来分享配置和服务发现。比如Kubernetes 和Cloud Foundry.</li>
+<li>consul - 发现和配置服务的工具。提供API允许客户端注册和发现服务。它可以执行健康检查来决定服务可用性。</li>
+<li>zookeeper - 广泛使用，高性能协调服务。原来是Hadoop的子项目，现在是顶级项目。</li>
+</ul>
+
+
+<p>另外，一些系统没有明确的服务注册表。服务注册表只是基础架构的内置部分。</p>
+
+<h2>服务注册方式</h2>
+
+<p>服务实例必须能在服务注册表中注册和注销。有几种不同的方式来处理注册和注销。一个是服务实例自己去注册自己。另一个是用于其他系统组件来管理服务实例的注册。</p>
+
+<h4>自注册模式</h4>
+
+<p>服务实例自己负责注册和注销。如果需要，服务实例发送心跳请求来防止注册过期了。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part4-4_self-registration-pattern.png" alt="" /></p>
+
+<p>一个很好的例子是<a href="https://github.com/Netflix/eureka">Netflix OSS Eureka client</a>。Eureka客户端处理服务实例注册和注销的各个方面。<a href="http://projects.spring.io/spring-cloud/">Spring Cloud project</a>实现包括服务发现的多种模式，可以轻松在Eureka上注册服务实例。你可以用@ EnableEurekaClient的Java注解来配置。</p>
+
+<p>好处：相对简单，不需要其他系统组件</p>
+
+<p>缺点：将服务实例耦合到服务注册表。你必须在每个编程语言和框架中实现注册代码。</p>
+
+<p>将服务与服务注册表分离的替代方法是第三方注册模式。</p>
+
+<h2>第三方注册模式</h2>
+
+<p>当使用第三方注册模式时，服务实例不负责向服务注册表注册自己。相反，称为<em>服务注册器</em>的另一个组件处理注册。服务注册器通过轮询部署环境或者订阅事件来跟踪</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part4-5_third-party-pattern.png" alt="" /></p>
+
+<p>一个服务注册器的例子是开源的<a href="https://github.com/gliderlabs/registrator">Registrator</a>。它自动注册和注销作为Docker容器的服务实例。注册商支持多个服务注册机构包括etcd和Consul。</p>
+
+<p>另外一个例子是<a href="https://github.com/netflix/Prana">NetflixOSS Prana</a>。主要用于非JVM语言编写的服务。它是服务实例并行运行的侧边应用程序。Prana使用Netflix Eureka注册和注销服务实例。</p>
+
+<p>好处：服务和服务注册表解耦，你不需要为每种编程语言和框架实现服务注册的逻辑，而是服务实例注册功能被在专用服务中以集中方式管理。</p>
+
+<p>缺点：除非内置到部署环境，否则它是你需要设置和管理的另一个高可用系统组件。</p>
+
+<h2>总结</h2>
+
+<p>在微服务应用中，运行的服务实例集会动态更改。实例能动态分配网络位置。所以为了使客户端向服务端发送请求它必须使用服务发现机制。</p>
+
+<p>服务发现的关键点是服务注册表。它2是一个可用的服务实例的数据库。提供了可管理和查询的API。服务实例通过API注册和注销到服务注册表中。</p>
+
+<p>有两种服务发现模式：客户端发现和服务端发现。前者是客户端负责查询服务注册表然后选择可用实例再发送请求。后者客户端发给负载均衡器，让它帮客户端查询服务注册表和发送请求。</p>
+
+<p>有两种方式注册和注销服务。自注册：服务实例自己注册自己到服务注册表中。第三方注册：第三方系统组件代表服务来操作注册和注销。</p>
+
+<p>在一些部署环境中你需要用服务注册表来设置自己的服务发现基础设施比如 Netflix Eureka, etcd, or Apache Zookeeper。在其他部署环境，服务注册表是内置的。比如 Kubernetes and Marathon。他们还在扮演服务端发现路由器角色的每个集群主机上运行代理。</p>
+
+<p>HTTP反向代理和负载均衡器比如NGINX能当做服务端发现的服务在均衡器。服务注册表可以推路由信息给NGINX并且触发流畅的配置更新。</p>
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[译][MicroService 3]构建微服务:微服务架构中的进程间通信]]></title>
+    <link href="http://www.wangtianyi.top/blog/2017/05/05/gou-jian-wei-fu-wu-wei-fu-wu-jia-gou-zhong-de-jin-cheng-jian-tong-xin/"/>
+    <updated>2017-05-05T14:39:20+08:00</updated>
+    <id>http://www.wangtianyi.top/blog/2017/05/05/gou-jian-wei-fu-wu-wei-fu-wu-jia-gou-zhong-de-jin-cheng-jian-tong-xin</id>
+    <content type="html"><![CDATA[<p>在单体应用上，组件通过语言级别的方法或者方法彼此调用。相比之下，基于微服务的应用是在多台机器上运行的分布式系统。每个服务实例通常是一个进程。</p>
+
+<!--more-->
+
+
+<p>因此，如下图所示，服务必须用进程间通信（IPC）机制进行交互。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2015/07/Richardson-microservices-part3-monolith-vs-microservices-1024x518.png" alt="" /></p>
+
+<p>稍后我们会看一下特定的IPC技术，但是首先让我们探索各种设计问题。</p>
+
+<h2>交互方式</h2>
+
+<p>当为服务选择IPC机制时，首先要考虑服务是如何交互的。有很多客户端服务端交互方式。他们可以被分成两个维度。</p>
+
+<ul>
+<li>一对一 - 每个客户端的请求都被每一个服务实例处理</li>
+<li>一对多 - 每个请求都被多个服务实例处理</li>
+</ul>
+
+
+<p>第二个维度在同步和异步交互方面：</p>
+
+<ul>
+<li>同步 - 客户端期望及时响应但可能被服务器阻塞</li>
+<li>异步 - 客户端在等待回复时不会阻塞自己，响应不一定立即被服务器发送</li>
+</ul>
+
+
+<p>下表显示了各种交互方式。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>一对一</th>
+<th>一对多</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>同步</td>
+<td>请求/回复</td>
+<td>—</td>
+</tr>
+<tr>
+<td>异步1</td>
+<td>通知</td>
+<td>发布/订阅</td>
+</tr>
+<tr>
+<td>异步2</td>
+<td>请求/异步回复</td>
+<td>发布/异步回复</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>下面是一对一交互：</p>
+
+<ul>
+<li>请求/回复 - 客户端发送请求给服务并且等待回复。客户端期待回复能及时到达。在基于线程的应用中，处理请求的线程可能被阻塞。</li>
+<li>通知 - 客户端发送请求给服务，但是不期待回复。</li>
+<li>请求/异步响应 - 客户端发送请求给服务，该服务异步回复。客户端不会等待并且假设回复可能不会马上到达。</li>
+</ul>
+
+
+<p>下面是一对多交互：</p>
+
+<ul>
+<li>发布/订阅 - 客户端发布通知信息，可能被0或者更多感兴趣的服务消费掉</li>
+<li>发布/异步响应 - 客户端发布请求信息，对感兴趣的服务的响应等待一定的时间</li>
+</ul>
+
+
+<p>每个服务通常使用这些交互方式的组合。对于一些服务，一种IPC机制就够了。其他服务可能需要用IPC机制的组合。下面的图表展示了当用户请求时，出租车应用中可能有的内部交互。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2015/07/Richardson-microservices-part3-taxi-service-1024x609.png" alt="" /></p>
+
+<p>服务用<strong>通知</strong>，<strong>请求/回复</strong>和<strong>发布/订阅</strong>的组合。比如乘客的智能手机发送<strong>通知</strong>给旅程管理服务区请求一次打车。旅程管理服务通过用<strong>请求/回复</strong>调用乘客服务来验证乘客的账户是激活的。旅程管理服务就可以创建旅程并且用<strong>发布/订阅</strong>去通知其他服务，包括用调度器来定位可用的司机。</p>
+
+<h2>定义API</h2>
+
+<p>服务的API是服务和客户端的合同。不管你选什么IPC机制，用某种接口定义语言（IDL）定义服务的API是很重要的。用<a href="http://www.programmableweb.com/news/how-to-design-great-apis-api-first-design-and-raml/how-to/2015/07/10">API-first approach</a>去定义服务是很好的参考。你通过编写接口和审查客户端开发人员来开始服务的开发。只有在对API定义进行迭代之后才能实现服务。进行这样的设计可以增加构建符合客户需求的服务的机会。</p>
+
+<p>如本文后面你将看到的，API定义的的性质取决于你选择哪种IPC机制。如果你用消息传递，API包含消息通道和消息种类。如果你用HTTP，API包含URL和请求与回复的格式。稍后我们将更详细地描述一些IDL。</p>
+
+<h2>不断更新的API</h2>
+
+<p>服务的API总是随着时间变化。在单体应用中，更改API和更新所有调用者通常是直接的。在基于微服务的应用中，即使全部的消费者都是统一应用中的其他服务，还是比较困难。你通常无法强制所有客户端去升级。此外，你可能会<a href="http://techblog.netflix.com/2013/08/deploying-netflix-api.html">逐步部署新的版本的服务</a>，以便新老版本的服务同时运行。有一个处理问题的策略非常重要。</p>
+
+<p>处理API的更改方式取决于改变的大小。一些改变是次要的并且向后兼容以前的版本。比如，你可能给请求和相应添加属性。涉及客户端和服务端是有意义的，以便遵守鲁棒性原则。客户端用老的API应该继续与新版本服务正常工作。服务对瘸着的请求提供默认值并且客户端忽略任何额外响应属性。用IPC机制和响应消息传递格式非常重要，你可以轻松开发你的API。</p>
+
+<p>但是有时候你必须对API进行主要的不兼容的更改。因为你不能强制客户端立即升级，服务必须支持老版本的API一段时间。如果你用基于HTTP的机制比如REST，一个方法是把版本号嵌入URL中。每个服务实例可能同时处理多个版本。或者你可以部署每个处理特定版本的不同实例。</p>
+
+<h2>处理部分失败</h2>
+
+<p>在前面关于API网关的文章所述，在分布式系统中存在着部分故障的风险。因为客户端和服务是独立的进程，服务可能不会及时响应客户端的请求。由于故障或者维护，服务可能会关闭。或者服务变得过载并且响应速度非常慢。</p>
+
+<p>比如，考虑下这篇文章的<a href="https://www.nginx.com/blog/building-microservices-using-an-api-gateway/#product-details-scenario">产品详情方案</a>。我们假设推荐服务没有响应。客户端的垃圾实现可能无限期地等待响应。结果不仅会导致用户体验不好，也会消耗线程这样的宝贵资源。最终运行时会用完线程并变得无法响应，就和下面的图一样。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2015/07/Richardson-microservices-part3-threads-blocked-1024x383.png" alt="" /></p>
+
+<p>为了防止这个问题，你必须设计你的服务去处理部分失败。</p>
+
+<p>一个好的方法是使用<a href="http://techblog.netflix.com/2012/02/fault-tolerance-in-high-volume.html">Netflix描述的方法</a>。这种策略用来处理部分错误包括：</p>
+
+<ul>
+<li>网络超时 - 当等待回复时永远不会无限期等待并且总是使用超时策略。这可以确定资源不会被无限期被捆绑在一起</li>
+<li>限制未完成的请求的数量 - 对于客户端可以使用特定服务的未完成请求数量强加一个上线。如果到达限制，提出额外的请求可能没有意义，这些尝试需要立即失败。</li>
+<li><a href="http://martinfowler.com/bliki/CircuitBreaker.html">断路器模式</a> - 跟踪成功和失败的数量。如果错误率超过预定的阈值，断路器跳闸，以便以后的尝试失败。如果很多请求失败，建议服务设为不可用，发请求也是没有意义的。超时之后，客户端应该再次尝试，如果成功，关闭断路器。</li>
+<li>提供备用 - 当请求失败后执行备用逻辑。比如返回缓存数据或者默认值比如空的推荐。</li>
+</ul>
+
+
+<p><a href="https://github.com/Netflix/Hystrix">Netflix Hystrix</a>是一个实现这些或者其他模式的开源库。如果你用JVM你应该考虑用它。</p>
+
+<h2>IPC技术</h2>
+
+<p>有很多不同的IPC句式可以选择。服务能用同步请求/响应的通信机制比如基于HTTPS REST或者Thrift。或者，他们可以用异步的，基于消息的交流机制比如AMQP或STOMP。有很多不用的消息格式。服务能用易读的，基于文本的个数比如JSON和XML。或者二进制格式比如Avro或者协议缓冲区。后面我们将看一下同步的IPC机制，但是首先我们来讨论异步IPC机制。</p>
+
+<h4>异步，基于消息的通信</h4>
+
+<p>当用异步交换消息，多进程通信。客户端通过发送消息给服务。如果服务预期回复，则通过发送单独的消息给客户端实现。因为通信是异步的，客户端不会等待回复。而是假设客户端不会立即受到回复。</p>
+
+<p>消息由标题（比如发件人之类的元数据）和消息体组成。消息通过通道交换。任何数量的生产者都能发送消息给通道。相似的，任何数量的消费者可从通道接受消息。有两种通道，点对点或者发布订阅。点对点频道向正在从通道读取的消费者提供一个消息。服务使用点对点通道来描述前面提到的一对一交互风格。发布订阅通道将每个消息传递给全部附加的消费者。服务用发布订阅通道给上面描述的一对多风格。</p>
+
+<p>下图显示了出租车应用可能的发布订阅通道：</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2015/07/Richardson-microservices-part3-pub-sub-channels-1024x639.png" alt="" /></p>
+
+<p>旅行管理服务通过将旅途创建这个消息写到<strong>针对旅程创建这个业务的发布订阅通道</strong>来通知感兴趣的服务比如<strong>调度器</strong>。调度器发现可用的司机并通过写入司机推荐这个消息给<strong>分发乘客的发布订阅通道</strong>的方式来通知其他服务。</p>
+
+<p>有很多消息系统可以选择。你应该选择一个支持各种语言的一种。一些消息系统支持标准协议比如AMQP和STOMP。其他消息系统有专有的但是记录的协议。有很多开源消息系统去选择，包括RabbitMQ, Apache Kafka, Apache ActiveMQ,和 NSQ。在高层次上来说，他们都支持消息和通道。他们都努力做到可靠，高性能和可扩展。然而，每个消息模型的细节存在不同的差异。</p>
+
+<p>下面是用消息通信的优点：</p>
+
+<ul>
+<li>将客户端与服务端分离 - 客户通过发送消息个合适的通道来发送请求。客户端完全不需要关注服务实例。也不需要用发现机制来确定服务的位置。</li>
+<li>消息缓冲 - 使用比如HTTP这样的同步请求/响应协议，在客户端和服务端交互区间必须可用。相比之下，消息代理将消息排队知道被消费者处理。比如即使订单履行系统慢或者不可用，在线商店也能接受来自客户的订单。订单消息就被简单的放入队列中。</li>
+<li>灵活的客户端-服务端交互 - 消息传递支持所有前面描述的交互方式</li>
+<li>明确的进程间通信 - 基于RPC的机制尝试去调用远程服务就像本地服务一样。然而，因为物理规律和部分失败的可能性，实际上是完全不同的。消息通信使得这些差异非常明确，因此开发人员没有被弄虚作假的感觉。</li>
+</ul>
+
+
+<p>下面是缺点：</p>
+
+<ul>
+<li>额外操作的复杂性 - 消息系统是另一个必须安装、配置的系统。消息代理必须高可用，否则系统的可靠性会受到影响。</li>
+<li>实现基于请求/响应的交互的复杂性 - 请求/响应风格的交互有一些工作去做。每个请求消息必须包含应答通道表示符和相关标识符。服务将相关ID写入响应信息。客户端使用相关ID来将请求和响应匹配。通常使用直接支持请求/响应的IPC机制更容易。</li>
+</ul>
+
+
+<p>现在我们已经看过使用基于消息的IPC，我们来看看基于请求/响应的IPC。</p>
+
+<h4>同步，请求/响应IPC</h4>
+
+<p>客户端发送请求，服务端处理请求返回。在很多客户端中，当等待响应时线程会阻塞。其他客户端可能用异步，事件驱动的方式，如Futures或Rx Observables。然而，和消息通信不同，客户端假定响应会立马收到。有很多协议可供选择。两种流行的协议是REST和Thrift。</p>
+
+<h5>REST</h5>
+
+<p>在现在，用REST开发是很流行的方式。REST是一种用HTTP的IPC机制。在REST中核心概念是资源，通常代表业务实例比如顾客和产品或者业务实体的集合。REST用HTTP来操纵资源。比如GET返回资源的表现形式（XML或者JSON对象）。POST代表创建新资源，PUT请求更新资源。引用Roy Fielding的创建者：</p>
+
+<blockquote><p>REST提供一组架构约束，当作为整体使用时，强调了组件交互的可扩展性，接口的通用性，独立部署组件和中间组件来减少交互延迟，实施安全性和封装旧系统
+- Fielding，<a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">架构艺术和基于网络的软件架构设计</a></p></blockquote>
+
+<p>下图显示出租车应用可能使用REST的方式：</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2015/07/Richardson-microservices-part3-rest.png" alt="" /></p>
+
+<p>乘客的智能手机通过向旅行管理服务/trips发送POST请求来请求一次旅行。该服务通过发送GET请求给乘客管理服务得到乘客信息。在验证乘客是授权之后再创建旅行。旅行管理服务创建旅行并返回201给智能手机。</p>
+
+<p>很多开发人员声明他们基于HTTP的API用的是REST。但是就像Fielding在<a href="http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven">这篇文章</a>中描述的，事实不是这样的。Leonard Richardson定义了非常有用的包含下面级别的<a href="http://martinfowler.com/articles/richardsonMaturityModel.html">REST成熟度模型</a>。</p>
+
+<ul>
+<li>第0层级 - 0级的API客户端通过发送HTTP POST请求给单个URL来触发服务。每个请求指定要执行的操作，操作的目的，和任何参数。</li>
+<li>第1层级 - API支持资源的意图。要对资源执行相关操作，客户端发送POST请求表示动作和参数。</li>
+<li>第2层级 - API支持HTTP行为：GET来获取，POST是创建，PUT是更新。请求查询参数和主题指定动作参数。这使服务能利用web基础设施比如用GET请求缓存。</li>
+<li>第3层级 - 基于HATEOAS原则（Hypertext As The Engine Of Application State）。基本思想是，GET请求返回的资源包含用于这个资源上执行允许的操作的链接。比如客户端可以在订单页面上取消一个订单，这个页面是之前通过GET请求得到的订单页面。<a href="http://www.infoq.com/news/2009/04/hateoas-restful-api-advantages">HATEOAS的好处</a>包括不再必须将URL写在客户端代码中。另一个好处是因为资源的表示包括可允许操作的链接，所以客户端不需要猜测当前状态要执行什么动作。</li>
+</ul>
+
+
+<p>使用基于HTTP的协议有很多好处：</p>
+
+<ul>
+<li>HTTP是简单和友好的</li>
+<li>你可以用比如Postman或者curl来测试HTTP API</li>
+<li>直接支持请求/响应方式的交流</li>
+<li>防火墙友好</li>
+<li>不需要中间代理，简化了系统的架构</li>
+</ul>
+
+
+<p>HTTP有一些缺点：</p>
+
+<ul>
+<li>它直接支持请求/响应风格。你可以用HTTP或者通知，但是服务器比如始终发送HTTP响应。</li>
+<li>因为客户端和服务直接交流（没有中介缓冲区），他们必须在交互期间同时运行</li>
+<li>客户端必须知道每个服务的位置。和上一篇文章描述的，在现代应用中这是一个常见的问题。客户端必须使用服务发现机制去定位服务实例。</li>
+</ul>
+
+
+<p>开发人员社区最近发现了定义RESTful API的价值。有几个选项，包括RAML和Swagger。一些IDL比如Swagger允许你定义请求和响应的消息。其他比如RAML需要你用独立的规范比如JSON。处理描述API之外，IDL通常有工具生成客户端和服务端框架。</p>
+
+<h5>Thrift</h5>
+
+<p>Apache Thrift是REST的一个有趣的替代方案。它是一个跨语言编写的RPC客户端和服务器的框架。Thrift提供C风格的IDL去定义你的API。你使用Thrift编译器去生成客户端和服务端框架，同时支持多种语言。</p>
+
+<p>Thrift接口包含一个或多个服务。服务定义类似于Java接口。它是强类型方法的集合。Thrift方法可以返回（可能空）一个值或者他们定义为单向。返回值的方法实现了请求/响应的交互风格。客户端等待响应，并可能抛出异常。单向方法对应于通知这样的交互方式。服务端不发送响应。</p>
+
+<p>Thrift支持各种消息格式，JSON,二进制，紧凑二进制。二进制比JSON更有效率因为解码更快。而却顾名思义，紧凑二进制是节省空间的格式。当然JSON是人性化和浏览器友好的。Thrift还提供包括原始TCP和HTTP在内的选择。原始TCP可能比HTTP更有效率。然而，HTTP是对防火墙，浏览器，我们来说都更人性化的。</p>
+
+<h4>消息格式</h4>
+
+<p>Thrift可能只支持少量的消息格式，也许只有一个在这两种情况下，使用跨语言消息格式非常重要。即使你现在用单一语言写微服务，你将来也可能用到别的语言。</p>
+
+<p>消息格式有两种主要类型：文本和二进制。基于文本的格式有JSON和XML。这些格式的优点不仅是他们是人类可读的，他们也是自我描述的。JSON的对象属性通过键值对代表。相似的，XML的属性由元素和值代表。这使得消息的消费者可以挑选他们自己感兴趣的值并忽略别的。因此，微小消息格式的变更可以很容易向后兼容。</p>
+
+<p>XML文档结构由<a href="http://www.w3.org/XML/Schema">XML模式</a>指定。随着时间的推移，开发人员社区已经意识到JSON需要一个类似的机制。一个选择是<a href="http://json-schema.org/">JSON模式</a>,或者作为IDL的一部分，Swagger。</p>
+
+<p>基于文本的消息格式缺点往往是冗长的，特别是XML。因为消息是自我描述的。每个消息除了他们的值还包括属性的名字。其他缺点是解析文本的开销。因此你可能想去考虑用二进制格式。</p>
+
+<p>有几种二进制可以选择。入股你用Thrift，可以选择二进制Thrift。如果你选择消息格式，热门的选项包括Protocol Buffers和Apache Avro。这两种提供IDL来定义自己的消息格式。然而，一个区别是Protocol Buffers使用标记资源，Apache Avro需要知道模式才能解释消息。因此，Protocol Buffers的API演进比Apache Avro更简单。<a href="http://martin.kleppmann.com/2012/12/05/schema-evolution-in-avro-protocol-buffers-thrift.html">这篇博文</a>是Protocol Buffers和Apache Avro的绝佳比较。</p>
+
+<h2>总结</h2>
+
+<p>微服务必须使用IPC机制来通信。当设计服务如何沟通时，你需要考虑很多问题：服务如何交互，怎样为每个服务指定API，怎样更新API，怎样处理部分故障的问题。有两种IPC机制可以用，<strong>异步消息</strong>或者<strong>同步请求/响应</strong>。在本系列的下篇文章中，我们将看到微服务中服务发现的问题。</p>
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
+]]></content>
+  </entry>
+  
+</feed>

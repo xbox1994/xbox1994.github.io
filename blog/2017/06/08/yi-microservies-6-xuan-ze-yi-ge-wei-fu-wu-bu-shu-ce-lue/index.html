@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>干掉这里的Bug</title>
+  <title>[译][MicroService 6]选择一个微服务部署策略 - 干掉这里的Bug</title>
   <meta name="author" content="Tianyi Wang">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.wangtianyi.top/">
+  <link rel="canonical" href="http://www.wangtianyi.top/blog/2017/06/08/yi-microservies-6-xuan-ze-yi-ge-wei-fu-wu-bu-shu-ce-lue/">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="干掉这里的Bug" type="application/atom+xml">
 
   <!-- http://opengraphprotocol="-co.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://www.wangtianyi.top/">
-  <meta property="og:title" content="干掉这里的Bug">
+  <meta property="og:url" content="http://www.wangtianyi.top/blog/2017/06/08/yi-microservies-6-xuan-ze-yi-ge-wei-fu-wu-bu-shu-ce-lue/">
+  <meta property="og:title" content="[译][MicroService 6]选择一个微服务部署策略 - 干掉这里的Bug">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -64,24 +64,46 @@
     <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
     <div id="wrap">
       
-      <div id="banner-image">
-        <div class="layer" style="text-align:center;">
-          <div id="banner-text">
-            <h1 class="page-title">干掉这里的Bug</h1>
-            <p class="page-desc">
-              <br>
-            </p>
-            <br>
-            <br>
-            <div class="page-links center">
-              <ul class="index-nav">
-                  <li ><a href="/blog/archives">All</a></li>
-<li ><a href="/about">About</a></li>
-              </ul>
-            </div>
-          </div>
+        <header role="banner">
+          <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">干掉这里的Bug</a>
         </div>
-      </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/blog/archives">All</a></li>
+<li ><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="www.wangtianyi.top">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+        </header>
       
       <div id="main" role="main" class="container">
         <div id="content">
@@ -95,16 +117,12 @@
             </script>
           </div>
           <div class="row">
-  <div class="page-content">
-    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+  <div class="page-content" itemscope itemtype="http://schema.org/Blog">
     <meta itemprop="name" content="干掉这里的Bug" />
     
     <meta itemprop="url" content="http://www.wangtianyi.top" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
   <header class="page-header">
     
       <p class="meta text-muted text-uppercase">
@@ -113,342 +131,258 @@
 
 
 
-Feb 26th, 2020
+Jun 8th, 2017
         
       </p>
     
     
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/26/liu-cheng-xing-si-kao/" itemprop="url">流程性思考</a></h2>
+    <h1 class="entry-title" itemprop="name headline">
+        [译][MicroService 6]选择一个微服务部署策略
+        
+    </h1>
     
   </header>
 
 
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>貌似解决了困扰我多年的一个问题</p>
+<div class="entry-content clearfix" itemprop="articleBody description"><p>选择一个微服务部署策略</p>
 
+<!--more-->
+
+
+<h1>动机</h1>
+
+<p>部署一个单体应用意味着运行多个相同的单个副本，并且通常是比较大的应用。你通常配置N个服务器（物理或虚拟），并且在每个上面跑M个应用的实例。单体应用的部署不总是很简单的，但是比部署微服务简单多了。</p>
+
+<p>微服务包含很多服务。服务又可能是用不同的语言和框架写的。每个服务都是一个有自己特定部署、资源、缩放和监控需求的小型应用。比如你需要根据服务来为每个服务启动一定量的实例。每个服务必须被提供合适的CPU、内存和IO资源。更具挑战的是部署必须可靠和具有成本效益。</p>
+
+<h1>多服务单主机模式</h1>
+
+<p>每个服务实例跑在一个或多个主机上的知名端口上运行。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/02/Richardson-microservices-architecture-part6-host.png" alt="" /></p>
+
+<p>优点：</p>
+
+<ul>
+<li>资源使用率高。多个服务实例共享服务器和操作系统，如果进程或进程组运行多个服务实例则更加有效。比如多个web应用共享同一个Tomcat服务器和JVM。</li>
+<li>部署服务的速度快。只需要把服务复制到主机上并启动。如果是Java，复制JAR/WAR。其他语言就复制源代码。任何情况下通过网络复制的字节数相对比较小。</li>
+<li>启动服务的速度快。因为没有</li>
+</ul>
+
+
+<p>缺点：</p>
+
+<ul>
+<li>进程之间无隔离。当你可以准确监控每个服务实例的资源利用率时，不能限制每个实例使用的资源。可能会耗尽主机的所有内存和CPU。</li>
+<li>部署服务的团队必须知道如何执行部署的细节。</li>
+</ul>
+
+
+<h1>单服务单主机模式</h1>
+
+<p>当你使用这个模式，你把每个服务打包成一个虚拟机镜像就像AMI一样。每个服务实例都是使用这个镜像的一个虚拟机。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/02/Richardson-microservices-architecture-part6-vm.png" alt="" /></p>
+
+<p>这是Netflix用来部署其视频流服务的主要方法。 Netflix使用<a href="https://github.com/Netflix/aminator">Aminator</a>将其每个服务包装为EC2 AMI。每个正在运行的服务实例是EC2实例。</p>
+
+<p>您可以使用多种工具来构建自己的虚拟机。您可以配置您的持续集成（CI）服务器（例如Jenkins）来调用Aminator将服务打包为EC2 AMI。<a href="https://www.packer.io/">Packer.io</a>是自动化虚拟机映像创建的另一个选项。与Aminator不同，它支持各种虚拟化技术，包括EC2，DigitalOcean，VirtualBox和VMware。</p>
+
+<p>优点：</p>
+
+<ul>
+<li>每个实例完全隔离。有固定的CPU和内存，不能从其他服务窃取资源。</li>
+<li>利用成熟的云设施。比如AWS提供了有用的功能比如负载均衡和自动缩放。</li>
+<li>封装服务实现的技术。一旦一个服务被打包成一个虚拟机，它将成为一个黑盒子。虚拟机的管理API变成部署服务的API。部署变得更加简单和可靠。</li>
+</ul>
+
+
+<p>缺点：</p>
+
+<ul>
+<li>资源利用率低。每个服务都有整个虚拟机的开销。</li>
+<li>成本变高。IAAS通常不管实例是否空闲还是繁忙，都会收费。比如AWS提供自动缩放，但是<a href="http://techblog.netflix.com/2013/11/scryer-netflixs-predictive-auto-scaling.html">很难快速响应需求变化</a>。</li>
+<li>部署新版本慢。虚拟机镜像通常构建地很慢、很慢地实例化，还有他们的大小，操作系统的启动时间也是有的。但是并不普遍，也有轻量级虚拟机比如Boxfuse的。</li>
+</ul>
+
+
+<h1>单服务单容器模式</h1>
+
+<p>当你用这个模式，每个服务实例都跑在自己的容器。容器是操作系统级的虚拟化。容器包含沙箱中的一个或多个进程。从进程的角度来看，它们有自己的的命名空间和根文件系统。你可以限制容器的内存和CPU。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/02/Richardson-microservices-architecture-part6-container.png" alt="" /></p>
+
+<p>要使用这个模式，你需要打包你的服务成为一个容器镜像。容器镜像是一个包含了跑服务的应用和库的文件系统。一些容器镜像包含完整的Linux根文件系统。其他是轻量级的。为了部署Java，比如，你构建一个包含Java运行时环境，Tomcat服务器和你的Java应用的镜像就好了。</p>
+
+<p>一旦你打包你的服务成为容器镜像，你可以启动一个或者多个容器。你通常跑多个容器在每个无力主机或者虚拟主机上。你可以用Kubernetes或Marathon去管理你的容器。集群管理器把主机视为资源池。它根据容器容器所需的资源和每个主机上可用的资源来决定放置每个容器的位置。</p>
+
+<p>优点：</p>
+
+<ul>
+<li>便于监控每个服务的开销。因为每个服务之间是独立的服务容器。</li>
+<li>与虚拟机一样，封装服务。</li>
+<li>构建速度快与虚拟机镜像。比如在我的电脑上用docker只有5秒来打包Spring Boot应用。容器启动也非常快，因为没有冗长的操作系统启动机制。当容器开启之后，服务也会开启。</li>
+</ul>
+
+
+<p>缺点：</p>
+
+<ul>
+<li>不够成熟与安全。容器也不如虚拟机安全因为共享主机的内核。</li>
+<li>需要管理容器镜像与部署架构。除非你用托管容器解决方案比如 Google Container Engine or Amazon EC2 Container Service (ECS), 否则你必须管理运行服务的容器设施和虚拟机设施。</li>
+<li>过度的虚拟机花费。容器常被部署在按每个虚拟机价格收费的基础设施上，你可能会承担过度配置虚拟机的额外花费。</li>
+</ul>
+
+
+<p>有趣的是，容器和虚拟机之间的区别是模糊的。如前所述，Boxfuse VM可以很快构建和启动。<a href="https://clearlinux.org/features/clear-containers">Clear Containers</a>旨在创建轻量级虚拟机。Docker最近收购了Unikernel Systems。</p>
+
+<p>还有越来约受欢迎的无服务部署概念。这是一种避开在部署服务在容器还是虚拟机之间的选择的方法。下面我们来看看。</p>
+
+<h1>无服务部署</h1>
+
+<p>AWS Lambda是无服务部署技术。它支持Java，Node.js,和Python服务。为了部署微服务，你需要打包它并上传到AWS Lambda。你也提供元数据，其中指定调用处理请求的函数的名称。AWS Lambda自动跑足够微服务实例来处理请求。你可以基于内存使用和每个请求花的时间来计费。当然，恶魔在细节上，你将了解到AWS Lambda的限制。但是你和别人都不需要单行任何服务器、虚拟机或者容器方面的问题。</p>
+
+<p>AWS Lambda function是一个无状态的服务。它通常通过调用AWS服务来处理请求。比如当一个图像被传到S3时会触发一个AWS Lambda function，将图插入到DynamoDb图像表中并且将消息发布到Kinesis流中来触发图像处理。一个AWS Lambda function可以触发第三方web服务。</p>
+
+<p>有4个方法去触发一个AWS Lambda function：</p>
+
+<ol>
+<li>直接的，用一个web服务请求</li>
+<li>自动的，回应来自AWS服务比如S3，DynamoDB, Kinesis, or Simple Email Service的事件</li>
+<li>自动的，通过AWS API网关去处理来自客户端HTTP请求</li>
+<li>定期的，根据cron一样的时间表</li>
+</ol>
+
+
+<p>AWS Lambda是部署微服务的便捷方式。基于请求的定价意味着你只需支付服务执行的实际操作。并且因为你不需要为基础设施负责，你可以关注在你开发应用上来。</p>
+
+<p>然而有很多限制。不适于部署需要长时间运行的服务，比如从第三方消息代理那处理消息的服务。请求必须在300秒内往完成。服务必须是无状态的，所以理论上AWS Lambda会为每个不同的请求在不同的服务器上跑。他们必须用支持的语言来写。服务也必须很快被启动；因此请求可能超时和被终止。</p>
+
+<h1>总结</h1>
+
+<p>部署微服务是有挑战的。有用很多语言和框架的多种甚至上百种服务。每个都是有自己部署方式、资源、缩放和监控需求的小型应用。有多服务单主机、单服务单主机、单服务单容器、无服务微服务部署模式可供选择。</p>
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
 </div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/26/liu-cheng-xing-si-kao/">阅读全文 &rarr;</a>
-    </footer>
-  
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      <footer class="post-footer">
+        <p class="meta text-muted">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 19th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/" itemprop="url">【研发效能之道】个人效能实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>程序员个体如何高效地进行开发工作</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
   
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
 
+<figure class="author-image">
+    <span class="img" href="/about" style="background-image: url(/images/avatar.jpg)"><span class="hidden">Picture</span></span>
+</figure>
 
+<section class="author">
+    <h4><span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="fn" itemprop="name">Tianyi Wang</span></span></h4>
 
-
-Feb 18th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/" itemprop="url">【研发效能之道】研发流程优化实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>接下来会以<strong>提高用户价值的流动效率</strong>为核心，列出一些具体的研发流程优化实践</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 17th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/" itemprop="url">【研发效能之道】研发流程优化理论</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在再次开始一个新的系列，【研发效能之道】，主要参考《极客时间|研发效率破局之道》，系列内容为其读书笔记与自己的理解、总结</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 10th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/" itemprop="url">【Prometheus】Prometheus的设计</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/" itemprop="url">【Prometheus】监控系统概述</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在开始一个新的系列，【Prometheus】，主要参考《深入浅出Prometheus》，基本为其读书笔记加上部分自己的理解</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/jia-gou-ru-men-end/" itemprop="url">【架构入门】思维导图</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/jia-gou-ru-men-end/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 18th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/" itemprop="url">【架构入门 - 可扩展篇】</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>随着服务的壮大，使用人数的增多，业务的递增，服务的扩展性尤为关键，在不影响现有架构的情况下如何增加机器、扩展功能？</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 15th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/" itemprop="url">【架构入门 - 高可用篇】计算高可用</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 5th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" itemprop="url">【架构入门 - 高性能篇】数据库高性能</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
+    <div class="author-meta">
+        <span class="author-link icon-link"><i class="fa fa-link" aria-hidden="true"></i> <a href="http://www.wangtianyi.top">http://www.wangtianyi.top</a></span>
     </div>
+</section>
 
-    <ul class="pager">
-      
-        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
+<hr>
+
+<section class="share">
+    
+    <h4>Share this post</h4>
+    
+    <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?url=http://www.wangtianyi.top/blog/2017/06/08/yi-microservies-6-xuan-ze-yi-ge-wei-fu-wu-bu-shu-ce-lue/;" 
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.wangtianyi.top/blog/2017/06/08/yi-microservies-6-xuan-ze-yi-ge-wei-fu-wu-bu-shu-ce-lue/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.wangtianyi.top/blog/2017/06/08/yi-microservies-6-xuan-ze-yi-ge-wei-fu-wu-bu-shu-ce-lue/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+    
+</section>
+
+
+
+
+<!--
+<footer class="post-footer">
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Instant%20Movie%20Streamer%20v3%20Release&amp;url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+
+-->
+          
+
+
+
+
+Jun 8th, 2017
+          <br>
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/microservice/'>microservice</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="pager">
+            
+            
+              
+                <a href="/blog/2017/06/01/yi-microservies-7-jiang-ju-wu-ba-zhong-gou-cheng-wei-fu-wu/" class="col-xs-12 col-md-4 btn btn-default" title="Previous Post: [译][MicroService 7]将巨无霸重构成微服务"> 
+                  <div class="text-muted">
+                    <small>Previous Post</small>
+                  </div>
+                  <div class="pager-title">
+                    <h4>[译][MicroService 7]将巨无霸重构成微服务</h4>
+                  </div>
+                </a>
+              
+            
+            
+            
+              
+              <a href="/blog/2017/06/09/yi-ci-nao-bao-plus-inceptionde-guo-cheng/" class="col-xs-12 col-md-4 btn btn-default pull-right" title="Next Post: 一次小型脑暴+Inception的过程">
+                <div class="text-muted">
+                  <small>Next Post</small>
+                </div>
+                <div class="pager-title">
+                  <h4>一次小型脑暴+Inception的过程</h4>
+                </div>
+              </a>
+              
+            
+            
+          </div>
+        
+      </footer>
+    </article>
+    
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>干掉这里的Bug</title>
+  <title>一次简单通用的压测调优实战 - 干掉这里的Bug</title>
   <meta name="author" content="Tianyi Wang">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.wangtianyi.top/">
+  <link rel="canonical" href="http://www.wangtianyi.top/blog/2018/12/08/yi-ci-ji-yu-wei-fu-wu-kuang-jia-de-tong-yong-ya-ce-diao-you-shi-zhan/">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="干掉这里的Bug" type="application/atom+xml">
 
   <!-- http://opengraphprotocol="-co.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://www.wangtianyi.top/">
-  <meta property="og:title" content="干掉这里的Bug">
+  <meta property="og:url" content="http://www.wangtianyi.top/blog/2018/12/08/yi-ci-ji-yu-wei-fu-wu-kuang-jia-de-tong-yong-ya-ce-diao-you-shi-zhan/">
+  <meta property="og:title" content="一次简单通用的压测调优实战 - 干掉这里的Bug">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -64,24 +64,46 @@
     <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
     <div id="wrap">
       
-      <div id="banner-image">
-        <div class="layer" style="text-align:center;">
-          <div id="banner-text">
-            <h1 class="page-title">干掉这里的Bug</h1>
-            <p class="page-desc">
-              <br>
-            </p>
-            <br>
-            <br>
-            <div class="page-links center">
-              <ul class="index-nav">
-                  <li ><a href="/blog/archives">All</a></li>
-<li ><a href="/about">About</a></li>
-              </ul>
-            </div>
-          </div>
+        <header role="banner">
+          <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">干掉这里的Bug</a>
         </div>
-      </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/blog/archives">All</a></li>
+<li ><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="www.wangtianyi.top">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+        </header>
       
       <div id="main" role="main" class="container">
         <div id="content">
@@ -95,16 +117,12 @@
             </script>
           </div>
           <div class="row">
-  <div class="page-content">
-    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+  <div class="page-content" itemscope itemtype="http://schema.org/Blog">
     <meta itemprop="name" content="干掉这里的Bug" />
     
     <meta itemprop="url" content="http://www.wangtianyi.top" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
   <header class="page-header">
     
       <p class="meta text-muted text-uppercase">
@@ -113,342 +131,371 @@
 
 
 
-Feb 26th, 2020
+Dec 8th, 2018
         
       </p>
     
     
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/26/liu-cheng-xing-si-kao/" itemprop="url">流程性思考</a></h2>
+    <h1 class="entry-title" itemprop="name headline">
+        一次简单通用的压测调优实战
+        
+    </h1>
     
   </header>
 
 
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>貌似解决了困扰我多年的一个问题</p>
+<div class="entry-content clearfix" itemprop="articleBody description"><p>相比于网上教你如何使用ab、jmeter工具进行压测一个接口，本文更关注在压测调优的思路上。</p>
 
+<!-- more -->
+
+
+<h2>明确思路</h2>
+
+<p>目的：提升单个接口的QPS（每秒查询率QPS是对一个特定的查询服务器在规定时间内所处理流量多少的衡量标准。）</p>
+
+<p>工具：本文不关注工具的使用，简单起见，使用apache的<code>ab</code>工具</p>
+
+<p>步骤：先测试并优化一个空接口（直接返回请求的接口），拿到一个极限QPS，然后分别引进Redis、MySQL的接口分别进行测试并优化，使其尽量接近极限QPS。步骤严格遵循控制变量法。</p>
+
+<p>环境：为得到尽量接近真实生产环境的数据，需要提前建立一个与生产环境几乎一致的压测环境，在压测环境上进行测试。当前环境为：AWS EC2上部署的K8S集群，共2个Node节点，CPU为2核。</p>
+
+<h2>空接口压测优化</h2>
+
+<h3>获取数据</h3>
+
+<p>先在代码中写上一个直接返回请求的test接口，然后部署到容器集群中作为被压测的对象，再登录到另外一个作为施压机进行压测。</p>
+
+<p>同时注意检测CPU，内存，网络状态，因为对于一个空接口，QPS达到上限一定是因为该服务所在宿主机的某处性能达到瓶颈。</p>
+
+<p>命令：<code>ab -n 3000 -c 300 "http://10.1.2.3/test/"</code></p>
+
+<p>测试环境：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Requests per second:    1448.86 [#/sec] (mean)
+</span><span class='line'>Time per request:       69.020 [ms] (mean)
+</span><span class='line'>
+</span><span class='line'>Connection Times (ms)
+</span><span class='line'>              min  mean[+/-sd] median   max
+</span><span class='line'>Connect:        1    1   1.1      1       8
+</span><span class='line'>Processing:     5   66  29.4     63     164
+</span><span class='line'>Waiting:        5   66  29.4     63     164
+</span><span class='line'>Total:          5   67  29.7     64     165</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在整个压测过程中，使用<code>top -d 0.3</code>发现CPU达到瓶颈，为验证我们的猜想，将相同的服务部署到另外一个CPU性能更好的机器上测试。</p>
+
+<p>CPU性能提升之后的本地环境：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Requests per second:    3395.25 [#/sec] (mean)
+</span><span class='line'>Time per request:       29.453 [ms] (mean)
+</span><span class='line'>
+</span><span class='line'>Connection Times (ms)
+</span><span class='line'>              min  mean[+/-sd] median   max
+</span><span class='line'>Connect:        0    0   0.7      0       3
+</span><span class='line'>Processing:     2   28  13.3     26      84
+</span><span class='line'>Waiting:        2   28  13.3     26      84
+</span><span class='line'>Total:          2   29  13.4     26      86</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>定位问题</h3>
+
+<p>Processing time的解释：The server response time—i.e., the time it took for the server to process the request and send a reply</p>
+
+<p>结论很明显，在Connect连接时长几乎一致的情况下，服务器端处理时间大大减少，所以<strong>CPU</strong>对QPS的影响是最直接的。</p>
+
+<p>另外，依据经验判断，2核CPU的机器本地压测只有3k是不正常的一个数据，所以猜测框架性能有差异，所以对不同框架进行了空接口的测试，数据如下：</p>
+
+<p><code>beego: 12k , go micro: 3.5k, spring boot: 5.5k</code></p>
+
+<p>结论是<strong>框架</strong>直接大幅度影响性能，分析一下，go micro与beego、spring boot的区别是它是一个<strong>微服务</strong>架构的框架，需要consul、api gateway、后台服务一起启动，一个请求来到gateway之后，可能需要查询consul拿到后台服务的地址，还需要将JSON格式转换为gRPC格式发送给后台服务，然后接收后台服务的返回，这直接导致了在CPU计算量、网络传输量最少两倍于单体应用，即使go micro的网关和后台服务分开在两台机器上部署，测试之后QPS也只能到达5.5k。</p>
+
+<p>我是直接感受到了一个微服务的缺点：相比于单体架构服务的直接返回请求，微服务架构服务的开销是很可能更大的，所以在选择架构的时候需要在性能与微服务带来的优势（服务解耦、职责单一、独立开发构建部署测试)上进行衡量，当然如果你服务器够多性能够好，当我没说。</p>
+
+<h3>进行优化</h3>
+
+<p>在CPU无法提升、框架无法改变的情况下，只能在框架和服务的配置、代码的使用、架构层面进行优化。</p>
+
+<h4>1</h4>
+
+<p>参考go micro作者给的<a href="https://micro.mu/docs/faq.html#how-performant-is-it">方法</a>，对框架的配置进行优化：</p>
+
+<p><code>--client_pool_size=10 # enables the client side connection pool</code></p>
+
+<p>再次在测试环境下测试，QPS提升300，到达1700。</p>
+
+<h4>2</h4>
+
+<p>api gateway是所有流量都会走的地方，所以是优化的重要部分，我们先测试一下删掉其中的业务代码，QPS提升了600，到达2300，所以优化了一下这里的逻辑，QPS到达2100</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="k">if</span> <span class="p">!</span><span class="nx">strings</span><span class="p">.</span><span class="nx">Contains</span><span class="p">(</span><span class="nx">cookies</span><span class="p">,</span> <span class="s">&quot;xxx&quot;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&quot;no xxx cookie found&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>替换掉</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="nx">cookiesArr</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">Split</span><span class="p">(</span><span class="nx">cookies</span><span class="p">,</span> <span class="s">&quot;;&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">cookiesArr</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">cookie</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">Split</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="s">&quot;=&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">Trim</span><span class="p">(</span><span class="nx">cookie</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&quot; &quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;xxx&quot;</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">sid</span> <span class="p">=</span> <span class="nx">cookie</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span><span class='line'>      <span class="k">break</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3</h4>
+
+<p>最后，使用k8s的自动伸缩机制，另外部署了一组api gateway和后台服务到不同的Node上，相当于配置好了两台机器的负载均衡，QPS达到3200</p>
+
+<h2>Redis相关接口优化</h2>
+
+<p>找到一个仅包含一次Redis get操作且无返回数据的接口作为测试接口，在空接口优化之后的基础上进行测试，QPS：2000</p>
+
+<p>对于连接另外的一个服务或中间件的情况，优化的方式并不多，最常用的优化方式就是提升连接数，在服务内部将连接Redis的连接数提MaxIdle提升到800，MaxActive提升到10000，QPS提升500，达到2500。</p>
+
+<p>另外可以查看Redis服务的一些配置和性能图标，当前环境下使用的是AWS上的Redis服务，可配置的项目不多，使用的是两个节点的配置，在压测的过程中查看CPU占用、连接数占用、内存占用，均未发现达到上限，所以Redis服务没有可以优化的余地。</p>
+
+<h2>数据库相关接口优化</h2>
+
+<p>在高并发场景下，为了尽量提升QPS，查询的操作应该尽量全部使用Redis做缓存代替或者将请求尽量拦截在查询数据库之前，所以数据库的查询操作并不是QPS提升关注的重点。</p>
+
+<p>但需要对数据库进行一些通用的优化，比如主从复制，读写分离、提升连接数、在大数据量下分表、优化SQL、建立索引。下面以一个查询操作为例，一条复杂的sql为例做一次SQL优化与索引建立，以单次的查询时间为目标进行优化。</p>
+
+<h3>准备数据</h3>
+
+<p>先用存储过程准备50w条数据</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">DELIMITER</span> <span class="err">$$</span>
+</span><span class='line'><span class="k">CREATE</span> <span class="k">PROCEDURE</span> <span class="n">prepare_data</span><span class="p">()</span>
+</span><span class='line'><span class="k">BEGIN</span>
+</span><span class='line'>  <span class="k">DECLARE</span> <span class="n">i</span> <span class="nb">INT</span> <span class="k">DEFAULT</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">WHILE</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">500000</span> <span class="k">DO</span>
+</span><span class='line'>    <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">game_record</span> <span class="p">(</span><span class="n">app_id</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">game_match_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">nickname</span><span class="p">,</span> <span class="n">device_id</span><span class="p">,</span> <span class="n">prize_grade</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">&#39;appid&#39;</span><span class="p">,</span> <span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="n">concat</span><span class="p">(</span><span class="s1">&#39;xx&#39;</span><span class="p">,</span><span class="n">i</span><span class="p">),</span> <span class="s1">&#39;70961908&#39;</span><span class="p">,</span> <span class="s1">&#39;asdfafd&#39;</span><span class="p">,</span> <span class="s1">&#39;xcao&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1543894842</span><span class="p">,</span> <span class="n">i</span> <span class="p">);</span>
+</span><span class='line'>    <span class="k">SET</span> <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">END</span> <span class="n">WHILE</span><span class="p">;</span>
+</span><span class='line'><span class="k">END</span><span class="err">$$</span>
+</span><span class='line'><span class="k">DELIMITER</span> <span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">call</span> <span class="n">prepare_data</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>建立索引</h3>
+
+<p>如何选择合适的列建立索引？</p>
+
+<ol>
+<li>WHERE / GROUP BY / ORDER BY / ON 的列</li>
+<li>离散度大（不同的数据多）的列使用索引才有查询效率提升</li>
+<li>索引字段越小越好，因为数据库按页存储的，如果每次查询IO读取的页越少查询效率越高</li>
+</ol>
+
+
+<p>对于以下SQL：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">game_record</span> <span class="k">where</span> <span class="n">app_id</span> <span class="o">=</span> <span class="o">?</span> <span class="k">and</span> <span class="n">token</span><span class="o">=?</span> <span class="k">and</span> <span class="n">score</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">order</span> <span class="k">by</span> <span class="n">prize_grade</span><span class="p">,</span> <span class="n">score</span> <span class="k">limit</span> <span class="mi">50</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>优化前时间: 0.551s</p>
+
+<p>对于order by操作，可以建立复合索引：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">create</span> <span class="k">index</span> <span class="n">grade_and_score</span> <span class="k">on</span> <span class="n">game_record</span><span class="p">(</span><span class="n">prize_grade</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>优化后时间: 0.194s</p>
+
+<h3>优化SQL</h3>
+
+<p>这里不贴具体的SQL语句了，以下是一些SQL通用优化方式：</p>
+
+<ul>
+<li>使用精确列名查询而不是*，特别是当数据量大的时候</li>
+<li>减少子查询，使用Join替代</li>
+<li>不用NOT IN，因为会使用全表扫描而不是索引；不用IS NULL，NOT IS NULL，因为会使索引、索引统计和值更加复杂，并且需要额外一个字节的存储空间。</li>
+</ul>
+
+
+<p>还有一些具体的数据库优化策略可以参考<a href="https://github.com/xbox1994/2018-Java-Interview/blob/master/MD/%E6%95%B0%E6%8D%AE%E5%BA%93-MySQL.md">这里</a></p>
+
+<h2>TODO</h2>
+
+<p>以上是仅仅是排除代码之后的服务和中间件压测，还应该加入代码逻辑进行更加全面的测试，然后对代码进行优化，具体优化方式请参考对应编程语言的优化方式。</p>
+
+<p>如果以后碰到性能瓶颈，扩机器是最简单高效的，或者更换其他框架，或则还可以深入优化一下api gateway和后台服务交互的数据传输性能，因为这块是直接导致CPU达到瓶颈的原因。</p>
+
+<h2>总结</h2>
+
+<p>如果想做好一次压测和优化，需要非常清晰的思路、高效的压测方法、排查问题的套路、解决问题的方案，但最基础的还是需要知道一个请求从浏览器发送之后，到返回到浏览器，之间到底经历过什么，<a href="http://www.wangtianyi.top/blog/2017/10/22/cong-urlkai-shi-,ding-wei-shi-jie/">这篇比较基础的文章</a>可以帮你了解一些，但还不够，比如这次调优中还涉及到数据库优化、Go语言、硬件性能、AWS、Docker、K8S这样的云平台和容器技术、容器编排工具，所以压测调优是一次对自己掌握服务端整个架构和细节的考验和学习过程。</p>
+
+<p>以上是本人和同事在短期内协作工作之后的总结，不足之处在所难免，欢迎各种意见。</p>
 </div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/26/liu-cheng-xing-si-kao/">阅读全文 &rarr;</a>
-    </footer>
-  
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      <footer class="post-footer">
+        <p class="meta text-muted">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 19th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/" itemprop="url">【研发效能之道】个人效能实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>程序员个体如何高效地进行开发工作</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
   
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
 
+<figure class="author-image">
+    <span class="img" href="/about" style="background-image: url(/images/avatar.jpg)"><span class="hidden">Picture</span></span>
+</figure>
 
+<section class="author">
+    <h4><span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="fn" itemprop="name">Tianyi Wang</span></span></h4>
 
-
-Feb 18th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/" itemprop="url">【研发效能之道】研发流程优化实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>接下来会以<strong>提高用户价值的流动效率</strong>为核心，列出一些具体的研发流程优化实践</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 17th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/" itemprop="url">【研发效能之道】研发流程优化理论</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在再次开始一个新的系列，【研发效能之道】，主要参考《极客时间|研发效率破局之道》，系列内容为其读书笔记与自己的理解、总结</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 10th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/" itemprop="url">【Prometheus】Prometheus的设计</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/" itemprop="url">【Prometheus】监控系统概述</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在开始一个新的系列，【Prometheus】，主要参考《深入浅出Prometheus》，基本为其读书笔记加上部分自己的理解</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/jia-gou-ru-men-end/" itemprop="url">【架构入门】思维导图</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/jia-gou-ru-men-end/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 18th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/" itemprop="url">【架构入门 - 可扩展篇】</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>随着服务的壮大，使用人数的增多，业务的递增，服务的扩展性尤为关键，在不影响现有架构的情况下如何增加机器、扩展功能？</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 15th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/" itemprop="url">【架构入门 - 高可用篇】计算高可用</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 5th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" itemprop="url">【架构入门 - 高性能篇】数据库高性能</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
+    <div class="author-meta">
+        <span class="author-link icon-link"><i class="fa fa-link" aria-hidden="true"></i> <a href="http://www.wangtianyi.top">http://www.wangtianyi.top</a></span>
     </div>
+</section>
 
-    <ul class="pager">
-      
-        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
+<hr>
+
+<section class="share">
+    
+    <h4>Share this post</h4>
+    
+    <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?url=http://www.wangtianyi.top/blog/2018/12/08/yi-ci-ji-yu-wei-fu-wu-kuang-jia-de-tong-yong-ya-ce-diao-you-shi-zhan/;" 
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.wangtianyi.top/blog/2018/12/08/yi-ci-ji-yu-wei-fu-wu-kuang-jia-de-tong-yong-ya-ce-diao-you-shi-zhan/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.wangtianyi.top/blog/2018/12/08/yi-ci-ji-yu-wei-fu-wu-kuang-jia-de-tong-yong-ya-ce-diao-you-shi-zhan/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+    
+</section>
+
+
+
+
+<!--
+<footer class="post-footer">
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Instant%20Movie%20Streamer%20v3%20Release&amp;url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+
+-->
+          
+
+
+
+
+Dec 8th, 2018
+          <br>
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/hou-tai/'>后台</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="pager">
+            
+            
+              
+                <a href="/blog/2018/10/20/wei-tuan-dui-gou-jian-devopsti-xi/" class="col-xs-12 col-md-4 btn btn-default" title="Previous Post: 为团队构建DevOps体系"> 
+                  <div class="text-muted">
+                    <small>Previous Post</small>
+                  </div>
+                  <div class="pager-title">
+                    <h4>为团队构建DevOps体系</h4>
+                  </div>
+                </a>
+              
+            
+            
+            
+              
+              <a href="/blog/2018/12/30/oauth2yuan-li-yu-linkedinde-di-san-fang-fen-xiang-shi-zhan/" class="col-xs-12 col-md-4 btn btn-default pull-right" title="Next Post: OAuth2原理与LinkedIn的第三方分享实战">
+                <div class="text-muted">
+                  <small>Next Post</small>
+                </div>
+                <div class="pager-title">
+                  <h4>OAuth2原理与LinkedIn的第三方分享实战</h4>
+                </div>
+              </a>
+              
+            
+            
+          </div>
+        
+      </footer>
+    </article>
+    
   </div>
 </div>
 

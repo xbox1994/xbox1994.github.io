@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>干掉这里的Bug</title>
+  <title>【架构入门 - 高性能篇】单机高性能 - 干掉这里的Bug</title>
   <meta name="author" content="Tianyi Wang">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.wangtianyi.top/">
+  <link rel="canonical" href="http://www.wangtianyi.top/blog/2019/04/20/jia-gou-ru-men-gao-xing-neng-pian-dan-ji/">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="干掉这里的Bug" type="application/atom+xml">
 
   <!-- http://opengraphprotocol="-co.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://www.wangtianyi.top/">
-  <meta property="og:title" content="干掉这里的Bug">
+  <meta property="og:url" content="http://www.wangtianyi.top/blog/2019/04/20/jia-gou-ru-men-gao-xing-neng-pian-dan-ji/">
+  <meta property="og:title" content="【架构入门 - 高性能篇】单机高性能 - 干掉这里的Bug">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -64,24 +64,46 @@
     <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
     <div id="wrap">
       
-      <div id="banner-image">
-        <div class="layer" style="text-align:center;">
-          <div id="banner-text">
-            <h1 class="page-title">干掉这里的Bug</h1>
-            <p class="page-desc">
-              <br>
-            </p>
-            <br>
-            <br>
-            <div class="page-links center">
-              <ul class="index-nav">
-                  <li ><a href="/blog/archives">All</a></li>
-<li ><a href="/about">About</a></li>
-              </ul>
-            </div>
-          </div>
+        <header role="banner">
+          <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">干掉这里的Bug</a>
         </div>
-      </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/blog/archives">All</a></li>
+<li ><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="www.wangtianyi.top">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+        </header>
       
       <div id="main" role="main" class="container">
         <div id="content">
@@ -95,16 +117,12 @@
             </script>
           </div>
           <div class="row">
-  <div class="page-content">
-    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+  <div class="page-content" itemscope itemtype="http://schema.org/Blog">
     <meta itemprop="name" content="干掉这里的Bug" />
     
     <meta itemprop="url" content="http://www.wangtianyi.top" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
   <header class="page-header">
     
       <p class="meta text-muted text-uppercase">
@@ -113,342 +131,306 @@
 
 
 
-Feb 26th, 2020
+Apr 20th, 2019
         
       </p>
     
     
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/26/liu-cheng-xing-si-kao/" itemprop="url">流程性思考</a></h2>
+    <h1 class="entry-title" itemprop="name headline">
+        【架构入门 - 高性能篇】单机高性能
+        
+    </h1>
     
   </header>
 
 
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>貌似解决了困扰我多年的一个问题</p>
+<div class="entry-content clearfix" itemprop="articleBody description"><p>做到单机高性能其实非常简单，一个字【钱】</p>
 
+<p>但钱的力量远远不够，还需要把钱花在刀刃上</p>
+
+<!-- more -->
+
+
+<p><img src="/images/blog/2019-04-20_0.jpg" title="'image'" ></p>
+
+<h2>协作方式</h2>
+
+<p>在高并发场景中，必须要让服务器同时维护大量请求连接，可能是一个服务进程创建另一个进程，也可能是一个服务线程去创建另一个线程，但连接结束后进程或线程就销毁了，这是一个巨大的浪费</p>
+
+<p>一个自然的想法就是通过创建一个进程/线程池从而达到资源复用，一个进程/线程可以处理多个连接</p>
+
+<p>那么如何处理多个连接？</p>
+
+<p><strong>同步阻塞</strong></p>
+
+<p><img src="/images/blog/2019-04-20_1.jpg" title="'image'" ></p>
+
+<p>一个请求占用一个进程处理，先等待数据准备好，然后从内核向进程复制数据，最后处理完数据后返回</p>
+
+<p>如果一个进程处理一个请求，再来请求再开进程，虽然会有CPU在等待IO时的浪费和进程数量限制，但还是可以做到一定的高性能。如果一个进程处理多个连接，那么其他连接会在第一个连接导致的IO操作时被阻塞，这样无法做到高性能，所以不会选择该模式实现高性能</p>
+
+<p><strong>同步非阻塞</strong></p>
+
+<p><img src="/images/blog/2019-04-20_2.jpg" title="'image'" ></p>
+
+<p>进程先将一个套接字在内核中设置成非阻塞再等待数据准备好，在这个过程中反复轮询内核数据是否准备好，准备好之后最后处理数据返回</p>
+
+<p>一个进程处理一个请求不太实际，一个进程处理多个请求的性能上限会更高，所以简单的处理<strong>同步阻塞</strong>中的阻塞问题的方式就是一个进程轮询多个连接，但轮询是有CPU开销的，且如果一个进程有成千上万的连接时效率很低，也不会选择该模式实现高性能</p>
+
+<p><strong>I/O多路复用</strong></p>
+
+<p><img src="/images/blog/2019-04-20_3.jpg" title="'image'" ></p>
+
+<p>相当于对<strong>同步非阻塞</strong>的优化版本，区别在于<strong>I/O多路复用</strong>阻塞在select，epoll这样的系统调用之上，而没有阻塞在真正的I/O系统调用如recvfrom之上。换句话说，轮询机制被优化成通知机制，多个连接公用一个阻塞对象，进程只需要在一个阻塞对象上等待，无需再轮询所有连接</p>
+
+<p>当某条连接有新的数据可以处理时，操作系统会通知进程，进程从阻塞状态返回，开始处理业务，这是高性能的基础，但仍不算高效，因为让一个进程/线程进行select是不够的，还需要某种机制来分配进程/线程去负责监听、处理数据这个两个过程才能实现高性能</p>
+
+<hr />
+
+<p><strong>Reactor</strong></p>
+
+<p><strong>I/O多路复用</strong>结合<strong>线程池</strong>就是<strong>Reactor</strong></p>
+
+<p>Reactor的核心包括Reactor（监听和分配事件）和处理资源池（负责处理事件），具体实现可以多变，体现在：</p>
+
+<ul>
+<li>Reactor的数量可以变化</li>
+<li>处理资源池的数量可以变化，可以是单个进程/线程，也可以是多个进程/线程</li>
+</ul>
+
+
+<p><strong>单Reactor单进程/线程</strong></p>
+
+<p><img src="/images/blog/2019-04-20_4.jpg" title="'image'" ></p>
+
+<ol>
+<li>Reactor对象通过select监控连接事件，收到事件后通过dispatch分发</li>
+<li>如果是建立连接，交给Acceptor处理，通过accept接收连接，创建一个Handler来处理连接后续的事件</li>
+<li>如果是不是建立连接事件，交给之前建立连接阶段创建的对应的Handler处理</li>
+</ol>
+
+
+<p>优点是简单，没有进程间通信、竞争，缺点是只有一个进程，无法发挥多核CPU性能，且Handler上处理某个连接的业务时，整个进程无法处理任何其他事件</p>
+
+<p>所以适用场景不多，适合于业务处理非常快的场景，如Redis</p>
+
+<p><strong>单Reactor多线程</strong></p>
+
+<p><img src="/images/blog/2019-04-20_5.jpg" title="'image'" ></p>
+
+<p>与<strong>单Reactor单进程/线程</strong>在于Handler只负责响应事件，业务处理交给Processor，且Processor会在独立的子线程中处理，然后将结果发给主进程的Handler处理</p>
+
+<p>优点是充分发挥了多核CPU的能力，缺点是多线程数据共享复杂，且Reactor承担所有事件的监听和响应，高并发会成为瓶颈</p>
+
+<p><strong>多Reactor多进程/线程</strong></p>
+
+<p><img src="/images/blog/2019-04-20_6.jpg" title="'image'" ></p>
+
+<p>为了解决<strong>单Reactor多线程</strong>的问题，这个模式的区别：</p>
+
+<ol>
+<li>父进程的select监听到连接建立事件后通过Acceptor将新的连接分配给子进程</li>
+<li>子进程的Reactor将新的连接加入自己的连接队列进行监听，并创建一个Handler用于处理连接的事件</li>
+<li>当有新的事件发生，子Reactor会调用连接的Handler</li>
+<li>Handler完成read->业务处理->send的业务流程</li>
+</ol>
+
+
+<p>看起来比<strong>单Reactor多线程</strong>更复杂，但实现更简单，因为：</p>
+
+<ol>
+<li>父进程只负责接收并建立新连接，子进程只负责业务处理</li>
+<li>父子进程之间的交互只有父进程把连接交给子进程，子进程不需要把结果返回给父进程</li>
+</ol>
+
+
+<p>Nginx、Memcache、Netty使用的就是该模式</p>
+
+<h3>Proactor</h3>
+
+<p>Reactor是同步非阻塞的网络模型，因为真正的read和send这样的IO操作都需要用户进程同步操作，如果把IO操作改为异步就能进一步提升性能，这就是<strong>Proactor</strong></p>
+
+<p><img src="/images/blog/2019-04-20_7.jpg" title="'image'" ></p>
+
+<ol>
+<li>初始化器Initiator负责创建通知组件Proactor和处理器Handler，并且都注册到内核</li>
+<li>内核负责处理注册请求，并完成IO操作</li>
+<li>内核完成IO操作后通知Proactor</li>
+<li>Proactor回调到Handler</li>
+<li>Handler完成业务处理，Handler也可以注册新的Handler到内核</li>
+</ol>
+
+
+<p>理论上Proactor的效率高于Reactor，让IO操作与计算重叠，但要实现真正的异步IO，需要操作系统支持，Windows支持而Linux不完善</p>
+
+<h2>实践方式</h2>
+
+<p>以上是操作系统或Nginx或高性能服务器软件已经帮我们解决了，我们在编码的时候除非达到了代码的性能极限，一般不需要担心这方面</p>
+
+<p>所以下面谈到的是一些作为开发人员，为了提升单体服务的性能而需要注意的地方</p>
+
+<h3>高性能的代码</h3>
+
+<p><strong>性能</strong></p>
+
+<ol>
+<li>选用高性能的框架。比如Java方面考虑用Netty，Go方面考虑用Gin</li>
+<li>代码细节。这块是与我们最息息相关的了，如何写出高性能代码，每种语言都有自己的最佳实践，反而这里没办法讲到，需要日常学习积累。比如字符串拼接效率如何最高？哪个数据结构适合在某个业务场景使用？</li>
+<li>IO细节。由于磁盘的读写速度远低于CPU、内存，所以对磁盘的读写往往会严重拖慢性能，比如写日志，不注意的话可能本地写了一份日志文件，控制台也在输出日志信息，另外一个文件上传流也在写入信息，那么log会成倍地拖慢速度，所以需要统一日志输出方式，比如只往日志收集流中写入到EFK系统中查看</li>
+</ol>
+
+
+<p><strong>单体服务器压测</strong></p>
+
+<p>写出了自认为高性能的代码？赶紧来压测试一遍，压测就一个目的：<strong>寻找瓶颈</strong></p>
+
+<p>在接近于生产环境下的机器做压测才是最真实的，还需要使用专门的压测机来避免环境的影响，最简单的方式是通过ab工具测试QPS是多少，同时检测CPU、内存、网络流量是否达到了瓶颈，然后再根据瓶颈，寻找解决方案，这就是大体压测以及优化的思路，单体应用的压测还挺简单，至于集群的压测就需要考虑更多，日后再说</p>
+
+<p>最近我对一个服务进行了压测，QPS是1200，并且是跑在3台虚拟机上的，瓶颈在于CPU，所以很明显单体服务的性能太低或者是总路由出现了转发问题，这里不考虑后者，我们先分析这个服务的接口是拿来干什么的，这个接口仅仅做了一件事，从Redis获取数据，转发给前端，这里也不考虑Redis的性能问题，那么就可能是在处理数据的时候性能太低。所以同事将返回的json压缩了一下，从40kb压缩到了20kb，QPS直接提升到2500。这就是一个简单的压测后调优的例子，还可以参考<a href="https://www.wangtianyi.top/blog/2018/12/08/yi-ci-ji-yu-wei-fu-wu-kuang-jia-de-tong-yong-ya-ce-diao-you-shi-zhan/">这里</a>。</p>
+
+<h3>合适的服务器</h3>
+
+<p><strong>规格</strong></p>
+
+<p>如果你用过云服务，那么肯定会在启动实例的时候被强迫去选择一个规格的实例，如下</p>
+
+<p><img src="/images/blog/2019-04-20_8.jpg" title="'image'" ></p>
+
+<p>那么请根据你的服务是哪种性能需要，选择对应的服务器呢，当然还要考虑你滴钱包够不够</p>
+
+<p><strong>配置</strong></p>
+
+<p>在Linux平台上，在进行高并发TCP连接处理时，最高的并发数量都要受到系统对用户单一进程同时可打开文件数量的限制（这是因为系统为每个TCP连接都要创建一个socket句柄，每个socket句柄同时也是一个文件句柄）。可使用<code>ulimit</code>命令查看系统允许当前用户进程打开的文件数限制</p>
+
+<p>类似的，对Linux系统配置也会影响到性能的参数需要格外注意，但也需要遵从一个方式：按需调整</p>
+
+<h2>参考</h2>
+
+<p><a href="https://time.geekbang.org/column/intro/81">https://time.geekbang.org/column/intro/81</a><br/>
+<a href="https://www.zhihu.com/question/19732473">https://www.zhihu.com/question/19732473</a><br/>
+<a href="https://blog.csdn.net/guowake/article/details/6615728">https://blog.csdn.net/guowake/article/details/6615728</a></p>
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
 </div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/26/liu-cheng-xing-si-kao/">阅读全文 &rarr;</a>
-    </footer>
-  
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      <footer class="post-footer">
+        <p class="meta text-muted">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 19th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/" itemprop="url">【研发效能之道】个人效能实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>程序员个体如何高效地进行开发工作</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
   
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
 
+<figure class="author-image">
+    <span class="img" href="/about" style="background-image: url(/images/avatar.jpg)"><span class="hidden">Picture</span></span>
+</figure>
 
+<section class="author">
+    <h4><span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="fn" itemprop="name">Tianyi Wang</span></span></h4>
 
-
-Feb 18th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/" itemprop="url">【研发效能之道】研发流程优化实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>接下来会以<strong>提高用户价值的流动效率</strong>为核心，列出一些具体的研发流程优化实践</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 17th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/" itemprop="url">【研发效能之道】研发流程优化理论</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在再次开始一个新的系列，【研发效能之道】，主要参考《极客时间|研发效率破局之道》，系列内容为其读书笔记与自己的理解、总结</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 10th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/" itemprop="url">【Prometheus】Prometheus的设计</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/" itemprop="url">【Prometheus】监控系统概述</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在开始一个新的系列，【Prometheus】，主要参考《深入浅出Prometheus》，基本为其读书笔记加上部分自己的理解</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/jia-gou-ru-men-end/" itemprop="url">【架构入门】思维导图</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/jia-gou-ru-men-end/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 18th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/" itemprop="url">【架构入门 - 可扩展篇】</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>随着服务的壮大，使用人数的增多，业务的递增，服务的扩展性尤为关键，在不影响现有架构的情况下如何增加机器、扩展功能？</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 15th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/" itemprop="url">【架构入门 - 高可用篇】计算高可用</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 5th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" itemprop="url">【架构入门 - 高性能篇】数据库高性能</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
+    <div class="author-meta">
+        <span class="author-link icon-link"><i class="fa fa-link" aria-hidden="true"></i> <a href="http://www.wangtianyi.top">http://www.wangtianyi.top</a></span>
     </div>
+</section>
 
-    <ul class="pager">
-      
-        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
+<hr>
+
+<section class="share">
+    
+    <h4>Share this post</h4>
+    
+    <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?url=http://www.wangtianyi.top/blog/2019/04/20/jia-gou-ru-men-gao-xing-neng-pian-dan-ji/;" 
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.wangtianyi.top/blog/2019/04/20/jia-gou-ru-men-gao-xing-neng-pian-dan-ji/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.wangtianyi.top/blog/2019/04/20/jia-gou-ru-men-gao-xing-neng-pian-dan-ji/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+    
+</section>
+
+
+
+
+<!--
+<footer class="post-footer">
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Instant%20Movie%20Streamer%20v3%20Release&amp;url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+
+-->
+          
+
+
+
+
+Apr 20th, 2019
+          <br>
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/jia-gou/'>架构</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="pager">
+            
+            
+              
+                <a href="/blog/2019/04/09/jia-gou-ru-men-xi-lie-shen-me-shi-jia-gou/" class="col-xs-12 col-md-4 btn btn-default" title="Previous Post: 【架构入门】什么是架构"> 
+                  <div class="text-muted">
+                    <small>Previous Post</small>
+                  </div>
+                  <div class="pager-title">
+                    <h4>【架构入门】什么是架构</h4>
+                  </div>
+                </a>
+              
+            
+            
+            
+              
+              <a href="/blog/2019/04/29/dan-nan-de-ji-ge-gao-neng/" class="col-xs-12 col-md-4 btn btn-default pull-right" title="Next Post: 🥚男的几个高能">
+                <div class="text-muted">
+                  <small>Next Post</small>
+                </div>
+                <div class="pager-title">
+                  <h4>🥚男的几个高能</h4>
+                </div>
+              </a>
+              
+            
+            
+          </div>
+        
+      </footer>
+    </article>
+    
   </div>
 </div>
 

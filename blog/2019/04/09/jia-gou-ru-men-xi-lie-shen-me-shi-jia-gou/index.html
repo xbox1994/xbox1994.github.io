@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>干掉这里的Bug</title>
+  <title>【架构入门】什么是架构 - 干掉这里的Bug</title>
   <meta name="author" content="Tianyi Wang">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.wangtianyi.top/">
+  <link rel="canonical" href="http://www.wangtianyi.top/blog/2019/04/09/jia-gou-ru-men-xi-lie-shen-me-shi-jia-gou/">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="干掉这里的Bug" type="application/atom+xml">
 
   <!-- http://opengraphprotocol="-co.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://www.wangtianyi.top/">
-  <meta property="og:title" content="干掉这里的Bug">
+  <meta property="og:url" content="http://www.wangtianyi.top/blog/2019/04/09/jia-gou-ru-men-xi-lie-shen-me-shi-jia-gou/">
+  <meta property="og:title" content="【架构入门】什么是架构 - 干掉这里的Bug">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -64,24 +64,46 @@
     <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
     <div id="wrap">
       
-      <div id="banner-image">
-        <div class="layer" style="text-align:center;">
-          <div id="banner-text">
-            <h1 class="page-title">干掉这里的Bug</h1>
-            <p class="page-desc">
-              <br>
-            </p>
-            <br>
-            <br>
-            <div class="page-links center">
-              <ul class="index-nav">
-                  <li ><a href="/blog/archives">All</a></li>
-<li ><a href="/about">About</a></li>
-              </ul>
-            </div>
-          </div>
+        <header role="banner">
+          <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">干掉这里的Bug</a>
         </div>
-      </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/blog/archives">All</a></li>
+<li ><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="www.wangtianyi.top">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+        </header>
       
       <div id="main" role="main" class="container">
         <div id="content">
@@ -95,16 +117,12 @@
             </script>
           </div>
           <div class="row">
-  <div class="page-content">
-    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+  <div class="page-content" itemscope itemtype="http://schema.org/Blog">
     <meta itemprop="name" content="干掉这里的Bug" />
     
     <meta itemprop="url" content="http://www.wangtianyi.top" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
   <header class="page-header">
     
       <p class="meta text-muted text-uppercase">
@@ -113,342 +131,323 @@
 
 
 
-Feb 26th, 2020
+Apr 9th, 2019
         
       </p>
     
     
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/26/liu-cheng-xing-si-kao/" itemprop="url">流程性思考</a></h2>
+    <h1 class="entry-title" itemprop="name headline">
+        【架构入门】什么是架构
+        
+    </h1>
     
   </header>
 
 
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>貌似解决了困扰我多年的一个问题</p>
+<div class="entry-content clearfix" itemprop="articleBody description"><p>对于想要入门架构的小白来说，我们必须要了解以下问题：</p>
 
+<ul>
+<li>什么是架构</li>
+<li>架构的目的</li>
+<li>架构的复杂度来源</li>
+<li>做架构需要具备的能力</li>
+</ul>
+
+
+<!-- more -->
+
+
+<p><img src="/images/blog/2019-04-09_1.jpg" title="'image'" ></p>
+
+<h2>什么是架构</h2>
+
+<p><strong>软件架构指软件系统的顶层结构</strong></p>
+
+<p><strong>系统</strong>：泛指由一群有关联的个体组成，根据某种规则运作，能完成个别元件不能单独完成的工作的群体。比如微信就是一个系统<br/>
+<strong>顶层结构</strong>：系统可分为系统与子系统，差别在于系统可能是另外一个大系统的子系统。比如微信系统中还包含聊天、登录、支付、朋友圈等子系统。所以顶层结构更好地来将它们区分开来，避免架构层次混乱</p>
+
+<p>不包括的方面：需求的详尽分析（所有功能需要在设计架构前已经分析清楚，架构师当然需要甄别需求，但软件架构需要基于清晰的需求）、系统中的实现细节（如聊天系统中使用哪种消息加密方式，这是详细设计中需要做的但不应该包含在顶层结构的设计，除非实现方式比较特殊直接影响到架构）</p>
+
+<h2>架构的目的</h2>
+
+<p><strong>根据业务识别出软件系统复杂度来源从而解决复杂度带来的问题</strong></p>
+
+<p>架构产生的直接原因是为了实现一个系统来完成业务需求，那么必定会带来一定的系统复杂度，从而衍生出一系列问题。我们做架构，就是需要提前将这些问题预想到并给出解决方案，这样才算一个合格的架构师</p>
+
+<p>举一个学生管理系统的例子，需求是登录、注册、成绩管理、课程管理。我们一拿到这个需求的时候，首先需要识别出复杂度在哪里，然后给出一些解决方案</p>
+
+<ul>
+<li>性能：一个学校的学生不多，大约1万左右，使用频率也不高，所以QPS非常低，一台主机作为Web服务器，一套MySQL数据库就可以了</li>
+<li>高可用：如果Web服务器挂了几个小时，也无关痛痒，大不了重启服务器就能恢复，但数据库里的数据没了就非常严重了，所以必须考虑MySQL主备方案</li>
+<li>扩展性：几乎不用考虑扩展性，现在的架构起码能抗住两倍于现在的流量</li>
+<li>成本：只需要几台服务器</li>
+<li>安全：由于学生的信息属于学生的隐私，所以需要对我们的入口进行控制，比如需要账号密码管理系统，密码需要加密存储，数据库需要使用复杂用户名密码以及IP白名单</li>
+</ul>
+
+
+<p>所以该系统复杂度主要体现在<strong>存储的可靠性</strong>上，多使用一台服务器作为备库是最简单的解决方案，至于是否还需要另外的数据备份方式依情况而定</p>
+
+<p>这个例子就是我们作为架构师的入门案例，我们通过对学生管理系统的架构进行设计，分析出了复杂度在哪里，并给与了解决方案，达到了架构的目的，但现实情况往往比较复杂，问题更多，我们需要一个更加系统的分析流程来进行架构</p>
+
+<h2>复杂度来源</h2>
+
+<p>想要对问题进行分析，那么首先需要知道问题产生的原因，现在我们来了解一下架构的复杂度来源</p>
+
+<h3>高性能</h3>
+
+<ul>
+<li>一方面是<strong>单机复杂度</strong>，就是在单台计算机内部实现高性能</li>
+</ul>
+
+
+<p>除开硬件，操作系统就是发挥出高性能的关键，进程与线程则是操作系统中性能影响最大的方面，比如我们为了追求高性能，需要考虑多线程、多进程、进程间通信、多线程并发，还需要结合实际场景选择合适的方案</p>
+
+<ul>
+<li>另一方面是<strong>集群复杂度</strong>，就是在多台计算机协作的情况下实现高性能</li>
+</ul>
+
+
+<p><img src="/images/blog/2019-04-09_3.png" title="'image'" ></p>
+
+<p>集群作为<strong>任务分配</strong>的使用方式：能够突破单台服务器的极限性能，通过增加更多的服务器来满足性能要求。比如一台Nginx服务器加几百台Web服务器确实可以达到一定程度的高性能服务，但不能充分发挥出服务器集群的极限性能，因为服务器之间除了分担流量，毫无配合</p>
+
+<p>任务分配的意思是指每台机器都可以处理完整的业务任务，不同的任务分配到不同的机器上执行。一个任务分配器（Nginx、LVS）加上几个业务服务器就能完成这种架构，但详细来讲，任务分配器还需要进行一些配置（跟业务服务器的连接方式、动态更新配置、选择合适的分配算法）</p>
+
+<p>当流量变大，一个任务分配器也是不够用的，需要一个任务分配集群，然后在任务分配集群前加上DNS轮询进行请求分配；业务服务器的数量也会大大增加，增加了管理的难度</p>
+
+<hr />
+
+<p><img src="/images/blog/2019-04-09_4.png" title="'image'" ></p>
+
+<p>集群作为<strong>任务分解</strong>的使用方式：由于业务变得复杂起来，一个请求可能会有很多不同的事情需要后台处理，比如消耗CPU的计算，消耗网络和磁盘IO的数据传输，所以将不同的功能对应到不同子系统中，然后针对不同业务的不同性能需求，分别进行独立的优化。这样不需要对整个系统进行修改，仅仅影响某个业务。这其实就是将单体应用拆分成若干小服务的做法，跟微服务类似，小服务也不能太多，否则会因为服务之间的消息传递大大降低性能</p>
+
+<h3>高可用</h3>
+
+<p>高可用指的是<strong>系统无中断地执行其功能的能力，代表系统的可用性程度</strong>。<strong>无中断</strong>是高可用性的难点所在，<strong>冗余</strong>是做到<strong>无中断</strong>的方法，简单说就是多弄几台服务器当做备份，所以复杂度因此而生。</p>
+
+<ul>
+<li>计算高可用</li>
+</ul>
+
+
+<p>计算指的是业务逻辑处理，无论在哪台服务器上计算都是一样的结果，所以这里的复杂度与【高性能】中的集群复杂度是类似的，不再赘述</p>
+
+<ul>
+<li>存储高可用</li>
+</ul>
+
+
+<p>与计算高可用的区别在于，复杂度除开在集群的配置，还在<strong>平衡数据的一致性和可用性</strong>以及<strong>减少数据不一致对业务造成的影响</strong>上。分布式系统中数据的不一致很可能导致业务不可用或者用户体验极差</p>
+
+<p>比如假设用户的数据存在北京机房，用户存入了 1 万块钱，然后他查询的时候被路由到了上海机房，北京机房的数据没有同步到上海机房，用户会发现他的余额并没有增加 1 万块。但最后发现是传输延迟的问题，给用户带来了不好的体验。根据CAP理论，我们只能在一致性和可用性之间做平衡，这就需要在我们做实际业务的时候进行取舍</p>
+
+<p>那么如何进行取舍？一台数据库服务器肯定可以保证数据的一致性，但可用性太低，所以数据库或缓存都有<strong>主备架构、集群架构</strong>方案来提升可用性。一旦状态异常，还会延伸到<strong>高可用状态决策</strong>，比如主节点宕机，从节点应该以何种策略处理？是根据策略担任主节点？还是集群变成不可用状态？这些问题会在本系列的后续【高可用】相关文章中详细解释</p>
+
+<h3>扩展性</h3>
+
+<p>扩展性指的是<strong>系统为了应对将来需求变化而提供的一种扩展能力，当有新的需求出现时，系统不需要或者仅需要少量修改就可以支持，无须整个系统重构或者重建</strong></p>
+
+<p>设计具备良好可扩展性的系统，有以下两个基本条件，也是复杂度所在：</p>
+
+<ul>
+<li>预测变化</li>
+</ul>
+
+
+<p>我们在开发的过程中，需求是永远做不完的，如果架构一开始设计的没有扩展性，日后的需求涉及到的变更会很难应用到原有的系统上，成本会很高，程序员心里也不爽（改来改去），产品经理也不爽（做得那么慢），老板也不爽（那么多人就只能干这么点事）。所以作为架构师，必须得提前预测将来可能的变化，预测也有一个度，不能过分预测导致无法落地，也不能不预测导致没有扩展性</p>
+
+<p>例如，架构师准备设计一个简单的后台管理系统，当架构师考虑用 MySQL 存储数据时，是否要考虑后续需要用 Oracle 来存储？或者系统可能的访问量是多少？日后需要支持到多少？需要全球性的部署吗？作为架构师需要考虑到一段时间后的变化但不需要考虑到十年后的变化</p>
+
+<p>所以扩展性的一个复杂度在于<strong>预测变化</strong>，预测哪些方面，预测到哪种程度是<strong>预测变化</strong>的复杂所在，业界也不会有一个通用的标准来约束，只能靠自己的经验做出判断</p>
+
+<ul>
+<li>应对变化</li>
+</ul>
+
+
+<p>在做到<strong>预测变化</strong>的基础上，还需要找到合适的方案来<strong>应对变化</strong></p>
+
+<p>找到方案的思路大体是识别出<strong>变化层</strong>与<strong>稳定层</strong>，然后设计出它们之间的接口，这也是扩展性的另一个复杂度所在</p>
+
+<p><img src="/images/blog/2019-04-09_5.png" title="'image'" ></p>
+
+<p>以业务逻辑连接数据库为例，业务逻辑是稳定层，因为业务逻辑应该只关注逻辑的实现，不应该操心连接哪种数据库。多种不同的数据库是变化层，因为数据库可能增加一类或者减少一类。至于它们之间的连接接口，使用连接配置文件和对应的数据库连接包就可以做到。但复杂的是，当新数据库添加进来时，要保证对所有数据库的操作都是一致的，比如SQL语句很可能在不同的数据库中无法直接执行，需要做某些数据库的语法转换</p>
+
+<h3>成本、安全、规模</h3>
+
+<ul>
+<li>低成本</li>
+</ul>
+
+
+<p>和造桥游戏Poly Bridge一样，以最低成本完成稳定的架构才能得到更高的Rank（评价），也是对自己的架构能力的进一步挑战。小项目不需要太多机器，但架构师一般负责的都不会是太小的项目，如果你的架构能省下很多机器（金钱），你的奖金就能发的更多，自己也会非常有成就感</p>
+
+<p>所以，低成本的复杂度就是<strong>在成本与架构中平衡</strong>和<strong>技术创新达到低成本目标</strong>。技术创新对于一般公司难度太高，但像NoSQL、Redis、Hadoop就是通过技术革新带来的低成本收益。所以通常是寻找低成本与高性能、高可用之间的平衡</p>
+
+<ul>
+<li>安全</li>
+</ul>
+
+
+<p>安全非常重要，在涉及到交易相关的业务就更不用说，但安全是非常大的一个方面，大公司一般会有一个专门的安全小组对公司内部进行安全审计。安全问题一旦爆发，公司的业务影响还是小事，公众对公司的信任危机才是大事</p>
+
+<p><strong>功能安全</strong>：像SQL注入、CSRF、XSS、HTTPS、权限控制、密码管理，以及各种系统、软件的漏洞。黑客可以通过这些软件功能上的破绽拿到网站的服务器管理权限。</p>
+
+<p><strong>架构安全</strong>：传统的架构安全主要依靠防火墙，防火墙最基本的功能就是隔离网络，但由于性能问题不适用于互联网高并发场景，尤其难以防范一大堆肉鸡对你网站的DDoS攻击，导致正常业务无法访问，只能依靠运营商或者云服务商强大的带宽和流量清洗的能力，较少自己来设计和实现</p>
+
+<ul>
+<li>规模</li>
+</ul>
+
+
+<p>这里的规模指的是<strong>功能</strong>、<strong>数据</strong>的规模，除开高性能、高可用，当业务越来越复杂，时间越过越久，人员更替越来越多，功能和数据就会越来越丰富</p>
+
+<p>在<strong>功能</strong>上，即使使用的是服务拆分的思路去实现，服务也会越拆越多，若干个服务之间会存在更加复杂的调用链，从而引起质变：访问速度不可接受、调试变得困难</p>
+
+<p>在<strong>数据</strong>上，如果数据在MySQL中越来越多，查询速度会变慢，如果到时候才考虑到分表，根据哪个字段分？增删改查的逻辑需要大改特改；添加索引会花很久，过程中直接导致服务不可用；备份时间太长</p>
+
+<h2>能力的要求</h2>
+
+<p>以上是在技术方面需要考虑到的架构问题，但架构师并不是只需要技术就能无敌于天下的，这是100offer提供的【架构师该具备什么能力才能成为一家公司中的「灵魂人物」】的调查图</p>
+
+<p><img src="/images/blog/2019-04-09_2.jpg" title="'image'" ></p>
+
+<p>可以看出，<strong>设计能力</strong>（根据产品宗旨和目标，分析清楚产品定位以及产品业务，再整合利用现有的技术领域，找出最佳方案，实现产品概念）与<strong>技术能力</strong>（架构师必须是全栈工程师，对前后端运维都需要有所了解，对不同功能的实现多种方案有深入的理解）是架构师的核心能力，占的比重较大</p>
+
+<p>本系列文章也将着重对这两方面能力进行深入，但还有很多其他能力也必不可少，因为从接收需求到实施架构的过程中会有非常多的流程，比如讨论需求、讨论方案、讲解方案、总结汇报、日程安排。沟通表达、总结、管理能力显得格外重要</p>
+
+<p>这些<strong>软技能</strong>都不是一朝一夕能够学得的，需要大量的主动练习才能有所长进，同时本人推荐《软技能 代码之外的生存指南》可以作为学习指南参考</p>
+
+<h2>总结</h2>
+
+<p>以上内容可以说让我们对架构有了一个清晰的认识，也明确了我们需要努力的方向，本系列的后续文章就是将这些方向细化，分别给出一些做架构的具体处理方案，还有架构设计的一些套路。但更重要的是本系列仅仅只能作为入门，即使全部理解也无法成为架构师，还需要亲身实战，即使没有机会，也可以在 <a href="https://github.com/donnemartin/system-design-primer">https://github.com/donnemartin/system-design-primer</a> 上寻找锻炼机会</p>
+
+<h2>参考</h2>
+
+<p><a href="https://time.geekbang.org/column/intro/81">https://time.geekbang.org/column/intro/81</a><br/>
+<a href="https://www.zhihu.com/question/40520339">https://www.zhihu.com/question/40520339</a></p>
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
 </div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/26/liu-cheng-xing-si-kao/">阅读全文 &rarr;</a>
-    </footer>
-  
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      <footer class="post-footer">
+        <p class="meta text-muted">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 19th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/" itemprop="url">【研发效能之道】个人效能实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>程序员个体如何高效地进行开发工作</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
   
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
 
+<figure class="author-image">
+    <span class="img" href="/about" style="background-image: url(/images/avatar.jpg)"><span class="hidden">Picture</span></span>
+</figure>
 
+<section class="author">
+    <h4><span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="fn" itemprop="name">Tianyi Wang</span></span></h4>
 
-
-Feb 18th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/" itemprop="url">【研发效能之道】研发流程优化实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>接下来会以<strong>提高用户价值的流动效率</strong>为核心，列出一些具体的研发流程优化实践</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 17th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/" itemprop="url">【研发效能之道】研发流程优化理论</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在再次开始一个新的系列，【研发效能之道】，主要参考《极客时间|研发效率破局之道》，系列内容为其读书笔记与自己的理解、总结</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 10th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/" itemprop="url">【Prometheus】Prometheus的设计</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/" itemprop="url">【Prometheus】监控系统概述</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在开始一个新的系列，【Prometheus】，主要参考《深入浅出Prometheus》，基本为其读书笔记加上部分自己的理解</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/jia-gou-ru-men-end/" itemprop="url">【架构入门】思维导图</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/jia-gou-ru-men-end/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 18th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/" itemprop="url">【架构入门 - 可扩展篇】</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>随着服务的壮大，使用人数的增多，业务的递增，服务的扩展性尤为关键，在不影响现有架构的情况下如何增加机器、扩展功能？</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 15th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/" itemprop="url">【架构入门 - 高可用篇】计算高可用</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 5th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" itemprop="url">【架构入门 - 高性能篇】数据库高性能</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
+    <div class="author-meta">
+        <span class="author-link icon-link"><i class="fa fa-link" aria-hidden="true"></i> <a href="http://www.wangtianyi.top">http://www.wangtianyi.top</a></span>
     </div>
+</section>
 
-    <ul class="pager">
-      
-        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
+<hr>
+
+<section class="share">
+    
+    <h4>Share this post</h4>
+    
+    <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?url=http://www.wangtianyi.top/blog/2019/04/09/jia-gou-ru-men-xi-lie-shen-me-shi-jia-gou/;" 
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.wangtianyi.top/blog/2019/04/09/jia-gou-ru-men-xi-lie-shen-me-shi-jia-gou/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.wangtianyi.top/blog/2019/04/09/jia-gou-ru-men-xi-lie-shen-me-shi-jia-gou/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+    
+</section>
+
+
+
+
+<!--
+<footer class="post-footer">
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Instant%20Movie%20Streamer%20v3%20Release&amp;url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+
+-->
+          
+
+
+
+
+Apr 9th, 2019
+          <br>
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/jia-gou/'>架构</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="pager">
+            
+            
+              
+                <a href="/blog/2019/03/26/ji-yu-go-microde-wei-fu-wu-jia-gou-ben-di-shi-zhan/" class="col-xs-12 col-md-4 btn btn-default" title="Previous Post: 基于Go Micro的微服务架构本地实战"> 
+                  <div class="text-muted">
+                    <small>Previous Post</small>
+                  </div>
+                  <div class="pager-title">
+                    <h4>基于Go Micro的微服务架构本地实战</h4>
+                  </div>
+                </a>
+              
+            
+            
+            
+              
+              <a href="/blog/2019/04/20/jia-gou-ru-men-gao-xing-neng-pian-dan-ji/" class="col-xs-12 col-md-4 btn btn-default pull-right" title="Next Post: 【架构入门 - 高性能篇】单机高性能">
+                <div class="text-muted">
+                  <small>Next Post</small>
+                </div>
+                <div class="pager-title">
+                  <h4>【架构入门 - 高性能篇】单机高性能</h4>
+                </div>
+              </a>
+              
+            
+            
+          </div>
+        
+      </footer>
+    </article>
+    
   </div>
 </div>
 

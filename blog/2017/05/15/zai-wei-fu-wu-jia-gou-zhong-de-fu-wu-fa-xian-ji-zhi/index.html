@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>干掉这里的Bug</title>
+  <title>[译][MicroService 4]在微服务架构中的服务发现机制 - 干掉这里的Bug</title>
   <meta name="author" content="Tianyi Wang">
 
   
@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.wangtianyi.top/">
+  <link rel="canonical" href="http://www.wangtianyi.top/blog/2017/05/15/zai-wei-fu-wu-jia-gou-zhong-de-fu-wu-fa-xian-ji-zhi/">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="干掉这里的Bug" type="application/atom+xml">
 
   <!-- http://opengraphprotocol="-co.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://www.wangtianyi.top/">
-  <meta property="og:title" content="干掉这里的Bug">
+  <meta property="og:url" content="http://www.wangtianyi.top/blog/2017/05/15/zai-wei-fu-wu-jia-gou-zhong-de-fu-wu-fa-xian-ji-zhi/">
+  <meta property="og:title" content="[译][MicroService 4]在微服务架构中的服务发现机制 - 干掉这里的Bug">
   
 
   <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
@@ -64,24 +64,46 @@
     <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
     <div id="wrap">
       
-      <div id="banner-image">
-        <div class="layer" style="text-align:center;">
-          <div id="banner-text">
-            <h1 class="page-title">干掉这里的Bug</h1>
-            <p class="page-desc">
-              <br>
-            </p>
-            <br>
-            <br>
-            <div class="page-links center">
-              <ul class="index-nav">
-                  <li ><a href="/blog/archives">All</a></li>
-<li ><a href="/about">About</a></li>
-              </ul>
-            </div>
-          </div>
+        <header role="banner">
+          <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">干掉这里的Bug</a>
         </div>
-      </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/blog/archives">All</a></li>
+<li ><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="sitesearch" value="www.wangtianyi.top">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+        </header>
       
       <div id="main" role="main" class="container">
         <div id="content">
@@ -95,16 +117,12 @@
             </script>
           </div>
           <div class="row">
-  <div class="page-content">
-    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+  <div class="page-content" itemscope itemtype="http://schema.org/Blog">
     <meta itemprop="name" content="干掉这里的Bug" />
     
     <meta itemprop="url" content="http://www.wangtianyi.top" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
       
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
   <header class="page-header">
     
       <p class="meta text-muted text-uppercase">
@@ -113,342 +131,250 @@
 
 
 
-Feb 26th, 2020
+May 15th, 2017
         
       </p>
     
     
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/26/liu-cheng-xing-si-kao/" itemprop="url">流程性思考</a></h2>
+    <h1 class="entry-title" itemprop="name headline">
+        [译][MicroService 4]在微服务架构中的服务发现机制
+        
+    </h1>
     
   </header>
 
 
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>貌似解决了困扰我多年的一个问题</p>
+<div class="entry-content clearfix" itemprop="articleBody description"><!--more-->
 
+
+<h2>为什么用服务发现</h2>
+
+<p>让我们想象你正在写调用有REST API或者Thrift API的代码。为了发送请求，你的代码需要知道网络地址（IP地址和端口）。在跑在物理硬件上运行的传统应用上，服务实例的网络地址是相对静止的。比如你的代码可以读取你本地的配置文件。</p>
+
+<p>在现代、基于云服务的应用，然而这是非常难以解决的问题，就像下面的图表：</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part4-1_difficult-service-discovery.png" alt="" /></p>
+
+<p>服务实例动态分配网络地址。一系列服务实例会因为自动缩放、失败或升级而动态改变。所以你的客户端代码需要用更精确的服务发现机制。</p>
+
+<p>有两种服务发现模式。</p>
+
+<h4>客户端发现模式</h4>
+
+<p>当使用客户端发现，客户端对可用服务实例和经过他们的负载均衡请求有着决定网络位置的责任。客户端查询可用服务实例注册数据库。客户端用负载均衡策略去选择一个可用的服务实例然后发送请求。</p>
+
+<p>下面的图标展示这个模式的结构。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part4-2_client-side-pattern.png" alt="" /></p>
+
+<p><a href="https://netflix.github.io/">Netflix OSS</a>提供一个客户端发现模式的很好的例子。<a href="https://github.com/Netflix/eureka">Netflix Eureka</a>是一个服务注册表。它提供REST API给管理服务实例的注册并且查询可用实例。<a href="https://github.com/Netflix/ribbon">Netflix Ribbon</a>是可以和Eureka配合使用的IPC客户端，可以处理在可用服务实例间的负载均衡。我们将在下片文章深入讨论Eureka。</p>
+
+<p>客户端发现模式有很多优缺点。这种模式是相对简单的，除了服务注册表，没有其他的移动部件。并且因为客户端知道可用的服务实例，所以它可以实现智能的<strong>基于特定应用的负载均衡策略</strong>，比如一致地使用散列。一个很大的<strong>缺点是需要将客户端和服务注册表结合。你必须实现客户端服务发现逻辑和框架</strong>。</p>
+
+<h4>服务端发现模式</h4>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part4-3_server-side-pattern.png" alt="" /></p>
+
+<p>客户端通过负载均衡器发送请求给服务。负载均衡器查询服务注册表并且路由每个请求到一个可用的服务实例。在客户端发现中，服务实例在服务注册表注册和注销。</p>
+
+<p>AWS ELB是一个服务端发现的例子。一个ELB是通常被用来平衡外部流量。然而你可以用ELB去均衡内部的。客户端发请求通过ELB和他的DNS名字。ELB在ECS和EC2的实例间平衡流量。没有单独的服务注册表，而是EC2和ECS容器被注册到ELB自身。</p>
+
+<p>HTTP服务器和负载均衡器可以用来当做服务端发现的负载均衡器。比如<a href="https://www.airpair.com/scalable-architecture-with-docker-consul-and-nginx">这篇博文</a>描述用Consul Template来动态配置Nginx反向代理。Consul Template是一个可以从Consul服务注册表中拿到数据来定期重新生成任意配置文件的工具。它会运行任意的shell命令每当文件更改。在博文的描述中Consul Template生成<strong>nginx.conf</strong>文件用来配置反向代理，然后告诉Nginx重新加载配置。</p>
+
+<p>一些部署环境比如Kubernetes和Marathon在每个主机上跑一个代理。代理充当服务端发现的负载均衡器。为了发送请求给服务端，客户端通过代理使用主机的IP地址和服务端分配的端口来路由请求。代理然后透明地转发请求到集群中某处可用的服务。</p>
+
+<p>好处：服务发现的细节从客户端抽象出来。客户端只需要简单地想负载均衡器发送请求。消除实现服务发现逻辑的需要。</p>
+
+<p>缺点：需要设置和管理的高可用系统组件。</p>
+
+<h2>服务注册表</h2>
+
+<p>包含服务实例的网络位置。服务注册表需要高可用并且保持最新。客户端可以从服务注册表缓存到网络位置。然而，当信息最终变得过期，客户端无法发现服务实例。所以，服务注册表包含使用复制协议去维护一致性的一组服务器构成。</p>
+
+<p>Netflix Eureka是一个服务注册表的好例子。提供了REST API来注册和查询服务实例。</p>
+
+<p>Netflix通过在每个EC2可用区运行一个或多个Eureka服务来实现高可用。每个Eureka服务器都有自己的弹性IP地址。DNS TEXT记录被用来存储Eureka集群的配置，这是可用于映射可用区到Eureka服务器的网络位置的列表。当Eureka服务启动后，查询DNS去接受Eureka集群的配置，分配IP。</p>
+
+<p>Eureka客户端 - 查询DNS来发现服务器的网络位置。然而，如果同一可用区没有服务器，客户端用另一个可用区的Eureka服务器。</p>
+
+<p>其他服务注册表的例子：</p>
+
+<ul>
+<li>etcd - 高可用，分布式，一致的键值存储来分享配置和服务发现。比如Kubernetes 和Cloud Foundry.</li>
+<li>consul - 发现和配置服务的工具。提供API允许客户端注册和发现服务。它可以执行健康检查来决定服务可用性。</li>
+<li>zookeeper - 广泛使用，高性能协调服务。原来是Hadoop的子项目，现在是顶级项目。</li>
+</ul>
+
+
+<p>另外，一些系统没有明确的服务注册表。服务注册表只是基础架构的内置部分。</p>
+
+<h2>服务注册方式</h2>
+
+<p>服务实例必须能在服务注册表中注册和注销。有几种不同的方式来处理注册和注销。一个是服务实例自己去注册自己。另一个是用于其他系统组件来管理服务实例的注册。</p>
+
+<h4>自注册模式</h4>
+
+<p>服务实例自己负责注册和注销。如果需要，服务实例发送心跳请求来防止注册过期了。</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part4-4_self-registration-pattern.png" alt="" /></p>
+
+<p>一个很好的例子是<a href="https://github.com/Netflix/eureka">Netflix OSS Eureka client</a>。Eureka客户端处理服务实例注册和注销的各个方面。<a href="http://projects.spring.io/spring-cloud/">Spring Cloud project</a>实现包括服务发现的多种模式，可以轻松在Eureka上注册服务实例。你可以用@ EnableEurekaClient的Java注解来配置。</p>
+
+<p>好处：相对简单，不需要其他系统组件</p>
+
+<p>缺点：将服务实例耦合到服务注册表。你必须在每个编程语言和框架中实现注册代码。</p>
+
+<p>将服务与服务注册表分离的替代方法是第三方注册模式。</p>
+
+<h2>第三方注册模式</h2>
+
+<p>当使用第三方注册模式时，服务实例不负责向服务注册表注册自己。相反，称为<em>服务注册器</em>的另一个组件处理注册。服务注册器通过轮询部署环境或者订阅事件来跟踪</p>
+
+<p><img src="https://cdn-1.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part4-5_third-party-pattern.png" alt="" /></p>
+
+<p>一个服务注册器的例子是开源的<a href="https://github.com/gliderlabs/registrator">Registrator</a>。它自动注册和注销作为Docker容器的服务实例。注册商支持多个服务注册机构包括etcd和Consul。</p>
+
+<p>另外一个例子是<a href="https://github.com/netflix/Prana">NetflixOSS Prana</a>。主要用于非JVM语言编写的服务。它是服务实例并行运行的侧边应用程序。Prana使用Netflix Eureka注册和注销服务实例。</p>
+
+<p>好处：服务和服务注册表解耦，你不需要为每种编程语言和框架实现服务注册的逻辑，而是服务实例注册功能被在专用服务中以集中方式管理。</p>
+
+<p>缺点：除非内置到部署环境，否则它是你需要设置和管理的另一个高可用系统组件。</p>
+
+<h2>总结</h2>
+
+<p>在微服务应用中，运行的服务实例集会动态更改。实例能动态分配网络位置。所以为了使客户端向服务端发送请求它必须使用服务发现机制。</p>
+
+<p>服务发现的关键点是服务注册表。它2是一个可用的服务实例的数据库。提供了可管理和查询的API。服务实例通过API注册和注销到服务注册表中。</p>
+
+<p>有两种服务发现模式：客户端发现和服务端发现。前者是客户端负责查询服务注册表然后选择可用实例再发送请求。后者客户端发给负载均衡器，让它帮客户端查询服务注册表和发送请求。</p>
+
+<p>有两种方式注册和注销服务。自注册：服务实例自己注册自己到服务注册表中。第三方注册：第三方系统组件代表服务来操作注册和注销。</p>
+
+<p>在一些部署环境中你需要用服务注册表来设置自己的服务发现基础设施比如 Netflix Eureka, etcd, or Apache Zookeeper。在其他部署环境，服务注册表是内置的。比如 Kubernetes and Marathon。他们还在扮演服务端发现路由器角色的每个集群主机上运行代理。</p>
+
+<p>HTTP反向代理和负载均衡器比如NGINX能当做服务端发现的服务在均衡器。服务注册表可以推路由信息给NGINX并且触发流畅的配置更新。</p>
+
+<h2>号外号外</h2>
+
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br/>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview">https://github.com/xbox1994/2018-Java-Interview</a></p>
 </div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/26/liu-cheng-xing-si-kao/">阅读全文 &rarr;</a>
-    </footer>
-  
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      <footer class="post-footer">
+        <p class="meta text-muted">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 19th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/" itemprop="url">【研发效能之道】个人效能实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>程序员个体如何高效地进行开发工作</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/19/yan-fa-xiao-neng-zhi-dao--ge-ren-xiao-neng-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
   
 
 
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
 
+<figure class="author-image">
+    <span class="img" href="/about" style="background-image: url(/images/avatar.jpg)"><span class="hidden">Picture</span></span>
+</figure>
 
+<section class="author">
+    <h4><span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="fn" itemprop="name">Tianyi Wang</span></span></h4>
 
-
-Feb 18th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/" itemprop="url">【研发效能之道】研发流程优化实践</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>接下来会以<strong>提高用户价值的流动效率</strong>为核心，列出一些具体的研发流程优化实践</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/18/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-shi-jian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Feb 17th, 2020
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/" itemprop="url">【研发效能之道】研发流程优化理论</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在再次开始一个新的系列，【研发效能之道】，主要参考《极客时间|研发效率破局之道》，系列内容为其读书笔记与自己的理解、总结</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2020/02/17/yan-fa-xiao-neng-zhi-dao--yan-fa-liu-cheng-you-hua-li-lun/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 10th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/" itemprop="url">【Prometheus】Prometheus的设计</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/10/prometheus-prometheus-de-she-ji/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/" itemprop="url">【Prometheus】监控系统概述</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>现在开始一个新的系列，【Prometheus】，主要参考《深入浅出Prometheus》，基本为其读书笔记加上部分自己的理解</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/prometheus-jian-kong-xi-tong-gai-shu/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-Jun 8th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/06/08/jia-gou-ru-men-end/" itemprop="url">【架构入门】思维导图</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"></div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/06/08/jia-gou-ru-men-end/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 18th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/" itemprop="url">【架构入门 - 可扩展篇】</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>随着服务的壮大，使用人数的增多，业务的递增，服务的扩展性尤为关键，在不影响现有架构的情况下如何增加机器、扩展功能？</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/18/jia-gou-ru-men-ke-kuo-zhan-pian/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 15th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/" itemprop="url">【架构入门 - 高可用篇】计算高可用</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/15/jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-May 5th, 2019
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" itemprop="url">【架构入门 - 高性能篇】数据库高性能</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="read-more btn btn-default" href="/blog/2019/05/05/jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
+    <div class="author-meta">
+        <span class="author-link icon-link"><i class="fa fa-link" aria-hidden="true"></i> <a href="http://www.wangtianyi.top">http://www.wangtianyi.top</a></span>
     </div>
+</section>
 
-    <ul class="pager">
-      
-        <li class="previous"><a href="/posts/2">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
+<hr>
+
+<section class="share">
+    
+    <h4>Share this post</h4>
+    
+    <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?url=http://www.wangtianyi.top/blog/2017/05/15/zai-wei-fu-wu-jia-gou-zhong-de-fu-wu-fa-xian-ji-zhi/;" 
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.wangtianyi.top/blog/2017/05/15/zai-wei-fu-wu-jia-gou-zhong-de-fu-wu-fa-xian-ji-zhi/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.wangtianyi.top/blog/2017/05/15/zai-wei-fu-wu-jia-gou-zhong-de-fu-wu-fa-xian-ji-zhi/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+    
+</section>
+
+
+
+
+<!--
+<footer class="post-footer">
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Instant%20Movie%20Streamer%20v3%20Release&amp;url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://iyask.me/instant-movie-streamer-v3-release/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+
+-->
+          
+
+
+
+
+May 15th, 2017
+          <br>
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/microservice/'>microservice</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="pager">
+            
+            
+              
+                <a href="/blog/2017/05/05/gou-jian-wei-fu-wu-wei-fu-wu-jia-gou-zhong-de-jin-cheng-jian-tong-xin/" class="col-xs-12 col-md-4 btn btn-default" title="Previous Post: [译][MicroService 3]构建微服务:微服务架构中的进程间通信"> 
+                  <div class="text-muted">
+                    <small>Previous Post</small>
+                  </div>
+                  <div class="pager-title">
+                    <h4>[译][MicroService 3]构建微服务:微服务架构中的进程间通信</h4>
+                  </div>
+                </a>
+              
+            
+            
+            
+              
+              <a href="/blog/2017/05/19/dockerjin-jie-yu-shi-zhan--bi-ji-ji-ben-zhi-shi-pian/" class="col-xs-12 col-md-4 btn btn-default pull-right" title="Next Post: 《Docker进阶与实战》笔记-基本知识篇">
+                <div class="text-muted">
+                  <small>Next Post</small>
+                </div>
+                <div class="pager-title">
+                  <h4>《Docker进阶与实战》笔记-基本知识篇</h4>
+                </div>
+              </a>
+              
+            
+            
+          </div>
+        
+      </footer>
+    </article>
+    
   </div>
 </div>
 
