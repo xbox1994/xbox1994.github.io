@@ -8,5 +8,5 @@ bundle exec rake preview
 bundle exec rake generate
 bundle exec rake deploy
 git add .
-git commit -m "qrcode"
+git commit -m "[文章]"
 git push origin source
