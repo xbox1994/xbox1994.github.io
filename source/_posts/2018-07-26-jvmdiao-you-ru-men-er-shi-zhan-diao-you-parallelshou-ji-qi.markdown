@@ -3,7 +3,7 @@ layout: post
 title: "JVM调优入门（二）：实战调优Parallel收集器"
 date: 2018-07-27 02:01:49 +0800
 comments: true
-categories: 后台
+tags: 后台
 ---
 
 在调优JVM的时候，我们的目的是在一定的运行环境下提高**吞吐量**，降低**最大停顿时间**。这篇文章以Parallel收集器来进行一次调优实战。

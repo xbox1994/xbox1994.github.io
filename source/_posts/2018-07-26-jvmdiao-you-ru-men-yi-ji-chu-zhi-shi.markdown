@@ -3,7 +3,7 @@ layout: post
 title: "JVM调优入门（一）：基础知识"
 date: 2018-07-25 17:31:28 +0800
 comments: true
-categories: 后台
+tags: 后台
 ---
 
 当Java程序性能达不到目标，且代码上的优化手段都已经穷尽时，通常需要调整垃圾回收器和JVM内存空间配置来进一步提高性能，这就是JVM调优。

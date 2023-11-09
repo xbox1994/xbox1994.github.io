@@ -3,7 +3,7 @@ layout: post
 title: "一次小型脑暴+Inception的过程"
 date: 2017-06-09 16:59:28 +0800
 comments: true
-categories: Inception
+tags: Inception
 ---
 在Beach上呆久了就会觉得无聊，然后最无聊的老司机来干大事啦，虽然整个流程只花了一个半小时。
 

@@ -3,7 +3,7 @@ layout: post
 title: "NUS后台"
 date: 2016-12-18 16:12:24 +0800
 comments: true
-categories: 后台
+tags: 后台
 ---
 Nginx Unicorn Sinatra  
 研究一个后台架构,客户端发送的请求最开始是由是Nginx接收的,随后反向代理发送给Unicorn服务器的一个线程,接下来是Sinatra框架和Rack负责处理

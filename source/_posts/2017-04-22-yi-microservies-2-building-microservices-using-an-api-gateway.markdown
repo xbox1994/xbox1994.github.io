@@ -3,7 +3,7 @@ layout: post
 title: "[译][MicroService 2]构建微服务:使用API网关"
 date: 2017-04-22 22:26:33 +0800
 comments: true
-categories: MicroService
+tags: MicroService
 ---
 
 七部曲中的第一篇是关于设计，构建和部署微服务。讨论了微服务的好处和缺点，尽管一系列的微服务有一定的复杂性，但是它们对于复杂应用来说还是通用的理想选择。这是第二篇文章关于讨论使用API网关来构建微服务。

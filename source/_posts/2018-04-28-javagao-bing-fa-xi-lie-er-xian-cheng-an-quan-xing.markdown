@@ -3,7 +3,7 @@ layout: post
 title: "Java多线程与高并发(二):线程安全性"
 date: 2018-04-28 23:59:31 +0800
 comments: true
-categories: 后台
+tags: 后台
 ---
 
 面试官：你能说说什么是线程安全吗？

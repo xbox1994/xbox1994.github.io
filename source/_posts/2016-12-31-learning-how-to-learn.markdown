@@ -3,7 +3,7 @@ layout: post
 title: "Learning how to Learn"
 date: 2016-12-31 18:05:30 +0800
 comments: true
-categories: 学习
+tags: 学习
 ---
 
 在过去的很多年时间里,我很少,其他人也很少告诉我们自己该如何学习,而是告诉你时间是挤出来的,把时间花到学习上是唯一提高学习成绩的方法.

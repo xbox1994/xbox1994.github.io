@@ -3,7 +3,7 @@ layout: post
 title: "[译][MicroService 1]介绍微服务"
 date: 2017-04-16 23:03:59 +0800
 comments: true
-categories: MicroService
+tags: MicroService
 ---
 微服务现在引起和很大的关注：文章，博客，讨论或者在社交媒体和会议报告上。他们正快速走向[Gartner炒作周期](http://www.gartner.com/technology/research/methodologies/hype-cycle.jsp)的高估预期阶段。与此同时，在软件社区中有怀疑者角儿微服务没有任何新意。Naysayers声称这个想法只是SOA的重塑。不过，尽管有炒作和怀疑，微服务架构模式在敏捷开发和复杂交付应用中有明显的优势。
 

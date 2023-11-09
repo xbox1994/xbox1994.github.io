@@ -3,7 +3,7 @@ layout: post
 title: "对CI/CD与分支模型的理解"
 date: 2017-06-13 00:02:12 +0800
 comments: true
-categories: DevOps
+tags: DevOps
 ---
 最近从前项目上刚下来，经历了项目中分支策略的重大变更，完成了对部署策略替换的实现，现在想把自己了解到的这方面知识记录以及总结一下，深入自己对其的理解程度。
 

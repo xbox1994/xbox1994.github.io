@@ -3,7 +3,7 @@ layout: post
 title: "Java多线程与高并发(四):java.util.concurrent包"
 date: 2018-05-01 11:53:15 +0800
 comments: true
-categories: 后台
+tags: 后台
 ---
 
 面试官：你用过JUC的哪些工具类？

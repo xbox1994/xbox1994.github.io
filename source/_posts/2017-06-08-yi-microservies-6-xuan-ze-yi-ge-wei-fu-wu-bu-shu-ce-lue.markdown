@@ -3,7 +3,7 @@ layout: post
 title: "[译][MicroService 6]选择一个微服务部署策略"
 date: 2017-06-08 23:19:56 +0800
 comments: true
-categories: MicroService
+tags: MicroService
 ---
 
 选择一个微服务部署策略

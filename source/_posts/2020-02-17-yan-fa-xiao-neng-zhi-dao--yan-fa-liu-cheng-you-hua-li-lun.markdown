@@ -3,7 +3,7 @@ layout: post
 title: "【研发效能之道】研发流程优化理论"
 date: 2020-02-17 15:49:59 +0800
 comments: true
-categories: DevOps
+tags: DevOps
 ---
 
 现在再次开始一个新的系列，【研发效能之道】，主要参考《极客时间|研发效率破局之道》，系列内容为其读书笔记与自己的理解、总结

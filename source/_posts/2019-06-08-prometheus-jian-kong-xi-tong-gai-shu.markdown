@@ -3,7 +3,7 @@ layout: post
 title: "【Prometheus】监控系统概述"
 date: 2019-06-08 16:06:06 +0800
 comments: true
-categories: DevOps
+tags: DevOps
 ---
 
 现在开始一个新的系列，【Prometheus】，主要参考《深入浅出Prometheus》，基本为其读书笔记加上部分自己的理解

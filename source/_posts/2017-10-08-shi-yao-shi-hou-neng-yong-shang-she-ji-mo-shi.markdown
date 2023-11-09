@@ -3,7 +3,7 @@ layout: post
 title: "什么时候能用上设计模式？"
 date: 2017-10-08 18:05:56 +0800
 comments: true
-categories: 后台
+tags: 后台
 ---
 这是原本我觉得在这一生中很难碰到的开发实践。
 

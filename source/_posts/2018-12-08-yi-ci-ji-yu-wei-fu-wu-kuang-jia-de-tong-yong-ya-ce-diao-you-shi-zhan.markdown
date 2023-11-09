@@ -3,7 +3,7 @@ layout: post
 title: "一次简单通用的压测调优实战"
 date: 2018-12-08 20:16:55 +0800
 comments: true
-categories: 后台
+tags: 后台
 ---
 
 相比于网上教你如何使用ab、jmeter工具进行压测一个接口，本文更关注在压测调优的思路上。

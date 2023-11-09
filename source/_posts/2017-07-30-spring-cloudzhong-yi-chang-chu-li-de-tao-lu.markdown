@@ -3,7 +3,7 @@ layout: post
 title: "Spring Cloud中异常处理的套路"
 date: 2017-07-30 01:55:36 +0800
 comments: true
-categories: 后台
+tags: 后台
 ---
 异常在Java中有两种分类：Error（OutOfMemoryError之类的我们自己程序无法处理的非常严重的错误，Java推荐不catch，让程序随之崩溃）、Excepiton（NullPointerException之类的并不致命的错误，Java觉得indicates conditions that a reasonable application might want to catch，推荐catch），本文以下内容涉及到的都是Exception。
 

@@ -3,7 +3,7 @@ layout: post
 title: "【架构入门】思维导图"
 date: 2019-06-08 16:06:06 +0800
 comments: true
-categories: 架构
+tags: 架构
 ---
 
 <!-- more -->

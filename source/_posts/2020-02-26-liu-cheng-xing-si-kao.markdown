@@ -3,7 +3,7 @@ layout: post
 title: "流程性思考"
 date: 2020-02-26 16:44:10 +0800
 comments: true
-categories: 生活绝非编码
+tags: 生活绝非编码
 ---
 
 貌似解决了困扰我多年的一个问题

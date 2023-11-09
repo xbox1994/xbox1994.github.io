@@ -3,7 +3,7 @@ layout: post
 title: "打上花火 完结！"
 date: 2018-09-01 20:40:18 +0800
 comments: true
-categories: 生活绝非编码
+tags: 生活绝非编码
 ---
 
 不容易啊，为了这首歌，练了足足一个月

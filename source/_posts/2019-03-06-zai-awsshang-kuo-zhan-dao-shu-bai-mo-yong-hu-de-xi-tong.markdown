@@ -3,7 +3,7 @@ layout: post
 title: "【译】在AWS上扩展到数百万用户的系统"
 date: 2019-03-06 00:02:36 +0800
 comments: true
-categories: 架构
+tags: 架构
 ---
 
 <!-- more -->

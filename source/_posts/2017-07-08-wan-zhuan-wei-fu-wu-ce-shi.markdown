@@ -3,7 +3,7 @@ layout: post
 title: "玩转微服务测试"
 date: 2017-07-08 00:48:13 +0800
 comments: true
-categories: MicroService
+tags: MicroService
 ---
 本文会讲到在微服务中，测试如何在基于其意义的基础上如何配合微服务的特点被完成，不会涉及到类似测试技巧、测试性能等实现细节，但看完你会明白的是要写什么、为什么在微服务中这样写。
 

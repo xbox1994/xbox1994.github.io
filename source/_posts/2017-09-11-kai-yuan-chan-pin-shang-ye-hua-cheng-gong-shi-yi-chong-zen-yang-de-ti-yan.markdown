@@ -3,7 +3,7 @@ layout: post
 title: "开源产品商业化成功是一种怎样的体验"
 date: 2017-09-11 01:18:59 +0800
 comments: true
-categories: 生活绝非编码
+tags: 生活绝非编码
 ---
 Docker：泻药
 <!--more-->

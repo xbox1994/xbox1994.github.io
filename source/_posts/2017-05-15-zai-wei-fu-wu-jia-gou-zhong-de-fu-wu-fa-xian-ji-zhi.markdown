@@ -3,7 +3,7 @@ layout: post
 title: "[译][MicroService 4]在微服务架构中的服务发现机制"
 date: 2017-05-15 23:11:02 +0800
 comments: true
-categories: MicroService
+tags: MicroService
 ---
 
 <!--more-->

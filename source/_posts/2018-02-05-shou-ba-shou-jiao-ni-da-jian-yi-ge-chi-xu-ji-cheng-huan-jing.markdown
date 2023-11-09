@@ -3,7 +3,7 @@ layout: post
 title: "手把手教你搭建一个持续集成环境"
 date: 2018-02-05 18:47:16 +0800
 comments: true
-categories: DevOps
+tags: DevOps
 ---
 
 本文将带领你从0开始，用Vagrant + Docker + Ansible + Jenkins + Nginx + GitHub等工具和资源来搭建一条可执行可扩展的持续集成流水线，即使这些名字你都没听过也没关系，本文将会在需要的时候一一解释给你听。

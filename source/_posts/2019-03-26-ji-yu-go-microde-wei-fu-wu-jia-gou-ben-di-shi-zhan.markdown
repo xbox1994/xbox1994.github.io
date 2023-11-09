@@ -3,7 +3,7 @@ layout: post
 title: "基于Go Micro的微服务架构本地实战"
 date: 2019-03-26 17:00:00 +0800
 comments: true
-categories: 后台
+tags: 后台
 ---
 
 本项目Github地址：https://github.com/xbox1994/GoMicroExample

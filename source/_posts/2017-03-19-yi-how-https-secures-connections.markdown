@@ -3,7 +3,7 @@ layout: post
 title: "[译]How HTTPS Secures Connections"
 date: 2017-03-19 04:15:33 +0800
 comments: true
-categories: 翻译
+tags: 翻译
 ---
 译自：https://blog.hartleybrody.com/https-certificates/
 <!--more-->

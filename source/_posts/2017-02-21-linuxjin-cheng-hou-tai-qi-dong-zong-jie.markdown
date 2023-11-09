@@ -3,7 +3,7 @@ layout: post
 title: "Linux进程后台启动总结"
 date: 2017-02-21 16:44:21 +0800
 comments: true
-categories: DevOps
+tags: DevOps
 ---
 & screen nohup service...进程的后台启动方式总结
 <!--more-->

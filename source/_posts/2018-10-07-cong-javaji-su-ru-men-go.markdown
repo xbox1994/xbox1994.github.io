@@ -3,7 +3,7 @@ layout: post
 title: "从Java极速入门Go"
 date: 2018-10-07 22:46:21 +0800
 comments: true
-categories: 后台
+tags: 后台
 ---
 
 <!-- more -->

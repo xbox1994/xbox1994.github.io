@@ -3,7 +3,7 @@ layout: post
 title: "React Native组件设计实践"
 date: 2017-11-18 20:12:55 +0800
 comments: true
-categories: 前端
+tags: 前端
 ---
 
 本文中所提到的**组件**的定义是基于React Native官方提供的某个/些组件进行包装/组合的用户某个特定App的自定义组件，可能与业务相关，也可能无关。

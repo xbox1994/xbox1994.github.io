@@ -3,7 +3,7 @@ layout: post
 title: "【架构入门 - 高性能篇】集群高性能"
 date: 2019-05-01 16:06:06 +0800
 comments: true
-categories: 架构
+tags: 架构
 ---
 
 做到集群高性能其实非常简单，三个字【加机器】

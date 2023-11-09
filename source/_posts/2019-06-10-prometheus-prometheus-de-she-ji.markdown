@@ -3,7 +3,7 @@ layout: post
 title: "【Prometheus】Prometheus的设计"
 date: 2019-06-10 16:06:06 +0800
 comments: true
-categories: DevOps
+tags: DevOps
 ---
 
 <!-- more -->

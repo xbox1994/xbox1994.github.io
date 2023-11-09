@@ -3,7 +3,7 @@ layout: post
 title: "Java多线程与高并发(三):对象的安全发布与共享策略"
 date: 2018-04-30 21:10:40 +0800
 comments: true
-categories: 后台 
+tags: 后台 
 ---
 
 面试官：你知道如何发布或共享一个对象吗？

@@ -3,7 +3,7 @@ layout: post
 title: "Java多线程与高并发(一):并发基础与模拟工具"
 date: 2018-04-28 11:09:20 +0800
 comments: true
-categories: 后台
+tags: 后台
 ---
 
 面试官：你知道Java的内存模型是什么吗？

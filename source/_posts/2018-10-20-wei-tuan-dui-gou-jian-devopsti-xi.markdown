@@ -3,7 +3,7 @@ layout: post
 title: "为团队构建DevOps体系"
 date: 2018-10-20 19:12:43 +0800
 comments: true
-categories: DevOps
+tags: DevOps
 ---
 在开发过程中，如果团队没有基本的DevOps体系来保证应用的稳定，便捷的自动部署，规范的部署流程，优良的开发环境，那么除了开发效率很可能是极为底下之外，团队成员也怕是会怨声载道，更别提应用的健壮性了。
 

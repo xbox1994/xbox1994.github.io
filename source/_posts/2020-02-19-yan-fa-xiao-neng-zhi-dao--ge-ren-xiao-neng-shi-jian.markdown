@@ -3,7 +3,7 @@ layout: post
 title: "【研发效能之道】个人效能实践"
 date: 2020-02-19 18:58:15 +0800
 comments: true
-categories: DevOps
+tags: DevOps
 ---
 
 程序员个体如何高效地进行开发工作

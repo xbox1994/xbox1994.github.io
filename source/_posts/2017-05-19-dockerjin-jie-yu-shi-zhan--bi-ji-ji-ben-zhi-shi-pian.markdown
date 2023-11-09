@@ -3,7 +3,7 @@ layout: post
 title: "《Docker进阶与实战》笔记-基本知识篇"
 date: 2017-05-19 00:09:41 +0800
 comments: true
-categories: DevOps
+tags: DevOps
 ---
 
 <!--more-->
@@ -147,7 +147,7 @@ root@workshop:/var/lib/docker/graph/3d5bcd78e074f6f77b820bf4c6db0e05d522e24c855f
 [
 {
     "Id": "3d5bcd78e074f6f77b820bf4c6db0e05d522e24c855f3c2a3bbf3b1c8f967ba8",
-    "RepoTags": [
+    "Repotags:": [
         "busybox:latest"
     ],
     "RepoDigests": [],
