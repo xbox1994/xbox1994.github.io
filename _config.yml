@@ -64,7 +64,7 @@ ga_domain: yoursite
 
 # Sidebar settings
 sidebar: true                       # whether or not using Sidebar.
-sidebar-about-description: "I asked for this difficulty myself"
+sidebar-about-description: "I chose this difficulty myself."
 sidebar-avatar: /img/avatar/kadun.png      # use absolute URL, seeing it's used in both `/` and `/about/`
 widgets:
 - featured-tags
