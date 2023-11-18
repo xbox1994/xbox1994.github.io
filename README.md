@@ -10,3 +10,5 @@ npm install
 hexo server
 
 hexo clean && hexo deploy
+
+hexo new post "2023-11-18-分布式事务与seata/DTM"
