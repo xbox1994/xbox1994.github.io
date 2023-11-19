@@ -17,7 +17,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://www.wangtianyi.top/archives/4/">
+    <link rel="canonical" href="http://www.wangtianyi.top/page/7/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -133,14 +133,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">关于作者</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">关于作者</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -210,31 +210,27 @@
 
 <div class="post-preview">
 
-    <a href="/article/2018-05-08-javagao-bing-fa-wu-xian-cheng-chi/">
+    <a href="/article/2017-01-08-mou-ci-you-hua-shi-jian-nginxshi-na-lai-gan-shi-yao-de/">
         <h2 class="post-title">
                                  
-            Java多线程与高并发(五):线程池
+            记一次性能优化探索-Nginx有什么用
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            
-new Thread弊端
+            “这张卡马上做完了,赶紧desk check,我们先把测试环境准备好”.我高高兴兴地跟洲说,随手修改了一下配置文件中的微服务访问路径,然后重启服务器,一切看起来那么的一帆风顺.
+“好的,页面开始Loading啦”…10分钟之后…“我受不了了”
 
-每次启动线程都需要new Thread新建对象与线程，性能差。线程池能重用存在的线程，减少对象创建、回收的开销。
-线程缺乏统一管理，可以无限制的新建线程，导致OOM。线程池可以控制可以创建、执行的最大并发线程数。
-缺少工程实践的一些高级的功能如定期执行、线程中断。线程池提供定期执行、并发数控制功能
-
-ThreadPoolExecutor
-核心变量
-在创建线程池时......
+##问题
+1.本地环境开启的应用访问EC2上的某微服务速度慢,但在EC2环境开启的应用访问该微服务速度快.
+2.本地环境加载某一个页面的过程中刷新,......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2018-05-08
+            2017-01-08
         </p>
         <div class="tags">
             
@@ -248,33 +244,29 @@ ThreadPoolExecutor
 
 <div class="post-preview">
 
-    <a href="/article/2018-05-01-javagao-bing-fa-xi-lie-si-juc/">
+    <a href="/article/2016-12-31-learning-how-to-learn/">
         <h2 class="post-title">
                                  
-            Java多线程与高并发(四):java.util.concurrent包
+            Learning how to Learn
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            面试官：你用过JUC的哪些工具类？
-前面从基础开始，到线程安全的实现、对象的发布与共享，涉及到很多线程安全的类与工具，JDK1.5开始，提供了更加方便强大的线程同步管理工具包JUC让我们使用，这个也是面试与实践中的重点，本文结合源代码作一些比较落地的讲解。
+            在过去的很多年时间里,我很少,其他人也很少告诉我们自己该如何学习,而是告诉你时间是挤出来的,把时间花到学习上是唯一提高学习成绩的方法.
+如果我能早一些看到,或者说如果我能早一些意识到这一点,把其中的理论实践下去可能会以自己为例反驳上面的观点.
 
-
-报告面试官，JUC中有非常多的类，将部分类按功能进行分类，分别是：
-
-之前提到过的原子atomic包
-比synchronized功能......
+我们时常听到一些感觉很矛盾的传说:某人特牛逼,学习总是名列前茅,还经常花时间去干别的事,如打篮球,玩游戏.我原来会觉得这种人肯定是天才,脑袋绝顶聪明......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2018-05-01
+            2016-12-31
         </p>
         <div class="tags">
             
-              <a href="/tags/#后台" title="后台">后台</a>
+              <a href="/tags/#学习" title="学习">学习</a>
             
         </div>
     
@@ -284,212 +276,28 @@ ThreadPoolExecutor
 
 <div class="post-preview">
 
-    <a href="/article/2018-04-30-javagao-bing-fa-xi-lie-san-dui-xiang-de-an-quan-fa-bu-yu-gong-xiang-ce-lue/">
+    <a href="/article/2016-12-25-ni-de-ming-zi-./">
         <h2 class="post-title">
                                  
-            Java多线程与高并发(三):对象的安全发布与共享策略
+            你的名字。
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            面试官：你知道如何发布或共享一个对象吗？
+            某夜,趟雨,迟到5分钟,坐下,观影,值了.
 
-发布对象：使一个对象能够被其他线程、其他作用域的代码所使用。
-变量逸出原有作用域
-12345678910111213141516import java.util.Arrays;public class Main &#123;    private String[] strs = &#123;"1", "2", "3"&#125;;    publi......
+这是我看过为数不多的电影之一,但这部电影的剧情是给我感触最深的.全剧可分为三个层次,每个层次内部有很强的主旨,但又有一条主线索贯穿其中.让人沉迷其中.
+##若即若离
+若有若无的联系,情感是最为微妙的,非常容易迷住观众,引人入胜.
+梦中交换身体,邂逅彼此,过着梦想的和从来没有过的生活,用文字约束着交流着.
+“姐姐你什么时候开始这么喜欢摸自己的胸啊.......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2018-04-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-04-28-javagao-bing-fa-xi-lie-er-xian-cheng-an-quan-xing/">
-        <h2 class="post-title">
-                                 
-            Java多线程与高并发(二):线程安全性
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            面试官：你能说说什么是线程安全吗？
-
-线程安全性
-当多个线程访问某个类时，不管运行时环境采用何种调度方式或者这些线程将如何交替执行，并且在调用代码中不需要任何额外的同步，这个类都能表现出正确的行为，那么这个类就是线程安全的。
-
-原子性：同一时刻只能有一个线程对它操作
-可见性：一个线程对内存的修改能让其他线程观察到
-有序性：指令执行顺序，杂乱无序
-
-原子性
-Atomic包
-AtomicInte......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-04-28
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-04-28-javagao-bing-fa-xi-lie-yi-bing-fa-ji-chu-yu-mo-ni-gong-ju/">
-        <h2 class="post-title">
-                                 
-            Java多线程与高并发(一):并发基础与模拟工具
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            面试官：你知道Java的内存模型是什么吗？
-
-基本概念
-并发、并行
-引用知乎上一个最高赞：
-
-你吃饭吃到一半，电话来了，你一直到吃完了以后才去接，这就说明你不支持并发也不支持并行。
-
-
-你吃饭吃到一半，电话来了，你停了下来接了电话，接完后继续吃饭，这说明你支持并发。
-
-
-你吃饭吃到一半，电话来了，你一边打电话一边吃饭，这说明你支持并行。
-
-
-并发的关键是你有处理多个任务的能力，不一定要同时。......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-04-28
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-03-18-min-jie-zhong-de-kan-ban/">
-        <h2 class="post-title">
-                                 
-            敏捷中的看板
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            很荣幸，第一份工作就进入了提倡敏捷开发的TW，进的第一个团队也是比较规范使用看板方法的团队。什么敏捷开发、看板方法，在学校的时候是从来没听过的，甚至进公司前一年还在学校学习如何通过瀑布开发方式来完成项目，当时觉得瀑布过于死板，但是又想不到有什么好的方法。
-
-#什么是敏捷开发
-一种以用户的需求进化为核心、高效快速迭代的软件开发方式而已，只要符合了敏捷的元素，你就可以说用的是敏捷，敏捷开发没有固......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-03-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#敏捷" title="敏捷">敏捷</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-02-05-shou-ba-shou-jiao-ni-da-jian-yi-ge-chi-xu-ji-cheng-huan-jing/">
-        <h2 class="post-title">
-                                 
-            手把手教你搭建一个持续集成环境
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            本文将带领你从0开始，用Vagrant + Docker + Ansible + Jenkins + Nginx + GitHub等工具和资源来搭建一条可执行可扩展的持续集成流水线，即使这些名字你都没听过也没关系，本文将会在需要的时候一一解释给你听。
-
-By: 巧颖 &amp; 天一
-#总览
-这是我们将要搭建的所有基础设施的总体架构图，我们将在本文中手把手教你搭建这样一个持续集成环境。
-
-我......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-02-05
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#DevOps" title="DevOps">DevOps</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2017-12-29-lai-chi-ji/">
-        <h2 class="post-title">
-                                 
-            少年的2017年尾声
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            最后一天啦，发现一个半月没有更新博客了，一方面是项目上有点忙又赶上年终评价了，一方面是不知道写什么，还有一方面是痴迷于steam上的吃鸡不能自拔。不如把最近的状况写写吧。
-
-#习惯性博客
-
-写博客真是一件容易上瘾的事情。
-
-但是如果从来没写过日记、博客的时候要你去写一篇长文可真是非常头疼了。记得在小学的时候，日记是语文老师布置下来的强制性的任务，每天都要写，第二天上交，不能少于多少字。写起来......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2017-12-29
+            2016-12-25
         </p>
         <div class="tags">
             
@@ -503,63 +311,28 @@ By: 巧颖 &amp; 天一
 
 <div class="post-preview">
 
-    <a href="/article/2017-11-18-react-nativezu-jian-she-ji-shi-jian/">
+    <a href="/article/2016-12-18-nusde-hou-tai/">
         <h2 class="post-title">
                                  
-            React Native组件设计实践
+            NUS后台
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            本文中所提到的组件的定义是基于React Native官方提供的某个/些组件进行包装/组合的用户某个特定App的自定义组件，可能与业务相关，也可能无关。
+            Nginx Unicorn Sinatra
+研究一个后台架构,客户端发送的请求最开始是由是Nginx接收的,随后反向代理发送给Unicorn服务器的一个线程,接下来是Sinatra框架和Rack负责处理
 
-#为什么要写组件
-想象一下，你的每一个页面中除了工具类的引用之外没有任何一个import，当你写了几个页面之后发现很舒服，当你写下一个页面的时候你突然发现你可能需要：
-
-复制 + 粘贴
-花很多时间弄清楚之前的页面中写的是什么东西
-粘贴代码......
+###Nginx
+是一个高性能的HTTP和反向代理服务器
+根据以下文件你可以发现在SF中我们是如何使用nginx的
+infrastructure/ansible/roles.add_app......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2017-11-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#前端" title="前端">前端</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2017-10-22-cong-urlkai-shi-,ding-wei-shi-jie/">
-        <h2 class="post-title">
-                                 
-            从URL开始，定位世界
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            从我们输入URL并按下回车键到看到网页结果之间发生了什么？换句话说，一张网页，要经历怎样的过程，才能抵达用户面前？下面来从一些细节上面尝试一下探寻里面的秘密。
-
-#前言：键盘与硬件中断
-说到输入URL，当然是从手敲键盘开始。对于键盘，生活中用到的最常见的键盘有两种：薄膜键盘、机械键盘。
-
-薄膜键盘：由面板、上电路、隔离层、下电路构成。有外观优美、寿命较长、成本低廉的特点，是最为流行的键盘种类......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2017-10-22
+            2016-12-18
         </p>
         <div class="tags">
             
@@ -578,13 +351,9 @@ By: 巧颖 &amp; 天一
 <ul class="pager">
     
         <li class="previous">
-            <a href="/archives/3/">&larr; Newer Posts</a>
+            <a href="/page/6/">&larr; Newer Posts</a>
         </li>
     
-    
-        <li class="next">
-            <a href="/archives/5/">Older Posts &rarr;</a>
-        </li>
     
 </ul>
 
@@ -632,11 +401,11 @@ By: 巧颖 &amp; 天一
             
         
             
-            <a href="/tags/#MicroService" title="MicroService" rel="7">MicroService</a>
+            <a href="/tags/#翻译" title="翻译" rel="1">翻译</a>
             
         
             
-            <a href="/tags/#翻译" title="翻译" rel="1">翻译</a>
+            <a href="/tags/#MicroService" title="MicroService" rel="7">MicroService</a>
             
         
             
@@ -644,11 +413,11 @@ By: 巧颖 &amp; 天一
             
         
             
-            <a href="/tags/#敏捷" title="敏捷" rel="1">敏捷</a>
+            <a href="/tags/#前端" title="前端" rel="1">前端</a>
             
         
             
-            <a href="/tags/#前端" title="前端" rel="1">前端</a>
+            <a href="/tags/#敏捷" title="敏捷" rel="1">敏捷</a>
             
         
             
