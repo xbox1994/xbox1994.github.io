@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          【译】在AWS上扩展到数百万用户的系统 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2019-03-06-zai-awsshang-kuo-zhan-dao-shu-bai-mo-yong-hu-de-xi-tong/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#架构" title="架构">架构</a>
+                            
+                        </div>
+                        <h1>【译】在AWS上扩展到数百万用户的系统</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2019-03-06
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <a id="more"></a>
+<h2 id="第一步弄清用例与约束">第一步：弄清用例与约束</h2>
+<blockquote>
+<p>收集需求和问题的范围<br>
+通过问问题来弄清用例与约束<br>
+讨论假设</p>
+</blockquote>
+<p>我们假定以下用例</p>
+<h3 id="用例">用例</h3>
+<p>解决这个问题需要采用迭代的方法：</p>
+<ol>
+<li>基准/负载测试</li>
+<li>瓶颈检测</li>
+<li>评估替代方案来解决瓶颈</li>
+<li>重复以上</li>
+</ol>
+<p>这是将基本设计升级为可扩展设计的良好模式</p>
+<p>除非你有AWS的背景或者正在申请AWS的相关职位，否则在AWS上的实现细节不需要了解。然而<strong>大部分在这里讨论的原理可以应用到除了AWS以外更通用的地方</strong></p>
+<h4 id="我们将问题约束到如下范围">我们将问题约束到如下范围</h4>
+<ul>
+<li><strong>用户</strong>发送读或写请求
+<ul>
+<li><strong>服务</strong>处理，存储用户数据然后返回结果</li>
+</ul>
+</li>
+<li><strong>服务</strong>需要从少量用户发展到数百万用户
+<ul>
+<li>在我们升级架构来处理大量用户请求时，讨论通用的扩展模式</li>
+</ul>
+</li>
+<li><strong>服务</strong>需要高可用</li>
+</ul>
+<h3 id="约束和假设">约束和假设</h3>
+<h4 id="状态假设">状态假设</h4>
+<ul>
+<li>流量分布不均</li>
+<li>需要关系型数据</li>
+<li>从单个用户扩展到千万级用户
+<ul>
+<li>用户增加的标识：
+<ul>
+<li>用户数+</li>
+<li>用户数++</li>
+<li>用户数+++</li>
+<li>…</li>
+</ul>
+</li>
+<li>一千万用户</li>
+<li>每月10亿次写入</li>
+<li>每月1000亿次读取</li>
+<li>100:1读写比</li>
+<li>每次写入1KB内容</li>
+</ul>
+</li>
+</ul>
+<h4 id="计算方式">计算方式</h4>
+<p><strong>如果你想做一个大致估算，请向你的面试官表明以下数据：</strong></p>
+<ul>
+<li>每月1TB数据写入
+<ul>
+<li>每次写入1KB数据 * 每月10亿次写入</li>
+<li>3年有3TB数据写入</li>
+<li>假设大多数写入是新的内容而不是已有内容的更新</li>
+</ul>
+</li>
+<li>平均每秒400次写入</li>
+<li>平均每秒40000次读取</li>
+</ul>
+<p>方便的转换公式:</p>
+<ul>
+<li>每月有250万秒</li>
+<li>每秒一个请求 = 每月250万个请求</li>
+<li>每秒40个请求 = 每月1亿个请求</li>
+<li>每秒400个请求 = 每月10亿个请求</li>
+</ul>
+<h2 id="第二步创建高层设计">第二步：创建高层设计</h2>
+<blockquote>
+<p>大致写出包含所有重要组件的高层设计</p>
+</blockquote>
+<p><img src="https://github.com/xbox1994/2018-Java-Interview/raw/master/images/aws1.png" alt></p>
+<h2 id="第三步设计核心组件">第三步：设计核心组件</h2>
+<blockquote>
+<p>深入每个核心组件的细节</p>
+</blockquote>
+<h3 id="用例用户发送读或写的请求">用例：用户发送读或写的请求</h3>
+<h4 id="目标">目标</h4>
+<ul>
+<li>对于仅仅的1-2个用户，你只需要一个基本的配置
+<ul>
+<li>简单的单体应用</li>
+<li>当需要的时候垂直缩放</li>
+<li>监控来确定瓶颈</li>
+</ul>
+</li>
+</ul>
+<h4 id="从单体应用开始">从单体应用开始</h4>
+<ul>
+<li>EC2上的<strong>服务器</strong>
+<ul>
+<li>存储用户数据</li>
+<li><a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9Frdbms" target="_blank" rel="noopener"><strong>MySQL数据库</strong></a></li>
+</ul>
+</li>
+</ul>
+<p>使用<strong>垂直扩展</strong>:</p>
+<ul>
+<li>选择更好性能的机器</li>
+<li>密切关注监控指标以确定如何扩大规模
+<ul>
+<li>使用基本监控来确定瓶颈：CPU，内存，IO，网络等</li>
+<li>CloudWatch, top, nagios, statsd, graphite等</li>
+</ul>
+</li>
+<li>垂直缩放可能会很昂贵</li>
+<li>没有故障转移措施</li>
+</ul>
+<p><em>替代方案和其他细节：</em></p>
+<ul>
+<li><strong>垂直扩展</strong>的替代是<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95" target="_blank" rel="noopener"><strong>水平扩展</strong></a></li>
+</ul>
+<h4 id="从sql开始考虑nosql">从SQL开始，考虑NoSQL</h4>
+<p>约束里我们需要关系型数据。我们在开始的时候可以在单机上用<strong>MySQL数据库</strong>.</p>
+<p><em>替代方案和其他细节：</em></p>
+<ul>
+<li><a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9Frdbms" target="_blank" rel="noopener">关系型数据库</a></li>
+<li>使用<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#sql-%E8%BF%98%E6%98%AF-nosql" target="_blank" rel="noopener">SQL还是NoSQL</a>的原因</li>
+</ul>
+<h4 id="分配公网静态ip">分配公网静态IP</h4>
+<ul>
+<li>弹性IP提供一个重启之后不会更改的公网端口</li>
+<li>有效的帮助故障转移，只需要将域名指向新IP</li>
+</ul>
+<h4 id="使用dns">使用DNS</h4>
+<p>使用Route 53添加<strong>DNS</strong>将域名映射到实例的公共IP</p>
+<p><em>替代方案和其他细节：</em></p>
+<ul>
+<li><a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F" target="_blank" rel="noopener">DNS</a></li>
+</ul>
+<h4 id="保护web服务器">保护web服务器</h4>
+<ul>
+<li>开启必要的端口
+<ul>
+<li>允许web服务器对于以下端口回复:
+<ul>
+<li>80 - HTTP</li>
+<li>443 - HTTPS</li>
+<li>22 - SSH（白名单）</li>
+</ul>
+</li>
+<li>阻止web服务器进行出站连接</li>
+</ul>
+</li>
+</ul>
+<p><em>替代方案和其他细节：</em></p>
+<ul>
+<li><a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%AE%89%E5%85%A8" target="_blank" rel="noopener">安全</a></li>
+</ul>
+<h2 id="第四步扩展设计">第四步：扩展设计</h2>
+<blockquote>
+<p>鉴于约束条件，确定并解决瓶颈</p>
+</blockquote>
+<h3 id="用户数">用户数+</h3>
+<p><img src="https://github.com/xbox1994/2018-Java-Interview/raw/master/images/aws2.png" alt></p>
+<h4 id="假设">假设</h4>
+<p>我们的用户数正在增加并且在我们单体应用上的负载也在增加。我们的<strong>基准/负载测试</strong>和<strong>瓶颈</strong>指向了<strong>MySQL数据库</strong>占用更多内存和CPU资源，同时用户内容正在填满磁盘空间</p>
+<p>到目前为止我们可以通过<strong>水平扩展</strong>解决问题。但不幸的是已经变得非常昂贵并且<strong>MySQL数据库</strong>和<strong>web服务器</strong>无法独立扩展</p>
+<h4 id="目标">目标</h4>
+<ul>
+<li>减轻单体应用的负载并且允许独立扩展
+<ul>
+<li>将静态内容分开存储到<strong>AWS对象存储</strong></li>
+<li>移动<strong>MySQL数据库</strong>到独立的服务上</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>这些改变将增加复杂度并且需要<strong>Web服务器</strong>指向<strong>对象存储</strong>和<strong>MySQL数据库</strong></li>
+<li>新组件额外的安全措施</li>
+<li>AWS的费用将会增加但应该与自己管理类似系统成本进行权衡</li>
+</ul>
+</li>
+</ul>
+<h4 id="分离存储静态内容">分离存储静态内容</h4>
+<ul>
+<li>考虑使用S3作为<strong>对象存储</strong>
+<ul>
+<li>高扩展和可靠性</li>
+<li>服务端加密</li>
+</ul>
+</li>
+<li>移动静态内容到S3
+<ul>
+<li>用户文件</li>
+<li>JS</li>
+<li>CSS</li>
+<li>图片</li>
+<li>视频</li>
+</ul>
+</li>
+</ul>
+<h4 id="移动mysql数据库到独立的服务">移动MySQL数据库到独立的服务</h4>
+<ul>
+<li>考虑使用RDS服务管理<strong>MySQL数据库</strong>
+<ul>
+<li>扩展和管理简单</li>
+<li>多个可用区</li>
+<li>静态加密</li>
+</ul>
+</li>
+</ul>
+<h4 id="保护系统">保护系统</h4>
+<ul>
+<li>在传输和静止时加密数据</li>
+<li>使用虚拟私有网络
+<ul>
+<li>为单个<strong>Web服务器</strong>创建公共子网以便可以发送和接收网上的流量</li>
+<li>为其他组件创建私有网络，组织外部访问</li>
+<li>每个组件仅仅对白名单IP开放端口</li>
+</ul>
+</li>
+</ul>
+<h3 id="用户数">用户数++</h3>
+<p><img src="https://github.com/xbox1994/2018-Java-Interview/raw/master/images/aws3.png" alt></p>
+<h4 id="假设">假设</h4>
+<p>我们的<strong>基准/负载测试</strong>和<strong>瓶颈检测</strong>表明我们的单体<strong>Web服务器</strong>在高峰期出现瓶颈，导致回应慢，在某些情况下宕机。随着服务的成熟，我们希望提高可用性和冗余度</p>
+<h4 id="目的">目的</h4>
+<ul>
+<li>以下目标尝试解决<strong>Web服务器</strong>的扩展问题
+<ul>
+<li>基于<strong>基准/负载测试</strong>和<strong>瓶颈检测</strong>，你可能只需要实现这些技术中的一个或者两个</li>
+</ul>
+</li>
+<li>使用<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95" target="_blank" rel="noopener"><strong>水平扩展</strong></a>处理不断增加的负载并解决单体故障
+<ul>
+<li>添加<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%99%A8" target="_blank" rel="noopener"><strong>负载均衡器</strong></a>
+<ul>
+<li>ELB是高可用的</li>
+<li>如果你想配置自己的<strong>负载均衡器</strong>, 在多个可用区配置<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%8F%8C%E5%B7%A5%E4%BD%9C%E5%88%87%E6%8D%A2active-active" target="_blank" rel="noopener">主-主</a>或<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%B7%A5%E4%BD%9C%E5%88%B0%E5%A4%87%E7%94%A8%E5%88%87%E6%8D%A2active-passive" target="_blank" rel="noopener">主-备</a>可以提高可用性</li>
+<li>在<strong>负载均衡器</strong>上关闭SSL去减少在后端服务器上的计算负载并简化证书管理</li>
+</ul>
+</li>
+<li>使用多个<strong>Web服务器</strong>分布到多个区域</li>
+<li>使用多个<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6" target="_blank" rel="noopener"><strong>主从故障切换</strong></a>模式的<strong>MySQL</strong>实例来增进冗余度</li>
+</ul>
+</li>
+<li>将<strong>Web服务器</strong>和<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%BA%94%E7%94%A8%E5%B1%82" target="_blank" rel="noopener"><strong>应用服务器</strong></a>分开
+<ul>
+<li>独立扩展和配置这两层</li>
+<li><strong>Web服务器</strong>可以作为<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86web-%E6%9C%8D%E5%8A%A1%E5%99%A8" target="_blank" rel="noopener"><strong>反向代理服务器</strong></a></li>
+<li>比如你可以添加<strong>应用服务器</strong>处理<strong>读API</strong>而其他<strong>应用服务器</strong>处理<strong>写API</strong></li>
+</ul>
+</li>
+<li>移动静态（和一些动态)内容到<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%86%85%E5%AE%B9%E5%88%86%E5%8F%91%E7%BD%91%E7%BB%9Ccdn" target="_blank" rel="noopener"><strong>CDN</strong></a>比如CloudFount去减少负载和延迟</li>
+</ul>
+<h3 id="users">Users+++</h3>
+<p><img src="https://github.com/xbox1994/2018-Java-Interview/raw/master/images/aws4.png" alt></p>
+<p><strong>注意:</strong> 为了避免过于混乱，没有显示<strong>内部负载均衡器</strong></p>
+<h4 id="假设">假设</h4>
+<p>我们的<strong>基准/负载测试</strong>和<strong>瓶颈检测</strong>表明我们的读请求很多(100:1读写比)，我们的数据库因为大量读取请求导致性能不佳</p>
+<h4 id="目标">目标</h4>
+<ul>
+<li>以下目标尝试去解决在<strong>MySQL数据库</strong>上的问题
+<ul>
+<li>基于<strong>基准/负载测试</strong>和<strong>瓶颈检测</strong>，你可能只需要实现这些技术中的一个或者两个</li>
+</ul>
+</li>
+<li>移动以下数据到<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E7%BC%93%E5%AD%98" target="_blank" rel="noopener"><strong>内存缓存</strong></a>，比如Elasticache去减少负载和延迟：
+<ul>
+<li>在<strong>MySQL</strong>中经常读取的内容
+<ul>
+<li>首先，在实现<strong>内存缓存</strong>之前试图配置<strong>MySQL数据库</strong>的缓存看是否足以解决瓶颈</li>
+</ul>
+</li>
+<li>来自<strong>Web服务器</strong>的session数据
+<ul>
+<li><strong>Web服务器</strong>变成无状态服务，允许<strong>自动缩放</strong></li>
+</ul>
+</li>
+<li>从内存读取1MB需要250微秒，而SSD需要4倍的时间，从硬盘读取需要80倍时间</li>
+</ul>
+</li>
+<li>添加<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6" target="_blank" rel="noopener"><strong>MySQL只读副本</strong></a>来减少主服务器的负载</li>
+<li>添加更多<strong>Web服务器</strong>和<strong>应用服务器</strong>来提升响应</li>
+</ul>
+<h4 id="添加mysql只读副本">添加MySQL只读副本</h4>
+<ul>
+<li>除了增加和扩展<strong>内存缓存</strong>外, <strong>MySQL只读副本</strong>也能帮助减轻<strong>MySQL主节点</strong>的负载</li>
+<li>添加<strong>Web服务器</strong>的逻辑来分开读写数据</li>
+<li>在<strong>MySQL只读副本</strong>前添加<strong>负载均衡器</strong>(图里没画)</li>
+</ul>
+<h3 id="用户数">用户数++++</h3>
+<p><img src="https://github.com/xbox1994/2018-Java-Interview/raw/master/images/aws5.png" alt></p>
+<h4 id="假设">假设</h4>
+<p>我们的<strong>基准/负载测试</strong>和<strong>瓶颈检测</strong>表明在正常工作时间内流量激增，在用户离开办公室时显著下降。我们认为我们可以根据实际负载自动调整服务器来降低成本。我们是个小公司，因此我们希望尽可能多地<strong>自动缩放</strong></p>
+<h4 id="目标">目标</h4>
+<ul>
+<li>添加<strong>自动缩放</strong>来根据需求提供实例数量
+<ul>
+<li>跟上流量的高峰</li>
+<li>通过关闭未使用的实例来减少费用</li>
+</ul>
+</li>
+<li>DevOps自动化
+<ul>
+<li>Chef, Puppet, Ansible等</li>
+</ul>
+</li>
+<li>继续监控指标以解决瓶颈
+<ul>
+<li><strong>主机级别</strong> - 查看单个EC2实例</li>
+<li><strong>汇总级别</strong> - 查看负载均衡器统计信息</li>
+<li><strong>日志分析</strong> - CloudWatch, CloudTrail, Loggly, Splunk, Sumo</li>
+<li><strong>外部网站性能</strong> - Pingdom或New Relic</li>
+<li><strong>处理通知和时间</strong> - PagerDuty</li>
+<li><strong>错误报告</strong> - Sentry</li>
+</ul>
+</li>
+</ul>
+<h4 id="添加自动缩放">添加自动缩放</h4>
+<ul>
+<li>考虑AWS的托管服务<strong>自动缩放</strong>
+<ul>
+<li>为每个<strong>Web服务器</strong>和<strong>应用服务器</strong>创建一个组, 每个组放到多个可用区中</li>
+<li>设置最小和最大实例数</li>
+<li>通过CloudWatch触发向上和向下扩展
+<ul>
+<li>一段时间内的指标：
+<ul>
+<li>CPU负载</li>
+<li>延迟</li>
+<li>网络流量</li>
+<li>自定义指标</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>自动缩放可能会带来复杂性</li>
+<li>系统可能需要一段时间才能适当扩展以满足不断增长的需求，或者在需求下降时缩小规模</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="users">Users+++++</h3>
+<p><img src="https://github.com/xbox1994/2018-Java-Interview/raw/master/images/aws6.png" alt></p>
+<p><strong>注意:</strong> <strong>自动缩放</strong>组未在图中显示</p>
+<h4 id="假设">假设</h4>
+<p>随着服务继续朝着约束中的数字增长, <strong>基准/负载测试</strong>和<strong>瓶颈检测</strong>继续迭代来发现和解决新的瓶颈</p>
+<h4 id="目标">目标</h4>
+<p>由于问题的限制，我们将继续解决扩展问题：</p>
+<ul>
+<li>如果我们的<strong>MySQL数据库</strong>开始变得非常大，我们可能会考虑只将有限时间段的数据存储在数据库中，同时将其余数据存储在Redshift等数据仓库中
+<ul>
+<li>像Redshift这样的数据仓库可以轻松处理每月1TB的新内容</li>
+</ul>
+</li>
+<li>每秒平均读取请求4万次，读取常用数据的流量可以通过扩展<strong>内存缓存</strong>来解决，这对于处理不均匀分布的流量和流量峰值也很有用
+<ul>
+<li><strong>SQL只读副本</strong>可能在处理缓存未命中时遇到问题，我们可能需要采用其他SQL扩展模式</li>
+</ul>
+</li>
+<li>对于单个<strong>SQL写服务</strong>来说，每秒400次平均写入次数（可能更高的峰值）可能很难，同时也表明需要额外的缩放技术</li>
+</ul>
+<p>SQL扩展模式包括:</p>
+<ul>
+<li><a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E8%81%94%E5%90%88" target="_blank" rel="noopener">联合</a></li>
+<li><a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%88%86%E7%89%87" target="_blank" rel="noopener">分片</a></li>
+<li><a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E9%9D%9E%E8%A7%84%E8%8C%83%E5%8C%96" target="_blank" rel="noopener">非规范化</a></li>
+<li><a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#sql-%E8%B0%83%E4%BC%98" target="_blank" rel="noopener">SQL调优</a></li>
+</ul>
+<p>为了进一步解决高读取和写入请求，我们还应考虑将适当的数据移动到<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#nosql" target="_blank" rel="noopener"><strong>NoSQL数据库</strong></a>，例如DynamoDB</p>
+<p>我们可以进一步分离<a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%BA%94%E7%94%A8%E5%B1%82" target="_blank" rel="noopener"><strong>应用服务器</strong></a>来允许独立的缩放。不需要实时完成的批处理和计算可以使用<strong>队列</strong>和<strong>工作程序</strong><a href="https://github.com/donnemartin/system-design-primer/blob/master/README-zh-Hans.md#%E5%BC%82%E6%AD%A5" target="_blank" rel="noopener"><strong>异步</strong></a>完成:</p>
+<ul>
+<li>例如，在照片服务中，照片上传和缩略图创建可以分开：
+<ul>
+<li><strong>客户端</strong>上传图片</li>
+<li><strong>应用程序服务器</strong>放一个任务到<strong>队列</strong></li>
+<li><strong>工作服务</strong>从<strong>队列</strong>中拉取到任务：
+<ul>
+<li>创建缩略图</li>
+<li>上传到<strong>数据库</strong></li>
+<li>存储缩略图到<strong>对象存储</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2019-03-26-ji-yu-go-microde-wei-fu-wu-jia-gou-ben-di-shi-zhan/" data-toggle="tooltip" data-placement="top" title="基于Go Micro的微服务架构本地实战">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2019-01-12-jia-gou-ru-men-xi-lie-cong-ye-wu-dao-ping-tai-de-si-wei-zhuan-bian/" data-toggle="tooltip" data-placement="top" title="【架构入门】从业务到平台的思维转变">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#架构" title="架构">架构</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

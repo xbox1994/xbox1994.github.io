@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          对CI/CD与分支模型的理解 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2017-06-13-dui-ci-slash-cdyu-fen-zhi-mo-xing-de-li-jie/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
+                            
+                        </div>
+                        <h1>对CI/CD与分支模型的理解</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2017-06-13
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>最近从前项目上刚下来，经历了项目中分支策略的重大变更，完成了对部署策略替换的实现，现在想把自己了解到的这方面知识记录以及总结一下，深入自己对其的理解程度。</p>
+<a id="more"></a>
+<p>#CI/CD<br>
+##概念<br>
+CI (Continuous Integration)和CD (Continuous Delivery)是敏捷中非常重要的概念，它以持续、敏捷的思想对项目开发、发布流程有一个具体的指导性实践。</p>
+<p>###持续集成</p>
+<img src="/images/blog/2017-06-13_3.png" title="image">
+<p>具体来说，Martin Fowler的定义是：<strong>持续集成是一种软件开发实践，即团队开发成员经常集成他们的工作，通常每个成员每天至少集成一次，也就意味着每天可能会发生多次集成</strong>。每次集成都通过自动化的构建（包括编译，发布，自动化测试)来验证，从而尽快地发现集成错误。许多团队发现这个过程可以大大减少集成的问题，让团队能够更快的开发内聚的软件。</p>
+<p>###持续交付</p>
+<img src="/images/blog/2017-06-13_4.png" title="image">
+<p><strong>持续交付是一个软件开发原则，使软件随时可以发布到生产中。强调的是应用程序保持在可以部署到生产中的状态</strong>。图中是持续交付会涉及到的持续部署的过程，持续部署意味着每一个变化都会通过管道自动投入生产，每天都会有许多次部署。</p>
+<p>###我的理解<br>
+持续集成是持续交付的基础，提前了代码融合的时机，同时提前了发现错误的时间点，也方便根据小步提交来定位错误；促进了人与人之间的交流；大大减少了合并代码产生冲突的可能性；但同时引入功能开关的问题。持续交付站在一个比较高的角度提供了一个软件开发与交付时的原则，是一个提高我们应用程序部署过程安全性、高效性、有效性的方式。</p>
+<p>##前项目的应用<br>
+上面都是概念的东西，一定需要至少一个实践来验证或者展示概念对应的实体是否是我们想要的。并且<strong>当理论付诸实践的时候，你才会发现嘴上说说是多么的容易</strong>。</p>
+<img src="/images/blog/2017-06-13_1.png" title="image">
+<p>我们项目上的CI/CD流程如图，省略掉具体测试与发布使用的AWS服务和测试工具。首先，代码被提交之后会触发一条新的流水线（Pipeline），经过自动化测试之后会部署到持续集成服务器中，然后跑User Journey测试，之后部署到UAT和PROD需要手动触发。</p>
+<p>现状：</p>
+<ul>
+<li>对于持续集成。刚来项目的时候，我们的项目并不是采用持续集成或者说是非常低效的持续集成，因为我们当时没有规定每个成员集成的频率，而是按照每个人做卡的速度，当卡做完之后再进行提交，所以经常性的两天甚至五天进行一次提交。</li>
+<li>对于持续交付。即使持续集成没有做到很好，但是依然可以实现持续交付，因为我们有在提交代码之前对Dev的约定：本地测试通过并且通过Desk Check才能提交；以及每次提交都会体现在Pipeline的记录中，所以在经过QA测试之后的版本是可以随时挑选特定的代码版本发布到生产环境中。使用GoCD之后我们搭建一个属于我们自己项目的Pipeline，保证了代码中的每个变化都会自动化部署到生产管道中让GoCD帮我们跑测试、部署到QA服务器，等待QA测试以及部署到产品环境中。</li>
+</ul>
+<p>###问题来了</p>
+<ul>
+<li>持续集成没有做到带来的问题。举一个最明显的例子。因为没有做到持续集成，我们经常碰到合并代码的时候冲突太大，特别是样式之间的冲突，因为对于样式，代码比较分散，重构不同的样式必定会影响到使用到此样式的组件，所以对于前端样式的卡，每次合并冲突的时候非常令人头疼的。</li>
+<li>即使做到之后，持续集成本身存在的问题。如果一天完成不了一张卡的开发、测试的话，但是为了持续集成，需要将代码提交到代码库，这时需要功能开关来将自己为完成的代码包裹起来，对外不可见。功能开关可能导致添加功能开关的难度（前端样式太过分散、重构期间的代码）、代码逻辑复杂、控制功能开关生命周期的effort。</li>
+<li>将代码合入到主干分支的安全性。即使跑过测试，经过Desk Check这样的初步测试，不是一个比较严格的代码审校流程。这个问题会放到另一个项目上的应用里讲到。</li>
+</ul>
+<p>###如何改进<br>
+那么我们就开始严格的持续集成。<strong>约定：每人每天至少提交一次代码</strong>。</p>
+<p>那么更多的问题来了：跑测试的时间太长直接阻碍测试代码的编写与持续集成的速度、维护功能开关的effort、开发人员的习惯导致的遗忘。这些问题其实都不大，比如第一个问题可以通过改进测试来提高跑测试的速度（优化代码或实现并行测试）。<strong>这些就是我们为了实现持续集成的过程中需要面临和解决的问题</strong>。</p>
+<p>##另一个项目上的应用<br>
+在一些大公司中，存在一种比较完善、规范化、对代码安全有一定要求的的持续集成模型。</p>
+<img src="/images/blog/2017-06-13_2.png" title="image">
+<p>虚线右侧是我们接下来准备看到的策略。</p>
+<ol>
+<li>Dev在本地分支进行开发</li>
+<li>完成之后将主干分支的代码拉下来合并到本地</li>
+<li>将本地代码推到Gerrit的repo中</li>
+<li>触发GoCD/Jenkins将代码部署到CI服务器中</li>
+<li>Team Lead或专人人工检测代码以及服务器运行状态</li>
+<li>同意合并到主干分支/不同意，让Dev继续在该分支上开发，无视此次提交</li>
+</ol>
+<p>这种策略与上个策略的区别在于对代码控制方面进行的比较严格，使用第三方工具来帮助我们代码审查，对提高代码库质量是非常好的一个实践。但同时增加了整个持续集成流程的复杂度和增加了DevOps实施难度。<br>
+#分支模型<br>
+很巧的是，上个项目使用过的两种分支模型恰好是老马<a href="https://martinfowler.com/bliki/FeatureBranch.html" target="_blank" rel="noopener">这篇文章</a>提到的前两种，顺便盗了两张图过来。<br>
+##功能分支模型</p>
+<img src="/images/blog/2017-06-13_5.png" title="image">
+<p>模型：</p>
+<ul>
+<li>为每个小功能（每张卡）开一个分支，在分支上提交时记得经常拉远端主干代码及时解决冲突，功能完成后合并到主分支。</li>
+<li>部署时选择主干上的某一次提交进行部署，Hotfix会从主干最新节点再加上一个提交。</li>
+</ul>
+<p>提交到主干分支上的频率：</p>
+<ul>
+<li>2~5天/次</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>所开发的功能之间可以保持相对独立，直到拉远端代码为止与他人无代码上冲突的可能</li>
+<li>一般不需要使用功能开关，因为功能之间（分支之间）已经独立开来</li>
+<li>结构简单，所有的分支都是基于卡的，并且全部围绕着一条主分支</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>当一个功能无法拆分成独立的卡时，卡之间的关联太多，可能会需要功能开关</li>
+<li>合并代码的时候冲突过多。如上图，P1-5提交到主干上之后，会是Green分支的噩梦</li>
+</ul>
+<p>##单分支模型</p>
+<img src="/images/blog/2017-06-13_6.png" title="image">
+<p>模型：</p>
+<ul>
+<li>始终在主干分支上开发，实践小步提交（比如以方法为单位进行提交），遇到冲突及时与冲突代码所有者协商，如果有未完成的代码但需要提交则使用功能开关隐藏起来。</li>
+<li>部署时选择主干上的某一次提交进行部署，Hotfix会从主干最新节点再加上一个提交。</li>
+<li>如果一张卡包含前后端，那么最好先开发后端再前端，因为功能开关在前端加最方便</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>小步提交（持续集成），经常解决冲突避免一次性解决大冲突</li>
+<li>将冲突提前，及早的发现并解决问题</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>必须使用功能开关，存在一定的effort去维护它</li>
+<li>Dev与QA需要保证开关两种情况下应用程序能正常使用</li>
+<li>一段时间后功能开关太多太杂难以移除、代码混乱不清晰</li>
+</ul>
+<p>提交到主干分支上的频率：</p>
+<ul>
+<li>每天/次</li>
+</ul>
+<p>##Git Flow模型</p>
+<img src="/images/blog/2017-06-13_7.png" title="image">
+<p>没有使用经验，请参看<a href="https://yaowenjie.github.io/devops/thinking-in-two-kinds-of-ci-cd-strategies-and-git-branch-models" target="_blank" rel="noopener">文章1</a>和<a href="http://nvie.com/posts/a-successful-git-branching-model/" target="_blank" rel="noopener">文章2</a></p>
+<p>#总结<br>
+以上总结了几种不同的持续集成方案、分支模型，但在具体项目中应当按具体需求确定使用哪一种方案或模型。就像如果你去别的国内外包公司想要他们使用TDD可能会碰到的尴尬一样，不要盲从某种方案，世界上没有银弹。</p>
+<p>另外想说一句，吐槽的人多，行动的人少，想做你什么都不是，做了一部分但不彻底人们还是会瞧不起你，就像当你杀掉一百万人的时候你已经是国家领袖而不是当初的杀人犯了。<br>
+#注<br>
+以上只是个人总结以及个人理解，如有偏差，欢迎指正。<br>
+#参考资料<br>
+<a href="https://martinfowler.com/articles/continuousIntegration.html" target="_blank" rel="noopener">https://martinfowler.com/articles/continuousIntegration.html</a><br>
+<a href="https://martinfowler.com/delivery.html" target="_blank" rel="noopener">https://martinfowler.com/delivery.html</a><br>
+<a href="https://martinfowler.com/bliki/FeatureBranch.html" target="_blank" rel="noopener">https://martinfowler.com/bliki/FeatureBranch.html</a><br>
+<a href="http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html</a><br>
+<a href="http://www.mindtheproduct.com/2016/02/what-the-hell-are-ci-cd-and-devops-a-cheatsheet-for-the-rest-of-us/" target="_blank" rel="noopener">http://www.mindtheproduct.com/2016/02/what-the-hell-are-ci-cd-and-devops-a-cheatsheet-for-the-rest-of-us/</a></p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2017-06-23-jian-ting-qi-de-qian-shi-jin-sheng/" data-toggle="tooltip" data-placement="top" title="监听器的前世今生">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2017-06-09-yi-ci-nao-bao-plus-inceptionde-guo-cheng/" data-toggle="tooltip" data-placement="top" title="一次小型脑暴+Inception的过程">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

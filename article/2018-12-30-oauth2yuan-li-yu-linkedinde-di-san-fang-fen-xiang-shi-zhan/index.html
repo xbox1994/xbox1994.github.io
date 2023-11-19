@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          OAuth2原理与LinkedIn的第三方分享实战 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2018-12-30-oauth2yuan-li-yu-linkedinde-di-san-fang-fen-xiang-shi-zhan/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                            
+                        </div>
+                        <h1>OAuth2原理与LinkedIn的第三方分享实战</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2018-12-30
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <a id="more"></a>
+<h2 id="oauth是什么">OAuth是什么</h2>
+<p>开放授权（OAuth）是一个开放标准，允许用户让第三方应用访问该用户在某一网站上存储的私密的资源（如照片，视频，联系人列表），而无需将用户名和密码提供给第三方应用。在全世界得到广泛应用，目前的版本是2.0版。</p>
+<p>比如我的应用需要实现在领英上替用户分享一个动态，但是只有得到用户的授权才能在我的应用中调用领英的API进行分享操作，如果直接让用户把用户名密码传到我的应用，确实可以实现，但是有以下问题：</p>
+<ul>
+<li>为了后续的服务，我的应用会保存用户的密码，在我的应用中保存密码很不安全</li>
+<li>用户无法限制我的应用中能进行哪些操作</li>
+<li>领英必须要有密码登录的功能，而单纯的密码登录并不安全</li>
+<li>我的应用中还需要处理验证码这样的额外身份验证情况</li>
+<li>用户只有修改密码，才能收回权限，但会让所有获得用户授权的第三方应用程序全部失效</li>
+<li>只要有一个第三方应用程序被破解，就会导致用户密码泄漏，以及所有被密码保护的数据泄漏</li>
+</ul>
+<p>OAuth就是为了解决上面这些问题而诞生的。</p>
+<h2 id="oauth原理">OAuth原理</h2>
+<pre><code> +--------+                               +---------------+
+ |        |--(A)- Authorization Request -&gt;|   Resource    |
+ |        |                               |     Owner     |
+ |        |&lt;-(B)-- Authorization Grant ---|               |
+ |        |                               +---------------+
+ |        |
+ |        |                               +---------------+
+ |        |--(C)-- Authorization Grant --&gt;| Authorization |
+ | Client |                               |     Server    |
+ |        |&lt;-(D)----- Access Token -------|               |
+ |        |                               +---------------+
+ |        |
+ |        |                               +---------------+
+ |        |--(E)----- Access Token ------&gt;|    Resource   |
+ |        |                               |     Server    |
+ |        |&lt;-(F)--- Protected Resource ---|               |
+ +--------+                               +---------------+
+</code></pre>
+<ul>
+<li>Client：客户端，第三方应用，我的应用就是一个Client</li>
+<li>Resource Owner ：用户</li>
+<li>Authorization Server：授权服务器，即提供第三方登录服务的服务器，如领英</li>
+<li>Resource Server：服务提供商，通常和授权服务器属于同一应用，如领英</li>
+</ul>
+<p>根据上图的信息，我们可以知道OAuth2的基本流程为：</p>
+<ol>
+<li>用户调用第三方应用的功能，如分享，该功能需要使用用户在服务提供商上的权限，所以第三方应用直接重定向到授权服务器的登录、授权页面等待用户登录、授权。</li>
+<li>用户登录之后同意授权，并返回一个凭证（code）给第三方应用</li>
+<li>第三方应用通过第二步的凭证（code）向授权服务器请求授权</li>
+<li>授权服务器验证凭证（code）通过后，同意授权，并返回一个服务访问的凭证（Access Token）。</li>
+<li>第三方应用通过第四步的凭证（Access Token）向服务提供商请求相关资源。</li>
+<li>服务提供商验证凭证（Access Token）通过后，将第三方应用请求的资源返回。</li>
+</ol>
+<p>简单来说，OAuth在&quot;客户端&quot;与&quot;服务提供商&quot;之间，设置了一个授权层。“客户端&quot;不能直接登录&quot;服务提供商”，只能登录&quot;授权层&quot;，以此将用户与客户端区分开来。&quot;客户端&quot;登录&quot;授权层&quot;所用的凭证（Access Token），与用户的密码不同。用户可以在登录的时候，授权服务器指定授权层令牌的权限范围和有效期。</p>
+<h2 id="linkedin的oauth2交互">LinkedIn的OAuth2交互</h2>
+<p>下面以在我的应用上实现在领英中替用户分享一个动态为例子，真切地来体验一把OAuth2。</p>
+<p>交互图如下，细节会在下面写到：</p>
+<img src="/images/blog/2018-12-30_1.png" title="image">
+<h3 id="配置linkedin应用程序">配置LinkedIn应用程序</h3>
+<p>除了领英，其他任意开发者平台都需要我们在平台上注册一个App才能给我们调用平台API的权限，也方便平台对我们的资质审核以及调用管理。</p>
+<p>所以首先我们得去领英开发者平台去注册一个App：<br>
+<a href="https://www.linkedin.com/developer/apps/new" target="_blank" rel="noopener">https://www.linkedin.com/developer/apps/new</a></p>
+<img src="/images/blog/2018-12-30_2.png" title="image">
+<ul>
+<li>Keys: 完成之后会得到App相关的Key，这是在后续OAuth2交互时需要向领英提供身份验证。</li>
+<li>权限：在用户登录时会给用户展示出我的应用需要哪些权限，我的应用最后调用API的时候会检测权限是否允许。</li>
+<li>回调API接口：这是在OAuth2交互时需要验证的一个参数，领英只会与已识别为可信终端的URL进行通信。</li>
+</ul>
+<h3 id="获取用户授权凭证code">获取用户授权凭证Code</h3>
+<p>用户在我的应用中点击【分享】按钮，会发送一个GET请求到<code>myApp/linkedin/auth/authorization</code>，其中<code>linkedin/auth/authorization</code>是我的应用里暴露出的一个专门用来进行验证的接口。</p>
+<p>我的应用收到请求之后直接回复重定向到领英的授权页面，并且重定向的url中必须包含领英实现的OAuth2的一些参数，如下：</p>
+<img src="/images/blog/2018-12-30_3.png" title="image">
+<p>其中state参数是防止csrf攻击加入进来的，关于csrf以及本例中对csrf防范的实现会在文章最后一部分提到。</p>
+<p>在go语言+Beego框架中的实现如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *AuthorizationController)</span> <span class="title">Get</span><span class="params">()</span></span> &#123;</span><br><span class="line">	host := beego.AppConfig.String(<span class="string">"host"</span>)</span><br><span class="line">	state := util.Generate(<span class="number">10</span>) <span class="comment">// random string with length 10</span></span><br><span class="line">	clientId := beego.AppConfig.String(<span class="string">"linkedin_client_id"</span>) <span class="comment">// 创建app得到的key</span></span><br><span class="line">	linkedinOauth2AuthorizationUrl := <span class="string">"https://www.linkedin.com/oauth/v2/authorization?response_type=code&amp;client_id=%s&amp;redirect_uri=%s/linkedin/auth/callback&amp;state=%s"</span></span><br><span class="line">	uri := fmt.Sprintf(linkedinOauth2AuthorizationUrl, clientId, host, state)</span><br><span class="line"></span><br><span class="line">	c.SetSession(<span class="string">"_csrf_Token"</span>, state)</span><br><span class="line">	c.Redirect(uri, <span class="number">302</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="浏览器跳转到领英页面等待授权">浏览器跳转到领英页面等待授权</h3>
+<p>浏览器从上一步中根据重定向url跳转到领英页面，等待用户登录并授权，如果用户已经登录就直接跳转，如下图：</p>
+<img src="/images/blog/2018-12-30_4.jpg" title="image">
+<p>用户如果点击Cancel，或者请求因任何其他原因而失败，则会将其重定向回redirect_uri的URL，并附加一些错误参数。</p>
+<p>用户如果点击Allow，用户批准您的应用程序访问其成员数据并代表他们与LinkedIn进行交互，也会将其重定向回redirect_uri，并附加重要参数<strong>code</strong></p>
+<h3 id="通过code拿到token并实现分享">通过Code拿到Token，并实现分享</h3>
+<p>redirect_uri就是我的应用中的callback接口，这个接口等待用户传递一个允许授权的凭证code，在我的应用中就可以拿这个code去领英中申请access token，以后就拿着这个access token去访问领英中允许访问的资源了</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *CallbackController)</span> <span class="title">Get</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// csrf validation</span></span><br><span class="line">	csrfToken := c.GetSession(<span class="string">"_csrf_Token"</span>)</span><br><span class="line">	<span class="keyword">if</span> csrfToken != c.GetString(<span class="string">"state"</span>) &#123;</span><br><span class="line">		c.Data[<span class="string">"json"</span>] = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;&#123;</span><br><span class="line">			<span class="string">"error"</span>:             c.GetString(<span class="string">"csrf error"</span>),</span><br><span class="line">			<span class="string">"error_description"</span>: c.GetString(<span class="string">"error_description"</span>)&#125;</span><br><span class="line">		c.ServeJSON()</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// user cancel authorization request or linkedin server error</span></span><br><span class="line">	<span class="keyword">if</span> c.GetString(<span class="string">"error"</span>) != <span class="string">""</span> &#123;</span><br><span class="line">		c.Data[<span class="string">"json"</span>] = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;&#123;</span><br><span class="line">			<span class="string">"error"</span>:             c.GetString(<span class="string">"error"</span>),</span><br><span class="line">			<span class="string">"error_description"</span>: c.GetString(<span class="string">"error_description"</span>)&#125;</span><br><span class="line">		c.ServeJSON()</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// user accept authorization request</span></span><br><span class="line">	code := c.GetString(<span class="string">"code"</span>)</span><br><span class="line">	<span class="keyword">if</span> code != <span class="string">""</span> &#123;</span><br><span class="line">		<span class="comment">// get access token by code</span></span><br><span class="line">		accessToken := getAccessToken(code)</span><br><span class="line">		<span class="comment">// share by access token</span></span><br><span class="line">		shareResponse := share(accessToken.AccessToken)</span><br><span class="line">		c.Data[<span class="string">"json"</span>] = &amp;shareResponse</span><br><span class="line">		c.ServeJSON()</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>getAccessToken和share方法仅仅是发送请求到领英的REST API接口，实际上如果领英有golang的sdk的话，就不需要我们自己使用golang的http包来自己封装请求处理结果了，但可惜领英并没有。</p>
+<p>最后给一个GIF图，该图包含了所有的流程展示，从点击【分享】按钮（调用localhost/linkedin/auth/authorization接口）开始：</p>
+<img src="/images/blog/2018-12-30_5.gif" title="image">
+<h2 id="csrf">CSRF</h2>
+<p><a href="http://en.wikipedia.org/wiki/Cross-site_request_forgery" target="_blank" rel="noopener">跨站请求伪造(Cross-site request forgery)</a>， 简称为 CSRF，是 Web 应用中常见的一个安全问题。前面的链接也详细讲述了 CSRF 攻击的实现方式。</p>
+<p>当前防范 CSRF 的一种通用的方法，是对每一个用户都记录一个无法预知的 cookie 数据，然后要求所有提交的请求（POST/PUT/DELETE）中都必须带有这个 cookie 数据。如果此数据不匹配 ，那么这个请求就可能是被伪造的。</p>
+<p>我们这里防范CSRF的方法就是通过在用户第一次点击分享时（调用/linkedin/auth/authorization）在Session中存储一个字符串：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *AuthorizationController)</span> <span class="title">Get</span><span class="params">()</span></span> &#123;</span><br><span class="line">	...</span><br><span class="line">	c.SetSession(<span class="string">"_csrf_Token"</span>, state)</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当用户浏览器拿到用户的授权凭证code之后发送给我的应用时（调用/linkedin/auth/callback）检测此时请求中的state与之前在Session中存储的字符串是否相同。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *CallbackController)</span> <span class="title">Get</span><span class="params">()</span></span> &#123;</span><br><span class="line">	...</span><br><span class="line">	csrfToken := c.GetSession(<span class="string">"_csrf_Token"</span>)</span><br><span class="line">	<span class="keyword">if</span> csrfToken != c.GetString(<span class="string">"state"</span>) &#123;</span><br><span class="line">		c.Data[<span class="string">"json"</span>] = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;&#123;<span class="string">"error"</span>: <span class="string">"xsrf error"</span>&#125;</span><br><span class="line">		c.ServeJSON()</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果相同则能判断是用户的请求，如果不同，则可能是用户点击了其他用户伪造的一个链接发送的请求，从而可以防止code被发送到恶意网站上去</p>
+<h2 id="本文资源">本文资源</h2>
+<p>代码及部分图片工程文件：<a href="https://github.com/xbox1994/OAuth2-LinkedIn.git" target="_blank" rel="noopener">https://github.com/xbox1994/OAuth2-LinkedIn.git</a></p>
+<h2 id="参考">参考</h2>
+<p><a href="https://zh.wikipedia.org/wiki/%E5%BC%80%E6%94%BE%E6%8E%88%E6%9D%83" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/开放授权</a><br>
+<a href="http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html</a><br>
+<a href="https://developer.linkedin.com/docs/share-on-linkedin" target="_blank" rel="noopener">https://developer.linkedin.com/docs/share-on-linkedin</a><br>
+<a href="https://zhuanlan.zhihu.com/p/20913727" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/20913727</a><br>
+<a href="https://www.cnblogs.com/flashsun/p/7424071.html" target="_blank" rel="noopener">https://www.cnblogs.com/flashsun/p/7424071.html</a><br>
+<a href="https://beego.me/docs/mvc/controller/xsrf.md" target="_blank" rel="noopener">https://beego.me/docs/mvc/controller/xsrf.md</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2019-01-12-jia-gou-ru-men-xi-lie-cong-ye-wu-dao-ping-tai-de-si-wei-zhuan-bian/" data-toggle="tooltip" data-placement="top" title="【架构入门】从业务到平台的思维转变">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2018-12-08-yi-ci-ji-yu-wei-fu-wu-kuang-jia-de-tong-yong-ya-ce-diao-you-shi-zhan/" data-toggle="tooltip" data-placement="top" title="一次简单通用的压测调优实战">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

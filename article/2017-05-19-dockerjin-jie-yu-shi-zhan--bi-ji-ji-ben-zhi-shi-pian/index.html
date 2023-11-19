@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          《Docker进阶与实战》笔记-基本知识篇 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2017-05-19-dockerjin-jie-yu-shi-zhan--bi-ji-ji-ben-zhi-shi-pian/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
+                            
+                        </div>
+                        <h1>《Docker进阶与实战》笔记-基本知识篇</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2017-05-19
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <a id="more"></a>
+<p>#Docker简介<br>
+##历史与发展<br>
+2013年dotCloutd的PaaS服务商将内部项目Docker开源。这家公司随后出售PaaS，改名为Docker.Inc，专注Docker的开发与推广</p>
+<p>Docker是一个开源的容器引擎，得益于容器技术带来的轻量级虚拟化，以及Docker在分层镜像应用上的创新，Docker在磁盘占用、性能和效率方面比传统虚拟化都有非常明显的提高，开始蚕食传统虚拟化的市场</p>
+<p>加入Linux基金会，遵循Apache2.0协议，代码托管在GitHub</p>
+<p>Docker省去传统虚拟化中的Hypervisor层，基于内核的Cgroup和Namespace技术与内核深度结合，性能与物理机接近</p>
+<p>Docker不会直接与内核交互，通过Libcontainer交互，它才是真正的容器引擎</p>
+<img src="/images/blog/Docker1.jpeg" title="image">
+<p>##功能与组件<br>
+###Docker客户端<br>
+Docker是C/S架构，Docker客户端通过command或REST API发起请求</p>
+<p>###Docker daemon<br>
+Docker server/Docker engine。驱动整个Docker功能的核心引擎。</p>
+<p>接受客户端的请求并实现功能，涉及容器、镜像、存储，复杂的内部机制。</p>
+<p>###Docker容器<br>
+功能上，通过Libcontainer实现对容器生命周期的管理。</p>
+<p>概念上，容器诠释了Docker集装箱的概念，可以存放任何货物，运到世界各地。</p>
+<p>容器不是新的概念，牛逼的是Docker把容器封装之后，与集装箱的概念对应起来，是Docker把容器推广到全世界。</p>
+<p>###Docker镜像<br>
+与容器的动态对应，镜像是运行环境的静态体现。</p>
+<p>相对于IOS镜像，轻量化，分层化，提供Dockerfile创建。</p>
+<p>###Registry<br>
+存放镜像的仓库，实现了镜像的传输中转站与版本管理。</p>
+<p>官方Registry是Docker Hub，Registry是开源项目，自己可以搭建自己的Hub或二次开发。</p>
+<p>##概念澄清<br>
+###Docker与LXC的关系<br>
+LXC（Linux Container）：Docker 1.9之前使用的内核容器技术</p>
+<p>Docker在LXC（Cgroup和Namespace）的基础上提供更高层的控制工具。包含以下重要特性：</p>
+<ul>
+<li>跨主机部署。LXC受限于机器的特定配置，Docker镜像定义了可移植的镜像。</li>
+<li>以应用为中心。简化应用的部署过程，在API、文档（这个真的要赞，Docker的文档是笔者读过最舒服的文档）、Dockerfile有体现。</li>
+<li>版本管理。类似于Git，镜像支持提交新的版本，回退版本，追踪镜像版本的功能。镜像的增量上传下载功能。</li>
+<li>组件重用。任何容器都可以用作生成另一个组件的镜像。</li>
+<li>共享。Registry。</li>
+<li>工具生态链。定义了API来定制容器创建和部署。非常多的工具能与Docker协作，扩展能力。</li>
+</ul>
+<p>Libcontainer：Docker强大之后定义容器标准，在1.10之后用的内核容器技术库</p>
+<p>###Docker容器与虚拟机有什么区别<br>
+硬件虚拟化技术VS操作系统虚拟化技术</p>
+<p>Hypervisor层VSCgroup和Namespace</p>
+<p>容器与主机共享内核，不同容器之间可以共享部分系统资源。虚拟机独占分配给自己的资源，各个虚拟机之间完全隔离，因此更加重量级并更消耗资源。</p>
+<p>启动速度：秒与数十秒</p>
+<p>请根据具体需求判断使用相应的隔离方式</p>
+<p>#容器技术<br>
+相对独立的运行环境：进程的资源控制+访问隔离<br>
+##一分钟理解容器<br>
+###组成<br>
+容器 = Cgroup + Namespace + rootfs + 容器引擎（用户态工具）</p>
+<p>###Cgroup<br>
+control group，内核的特性，限制和隔离一组进程对系统资源（CPU、内存、IO、网络）的使用。</p>
+<p>###Namespace<br>
+将内核的全局资源做封装，使每个Namespace都有一份独立的资源，因此不同的进程在各自的Namespace内对同一种资源的使用不会相互干扰。</p>
+<p>##容器造就Docker<br>
+Docker的核心技术：容器？分层镜像？统一应用的打包与部署方式？“Build, Ship and Run&quot;？</p>
+<ul>
+<li>微服务的设计艺术：轻量级虚拟化、与内核无缝结合的运行效率优势与极小的系统开销；将各个组件单独部署的思想。</li>
+<li>基于LXC容器技术的完善、加强、应用化</li>
+</ul>
+<p>#Docker镜像<br>
+##Docker image概念<br>
+启动容器的只读模板</p>
+<p>Docker image表示法：远程Registry地址/命名空间/仓库名:标签</p>
+<img src="/images/blog/Docker2.jpeg" title="image">
+<p>##Docker image的组织结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">vagrant@workshop:/var/lib/docker$ ll</span><br><span class="line">total 76</span><br><span class="line">drwxr-xr-x   9 root root  4096 May 18 15:16 ./</span><br><span class="line">drwxr-xr-x  52 root root  4096 Nov 22  2015 ../</span><br><span class="line">drwxr-xr-x   5 root root  4096 Nov 22  2015 aufs/</span><br><span class="line">drwx------   3 root root  4096 May 18 15:16 containers/</span><br><span class="line">drwx------ 258 root root 28672 May 17 15:51 graph/               #image各层的元数据</span><br><span class="line">-rw-r--r--   1 root root  5120 May 18 15:16 linkgraph.db</span><br><span class="line">drwxr-x---   3 root root  4096 Nov 22  2015 network/</span><br><span class="line">-rw-------   1 root root  2015 May 17 15:51 repositories-aufs    #image总体信息</span><br><span class="line">drwx------   2 root root  4096 May 18 13:59 tmp/</span><br><span class="line">drwx------   2 root root  4096 Nov 22  2015 trust/</span><br><span class="line">drwx------   3 root root  4096 May 17 15:39 volumes/</span><br></pre></td></tr></table></figure>
+<p>###总体信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vagrant@workshop:/var/lib/docker$ sudo cat repositories-aufs | python -m json.tool</span><br><span class="line">&#123;</span><br><span class="line">    &quot;Repositories&quot;: &#123;</span><br><span class="line">        &quot;busybox&quot;: &#123;</span><br><span class="line">            &quot;latest&quot;: &quot;3d5bcd78e074f6f77b820bf4c6db0e05d522e24c855f3c2a3bbf3b1c8f967ba8&quot;</span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure>
+<p>###数据与元数据<br>
+graph目录包含本地镜像库中所有元数据与数据信息。对于busybox</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@workshop:/var/lib/docker/graph/3d5bcd78e074f6f77b820bf4c6db0e05d522e24c855f3c2a3bbf3b1c8f967ba8# ll</span><br><span class="line">total 48</span><br><span class="line">drwx------   2 root root  4096 Nov 22  2015 ./</span><br><span class="line">drwx------ 258 root root 28672 May 17 15:51 ../</span><br><span class="line">-rw-------   1 root root  1074 Nov 22  2015 json</span><br><span class="line">-rw-------   1 root root     1 Nov 22  2015 layersize</span><br><span class="line">-rw-------   1 root root    82 Nov 22  2015 tar-data.json.gz</span><br></pre></td></tr></table></figure>
+<p>Docker daemon可以通过这些信息还原出Docker image：先通过repositories-aufs获取image对应的layer ID，再根据layer对应的元数据梳理出image包含的所有层、层与层之间的关系，然后使用联合挂载技术还原出容器启动所需要的rootfs。</p>
+<p>###数据的组织<br>
+docker inspect对元数据（上个控制台输出的名称为json的文件）进行了整理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">root@workshop:/var/lib/docker/graph/3d5bcd78e074f6f77b820bf4c6db0e05d522e24c855f3c2a3bbf3b1c8f967ba8# docker inspect busybox</span><br><span class="line">[</span><br><span class="line">&#123;</span><br><span class="line">    &quot;Id&quot;: &quot;3d5bcd78e074f6f77b820bf4c6db0e05d522e24c855f3c2a3bbf3b1c8f967ba8&quot;,</span><br><span class="line">    &quot;Repotags:&quot;: [</span><br><span class="line">        &quot;busybox:latest&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;RepoDigests&quot;: [],</span><br><span class="line">    &quot;Parent&quot;: &quot;bf0f46991aed1fa45508683e740601df23a2395c47f793883e4b0160ab906c1e&quot;,</span><br><span class="line">    &quot;Comment&quot;: &quot;&quot;,</span><br><span class="line">    &quot;Created&quot;: &quot;2015-10-20T21:56:30.211245109Z&quot;,</span><br><span class="line">    &quot;Container&quot;: &quot;e97e35122eefe587151947c737439860e06866ae6b5a5da785ec76caaa46441f&quot;,</span><br><span class="line">    &quot;ContainerConfig&quot;: &#123;</span><br><span class="line">        &quot;Hostname&quot;: &quot;3e10a20c1b67&quot;,</span><br><span class="line">        &quot;Domainname&quot;: &quot;&quot;,</span><br><span class="line">        &quot;User&quot;: &quot;&quot;,</span><br><span class="line">        &quot;AttachStdin&quot;: false,</span><br><span class="line">        &quot;AttachStdout&quot;: false,</span><br><span class="line">        &quot;AttachStderr&quot;: false,</span><br><span class="line">        &quot;Tty&quot;: false,</span><br><span class="line">        &quot;OpenStdin&quot;: false,</span><br><span class="line">        &quot;StdinOnce&quot;: false,</span><br><span class="line">        &quot;Env&quot;: null,</span><br><span class="line">        &quot;Cmd&quot;: [</span><br><span class="line">            &quot;/bin/sh&quot;,</span><br><span class="line">            &quot;-c&quot;,</span><br><span class="line">            &quot;#(nop) CMD [\&quot;sh\&quot;]&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;Image&quot;: &quot;bf0f46991aed1fa45508683e740601df23a2395c47f793883e4b0160ab906c1e&quot;,</span><br><span class="line">        &quot;Volumes&quot;: null,</span><br><span class="line">        &quot;WorkingDir&quot;: &quot;&quot;,</span><br><span class="line">        &quot;Entrypoint&quot;: null,</span><br><span class="line">        &quot;OnBuild&quot;: null,</span><br><span class="line">        &quot;Labels&quot;: null</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;DockerVersion&quot;: &quot;1.8.2&quot;,</span><br><span class="line">    &quot;Author&quot;: &quot;&quot;,</span><br><span class="line">    &quot;Config&quot;: &#123;</span><br><span class="line">        &quot;Hostname&quot;: &quot;3e10a20c1b67&quot;,</span><br><span class="line">        &quot;Domainname&quot;: &quot;&quot;,</span><br><span class="line">        &quot;User&quot;: &quot;&quot;,</span><br><span class="line">        &quot;AttachStdin&quot;: false,</span><br><span class="line">        &quot;AttachStdout&quot;: false,</span><br><span class="line">        &quot;AttachStderr&quot;: false,</span><br><span class="line">        &quot;Tty&quot;: false,</span><br><span class="line">        &quot;OpenStdin&quot;: false,</span><br><span class="line">        &quot;StdinOnce&quot;: false,</span><br><span class="line">        &quot;Env&quot;: null,</span><br><span class="line">        &quot;Cmd&quot;: [</span><br><span class="line">            &quot;sh&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;Image&quot;: &quot;bf0f46991aed1fa45508683e740601df23a2395c47f793883e4b0160ab906c1e&quot;,</span><br><span class="line">        &quot;Volumes&quot;: null,</span><br><span class="line">        &quot;WorkingDir&quot;: &quot;&quot;,</span><br><span class="line">        &quot;Entrypoint&quot;: null,</span><br><span class="line">        &quot;OnBuild&quot;: null,</span><br><span class="line">        &quot;Labels&quot;: null</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;Architecture&quot;: &quot;amd64&quot;,</span><br><span class="line">    &quot;Os&quot;: &quot;linux&quot;,</span><br><span class="line">    &quot;Size&quot;: 0,</span><br><span class="line">    &quot;VirtualSize&quot;: 1112855,</span><br><span class="line">    &quot;GraphDriver&quot;: &#123;</span><br><span class="line">        &quot;Name&quot;: &quot;aufs&quot;,</span><br><span class="line">        &quot;Data&quot;: null</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>Id：最上层的layerID<br>
+Parent：该layer的父层，这样就可以找到某个image的所有layer<br>
+##Docker image扩展知识<br>
+###联合挂载<br>
+把多个目录挂载到同一个目录，对外呈现这些目录的联合</p>
+<p>只有OverlayFS在2014年合入Linxu主线，aufs只有ubuntu支持，Redhat和Suse采用devicemapper，请根据实际情况选择后端存储驱动<br>
+###写时复制<br>
+操作系统的fork：当父进程fork子进程，内核不会马上分配内存，而是让父子进程共享内存。当两者之一修改共享内存时，会触发一次缺页异常导致真正的内存分配。加速了创建速度与减少了内存的消耗。</p>
+<p>所有的容器共享某个image的文件系统，所有数据都从image中读取，只有当要对文件进行写操作时，才从image里把要写的文件复制到自己的文件系统进行修改。从而提高加载速度并节省空间<br>
+##存在的问题</p>
+<ul>
+<li>image难以加密。image是共享的，加密会导致难以共享。有notary的镜像签名机制。</li>
+<li>image分层之后有大量元数据。分布式存储对小文件的支持不好。</li>
+<li>image制作完成之后无法修改。Dockre不提供修改或合并层的指令。</li>
+</ul>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2017-06-01-yi-microservies-7-jiang-ju-wu-ba-zhong-gou-cheng-wei-fu-wu/" data-toggle="tooltip" data-placement="top" title="[译][MicroService 7]将巨无霸重构成微服务">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2017-05-15-zai-wei-fu-wu-jia-gou-zhong-de-fu-wu-fa-xian-ji-zhi/" data-toggle="tooltip" data-placement="top" title="[译][MicroService 4]在微服务架构中的服务发现机制">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

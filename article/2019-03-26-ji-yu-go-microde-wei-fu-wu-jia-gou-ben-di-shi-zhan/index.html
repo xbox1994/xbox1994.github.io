@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          基于Go Micro的微服务架构本地实战 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2019-03-26-ji-yu-go-microde-wei-fu-wu-jia-gou-ben-di-shi-zhan/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                            
+                        </div>
+                        <h1>基于Go Micro的微服务架构本地实战</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2019-03-26
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>本项目Github地址：<a href="https://github.com/xbox1994/GoMicroExample" target="_blank" rel="noopener">https://github.com/xbox1994/GoMicroExample</a></p>
+<a id="more"></a>
+<h2 id="简介">简介</h2>
+<p>Go Micro是一个插件化的基础微服务框架，它是一部分微服务工具的集合。基于该框架可以构建出微服务应用程序。Micro的设计哲学是“可插拔”的插件化架构。在架构之外，它默认实现了consul作为服务发现，通过http、protobuf、进行通信。里面包含几乎所有微服务组件，并且支持非常好的拓展性，通过接口的设计方式，让我们可以拓展一些自己的组件，如服务发现、身份校验、配置管理等。另外，Micro工具包是建立在Go Micro基础之上的微服务工具包，提供更丰富的工具支持。</p>
+<p>但即使称自己为框架，但是不是一个完整成熟的微服务体系，所以在下文中会以成熟的微服务体系为目标，在Go Micro的基础上添砖加瓦，以一个简单的例子为例搭建出一套相对完整的微服务架构。</p>
+<h2 id="go-micro使用">Go Micro使用</h2>
+<p><a href="https://github.com/micro/go-micro" target="_blank" rel="noopener">https://github.com/micro/go-micro</a></p>
+<p>根据Getting started部分的教程，结合consul、gRPC可以搭建起一个服务之间调用的Demo，这里就不多说了。但是这个Demo和我们想要的微服务架构还是差太多。常见的微服务架构如下图：</p>
+<img src="/images/blog/2018-09-28_1.jpg" title="image">
+<p>现在我们仅仅实现了Service Discovery以及两个srv之间的交互。下面将一步一步将微服务的主要组件结合Go Micro的<a href="https://micro.mu/docs/go-micro-architecture_cn.html#%E7%9B%B8%E5%85%B3%E5%8C%85" target="_blank" rel="noopener">核心组件</a>（注册、选择器、传输、代理、编码、服务端、客户端）加入进来，同时包含一些新手的使用经验。</p>
+<h2 id="服务发现注册">服务发现注册</h2>
+<h4 id="原理">原理</h4>
+<p>服务注册发现是将所有服务注册到注册中心从而注册中心能提供一个可用的服务列表，让各个服务之间知道彼此的状态与地址。比如客户端可以向注册中心发起查询，来获取服务的位置。下面均以consul为例，说明原理。</p>
+<img src="/images/blog/2018-09-28_2.jpg" title="image">
+<ul>
+<li>当User Service启动的时候，会向consul发送一个POST请求，告诉consul自己的IP和Port</li>
+<li>consul 接收到User Service的注册后，每隔10s（默认）会向User Service发送一个健康检查的请求，检验User Service是否健康</li>
+<li>当Order Service发送 GET 方式请求/api/addresses到User Service时，会先从consul中拿到一个存储服务 IP 和 Port 的临时表，从表中拿到User Service的IP和Port后再发送GET方式请求/api/addresses</li>
+<li>该临时表每隔10s会更新，只包含有通过了健康检查的Service</li>
+</ul>
+<p>每当发生被注册过的服务之间的调用时，会先从consul中查询可用的IP与Port，才能定位被调用的服务地址。对于已经注册过的服务，应该让consul客户端每隔一段时间会向服务发送一个Health Check的请求来检验服务是否正常。</p>
+<p>在Go Micro中，通过在启动服务时执行自身在服务发现中的名称，就能在启动服务时自动注册到consul中：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">greeterService := micro.NewService(micro.Name(<span class="string">"go.micro.api.greeter"</span>))</span><br><span class="line">greeterService.Init()</span><br><span class="line"><span class="keyword">if</span> err := greeterService.Run(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Fatal(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="健康检查机制带来的问题go-micro组件-注册-registry">健康检查机制带来的问题（Go Micro组件 - 注册 Registry）</h4>
+<p>在Go Micro中可以使用consul、etcd、zookeeper、dns、gossip等等提供支持。服务使用启动注册关机卸载的方式注册。服务可以选择性提供过期TTL和定时重注册来保证服务在线，以及在服务不在线时把它清理掉。默认使用的注册中心是mdns，可以使用环境变量<code>MICRO_REGISTRY</code>或命令行<code>--registry</code>指定为consul或其他注册中心。</p>
+<p>使用consul之后的坑在于，在程序关闭的时候，如通过IDEA的调试模式启动的程序，或在K8S容器中运行的程序，在退出的时候可能不会发送Registering node的请求，导致consul依然认为该服务正常，依然会把已经关闭的节点当成健康服务，这是go micro中使用consul的<a href="https://www.consul.io/docs/agent/checks.html" target="_blank" rel="noopener">健康检查机制</a>的问题。</p>
+<p>在Go Micro源码的micro/go-micro/registry/consul_registry.go中，如果不使用TCP或TTL注册方式，则不会告知consul，我已经配置了一个健康检查的机制，所以除非我自己手动解除或在consul里发送命令删除，该节点一直会存在。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> check *consul.AgentServiceCheck</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> regTCPCheck &#123;</span><br><span class="line">	deregTTL := getDeregisterTTL(regInterval)</span><br><span class="line"></span><br><span class="line">	check = &amp;consul.AgentServiceCheck&#123;</span><br><span class="line">		TCP:                            fmt.Sprintf(<span class="string">"%s:%d"</span>, node.Address, node.Port),</span><br><span class="line">		Interval:                       fmt.Sprintf(<span class="string">"%v"</span>, regInterval),</span><br><span class="line">		DeregisterCriticalServiceAfter: fmt.Sprintf(<span class="string">"%v"</span>, deregTTL),</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// if the TTL is greater than 0 create an associated check</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> options.TTL &gt; time.Duration(<span class="number">0</span>) &#123;</span><br><span class="line">	deregTTL := getDeregisterTTL(options.TTL)</span><br><span class="line"></span><br><span class="line">	check = &amp;consul.AgentServiceCheck&#123;</span><br><span class="line">		TTL:                            fmt.Sprintf(<span class="string">"%v"</span>, options.TTL),</span><br><span class="line">		DeregisterCriticalServiceAfter: fmt.Sprintf(<span class="string">"%v"</span>, deregTTL),</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以我们必须添加额外的配置比如<code>MICRO_REGISTER_TTL=10;MICRO_REGISTER_INTERVAL=5;</code>让我们使用TTL的方式，如果10秒内我的服务没有向consul发送请求，服务则是断开状态。也可以使用TCP方式让consul来请求你的服务检查是否健康</p>
+<p>但这种方式并不是完美的，如果使用上面的参数，在服务关闭的5秒后，consul中该服务依然是健康的，其他服务请求consul会拿到这个已经关闭的服务的地址。由于consul和etcd都没有和zookeeper的一样的临时节点，无法做到立马在服务关闭的时候让注册中心感知，所以在实时性要求高的服务上下线的情景下应该使用zookeeper</p>
+<p>另一方面，上面我们写了三种健康检查的具体方式，可以大体分为客户端心跳（TTL、临时节点）和服务端主动探测（TCP）两种方式。客户端心跳中，长连接的维持和客户端的主动心跳都只是表明链路上的正常，不一定是服务状态正常。服务端主动调用服务进行健康检查是一个较为准确的方式，返回结果成功表明服务状态确实正常，但也存在问题。服务注册中心主动调用 RPC 服务的某个接口无法做到通用性；在很多场景下服务注册中心到服务发布者的网络是不通的，服务端无法主动发起健康检查。所以如何取舍，还是需要根据实际情况来决定，根据不同的场景，选择不同的策略。</p>
+<h4 id="服务之间的负载均衡go-micro组件-选择器-selector">服务之间的负载均衡（Go Micro组件 - 选择器 Selector）</h4>
+<p>选择器是构建在服务注册中心上的负载均衡抽象，负责通过Go Micro组件 - 客户端调用内部服务的策略。它允许服务被过滤函数过滤掉不提供服务，也可以通过选择适当的算法来被选中提供服务，算法可以是随机、轮询（客户端均衡）、最少链接（leastconn）等等。选择器通过客户端创建语法时发生作用。客户端会使用选择器而不是注册表，因为它提供内置的负载均衡机制。</p>
+<p>consul提供的负载均衡能力太弱，只有作为DNS查询的时候可以使用随机循环策略进行负载均衡，所以一般是<a href="https://www.hashicorp.com/blog/load-balancing-strategies-for-consul" target="_blank" rel="noopener">结合Fabio、Nginx</a>进行真实有效的负载均衡。在Go Micro中，请求路由访问某个服务的过程是（以consul为例）：</p>
+<ol>
+<li>根据服务名称去查询consul得到所有该服务的节点列表（micro/go-micro/registry/consul_registry.go GetService方法）</li>
+<li>根据选择器策略从节点列表中选择一个节点并发送请求（micro/go-micro/client/rpc_client.go next方法）</li>
+</ol>
+<p>默认使用的是<code>micro/go-micro/selector/strategy.go</code>中的Random算法随机选择节点，也可以自行定义算法选择节点，可以参考<a href="https://github.com/micro/examples/blob/master/client/selector/selector.go" target="_blank" rel="noopener">这里</a>实现自己的selector，本项目中不包含选择器的实现</p>
+<h2 id="api-网关">API 网关</h2>
+<p>API Gateway 是随着微服务概念一起兴起的一种架构模式，它用于解决微服务过于分散，没有一个统一的出入口进行流量管理的问题。它类似于面向对象的外观模式。流量管理的具体问题包括：封装了内部系统架构并且提供了每个客户端定制的API、身份验证、监控、负载均衡、缓存、数据通信协议转换、统一维护流量路由表。</p>
+<img src="/images/blog/2018-09-28_3.jpg" title="image">
+<p>API Gateway的缺点是，它必须是一个被开发、部署、管理的高可用组件。另外，开发人员必须更新API网关来暴露每个微服务接口。因此更新API网关的过程越少越好。然而，对于大多数现实世界的应用，使用API网关是必不可少的。</p>
+<h4 id="micro-api">Micro Api</h4>
+<p>Micro Api是Micro工具包中实现API网关的工具，它提供HTTP并使用服务发现动态路由到适当的后端。API的请求通过HTTP提供，并通过RPC进行内部路由。我们可以利用它进行服务发现，负载平衡，编码和基于RPC的通信。</p>
+<img src="/images/blog/2018-09-28_4.png" title="image">
+<p>上图是官方给的Micro Api路由图，Micro Api是一个请求路由、格式转换的工具，只需要执行<code>micro api</code>来启动它，就可以像其他服务一样自动注册到consul，在<code>8080</code>端口开启所有外界HTTP请求的访问入口，并将请求路由、转换到内部中。至于向加一些其他功能比如鉴权则需要实现Micro Api的插件，可以参考项目中的实现。</p>
+<h4 id="数据格式转换go-micro组件-编码-codec">数据格式转换（Go Micro组件 - 编码 Codec）</h4>
+<p>编码组件用于在消息传输到两端时进行编码与解码，可以是json、protobuf、bson、msgpack等等。与其它编码方式不同的我们支持RPC格式的。所以我们有JSON-RPC、PROTO-RPC、BSON-RPC等格式。编码包把客户端与服务端的编码隔离开来，并提供强大的方法来集成其它系统，比如gRPC、Vanadium等等。</p>
+<p>编码组件是框架内部的工作，开发时不需要关心，我们需要关心的是：前端需要使用Json来进行通信，但后端使用Protobuf在服务之间通信。对于外部请求，Micro Api通过接收前端HTTP请求，将请求转换之后发送到内部服务，对于服务间的请求，A服务可以直接使用go语言的gRPC客户端调用B服务的接口。相比在使用Restful方式完成服务之间的相互访问，gRPC能提供更好的性能，更低的延迟，并且生来适合与分布式系统。</p>
+<p>gRPC是一个高性能、通用的开源RPC框架，其由Google主要面向移动应用开发并基于HTTP/2协议标准而设计，同时基于标准化的IDL（ProtoBuf）来生成服务器端和客户端代码, ProtoBuf服务定义可以作为服务契约，因此可以更好的支持团队与团队之间的接口设计，开发，测试，协作。</p>
+<p>protoc-gen-micro是与Micro工具包类似的一个工具，在gRPC的基础之上封装了一层更加规范和易于使用的接口，我们只需要写出proto文件，执行<code>protoc --proto_path=proto --proto_path=${GOPATH} --micro_out=proto --go_out=proto greeter.proto</code>就能生成go语言版本接口文件，接口文件中定义了服务提供者应该实现哪些接口，服务调用者应该如何使用的接口。现在就需要实现服务端的接口之后在启动服务的代码中注册该proto对应的接口，如下：</p>
+<p>proto文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">syntax = &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">import &quot;github.com/micro/go-api/proto/api.proto&quot;;</span><br><span class="line"></span><br><span class="line">service Greeter &#123;</span><br><span class="line">    rpc Hello(go.api.Request) returns(go.api.Response) &#123;&#125;;  //对外的服务接口必须使用go-api的request与response，因为是与Micro Api结合使用需要统一接口</span><br><span class="line">                                                            //对内的服务可以自定义参数与返回，可参考service/user/proto/user.proto</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="统一流量入口维护路由关系">统一流量入口，维护路由关系</h4>
+<p>Micro Api根据HTTP请求路径、内部服务名称、被调用方法名建立了如下的映射关系，将所有前端传递过来的请求根据该表路由到后端服务中，可以避免从前端直接调用多个后端服务而产生的混乱的交互逻辑，也相当于避免暴露出后端服务。</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Service</th>
+<th>Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/foo/bar</td>
+<td>go.micro.api.foo</td>
+<td>Foo.Bar</td>
+</tr>
+<tr>
+<td>/foo/bar/baz</td>
+<td>go.micro.api.foo</td>
+<td>Bar.Baz</td>
+</tr>
+<tr>
+<td>/foo/bar/baz/cat</td>
+<td>go.micro.api.foo.bar</td>
+<td>Baz.Cat</td>
+</tr>
+</tbody>
+</table>
+<p>所以我们在写服务的时候需要注意服务的名称与方法名正确命名，比如<code>http://localhost:8080/greeter/hello</code>会映射到如下方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Greeter <span class="keyword">struct</span> &#123;</span><br><span class="line">	userClient user.UserService</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(ga *Greeter)</span> <span class="title">Hello</span><span class="params">(ctx context.Context, req *go_api.Request, rsp *go_api.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="用户身份鉴定">用户身份鉴定</h4>
+<p>该功能是除了登录功能的每一个API都会调用的功能，甚至为了不嵌入到每一个服务中，统一在这里处理较好。对于容器化与无状态服务，可以使用JWT进行身份验证，以下是一个例子，从Authorization中解析出用户信息然后传递给网关后的服务。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(*Auth)</span> <span class="title">Handler</span><span class="params">()</span> <span class="title">plugin</span>.<span class="title">Handler</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(h http.Handler)</span> <span class="title">http</span>.<span class="title">Handler</span></span> &#123;</span><br><span class="line">		<span class="keyword">return</span> http.HandlerFunc(<span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">			log.Println(<span class="string">"auth plugin received: "</span> + r.URL.Path)</span><br><span class="line">			<span class="keyword">if</span> r.URL.Path == <span class="string">"/user/login"</span> &#123;</span><br><span class="line">				h.ServeHTTP(w, r)</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			token := r.Header.Get(<span class="string">"Authorization"</span>)</span><br><span class="line">			userFromToken, e := Decode(token)</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> e != <span class="literal">nil</span> &#123;</span><br><span class="line">				response, _ := json.Marshal(util.CommonResponse&#123;</span><br><span class="line">					Code:    code.AuthorizationError,</span><br><span class="line">					Message: <span class="string">"please login"</span>,</span><br><span class="line">				&#125;)</span><br><span class="line">				w.Write(response)</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			r.Header.Set(<span class="string">"X-Example-Id"</span>, userFromToken.Id)</span><br><span class="line">			r.Header.Set(<span class="string">"X-Example-Username"</span>, userFromToken.Username)</span><br><span class="line">			h.ServeHTTP(w, r)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="服务端go-micro组件-服务端-server">服务端（Go Micro组件 - 服务端 Server）</h2>
+<p>Server包是使用编写服务的构建包，可以命名服务，注册请求处理器，增加中间件等等。服务构建在以上说的包之上，提供独立的接口来服务请求。现在服务的构建是RPC系统，在未来可能还会有其它的实现。服务端允许定义多个不同的编码来服务不同的编码消息。</p>
+<p>比如Greeter的main.go文件，只需要实现proto文件中的Hello接口，就可以被当做服务端，结合Go Micro服务端组件使用，成为一个可被访问的服务：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Greeter <span class="keyword">struct</span> &#123;</span><br><span class="line">	userClient user.UserService</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(ga *Greeter)</span> <span class="title">Hello</span><span class="params">(ctx context.Context, req *go_api.Request, rsp *go_api.Response)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	log.Print(<span class="string">"Received Greeter.Hello API request"</span>)</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	greeterService := micro.NewService(</span><br><span class="line">		micro.Name(<span class="string">"go.micro.api.greeter"</span>),</span><br><span class="line">	)</span><br><span class="line">	greeterService.Init()</span><br><span class="line">	greeterApi.RegisterGreeterHandler(greeterService.Server(), &amp;Greeter&#123;</span><br><span class="line">		userClient: user.NewUserService(<span class="string">"go.micro.api.user"</span>, greeterService.Client())&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err := greeterService.Run(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="客户端go-micro组件-客户端-client">客户端（Go Micro组件 - 客户端 Client）</h2>
+<p>客户端提供接口来创建向服务端的请求。与服务端类似，它构建在其它包之上，它提供独立的接口，通过注册中心来基于名称发现服务，基于选择器（selector）来负载均衡，使用transport、broker处理同步、异步消息。</p>
+<p>比如greeter服务想要调用user服务，那么就需要将user服务的proto接口文件放到greeter服务能访问到的地方，让greeter的代码能够与之共同构建，还需要在创建greeter服务的时候将user服务的客户端创建出来，如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	greeterService := micro.NewService(micro.Name(micro_c.MicroNameGreeter),)</span><br><span class="line">	greeterService.Init()</span><br><span class="line">	greeterApi.RegisterGreeterHandler(greeterService.Server(), &amp;Greeter&#123;</span><br><span class="line">		userClient: user.NewUserService(micro_c.MicroNameUser, greeterService.Client())&#125;)</span><br><span class="line">	<span class="keyword">if</span> err := greeterService.Run(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="服务间异步通信go-micro组件-代理-broker">服务间异步通信（Go Micro组件 - 代理 Broker）</h2>
+<p>Broker提供异步通信的消息发布/订阅接口。对于微服务系统及事件驱动型的架构来说，发布/订阅是基础。一开始，默认我们使用收件箱方式的点到点HTTP系统来最小化依赖的数量。但是，在go-plugins是提供有消息代理实现的，比如RabbitMQ、NATS、NSQ、Google Cloud Pub Sub等等。</p>
+<p>具体使用方法参看：<a href="https://github.com/micro/examples/tree/master/broker" target="_blank" rel="noopener">https://github.com/micro/examples/tree/master/broker</a></p>
+<h2 id="服务配置中心">服务配置中心</h2>
+<p>最开始，我们的每个服务的配置文件都是在自身代码库中，当服务数量、服务所在的环境的数量达到一定数量后，管理这些分散的配置文件会成为一个痛点。由于Micro Config不支持从Git上获取配置文件，所以选用Spring Cloud Config来实现。</p>
+<p>Spring Cloud Config的目标是将各个微服务的配置文件集中存储一个文件仓库中（比如系统目录，Git仓库等等），然后通过Config Server从文件仓库中去读取配置文件，而各个微服务作为Viper通过给Config Server发送请求来获取特定的Profile的配置文件，从而为自身的应用提供配置信息。</p>
+<img src="/images/blog/2018-09-28_5.jpg" title="image">
+<p>具体配置过程参看：<a href="https://www.jianshu.com/p/e60f3cceaace" target="_blank" rel="noopener">https://www.jianshu.com/p/e60f3cceaace</a> 以及本项目中的<code>service/config/config.go</code>文件、<code>config</code>项目。</p>
+<h2 id="服务容错保护">服务容错保护</h2>
+<p>服务熔断：当服务A调用服务B的请求满足一定的规则，比如10秒内请求数达到20个，并且有一半以上的请求失败了，此时我们通过切断对服务B的调用来保护系统的整体响应，这种操作即为服务熔断。<br>
+服务降级：在服务B被熔断之后，服务A不会真正地调用服务B。取而代之的是，我们在服务A中定义一个服务降级逻辑（通常是一个fallback接口），此时服务A会直接调用服务降级逻辑快速获取返回结果。</p>
+<p>下面是hystrix的配置文件，定义了服务熔断标准、服务降级逻辑、数据暴露端口</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> clientWrapper <span class="keyword">struct</span> &#123;</span><br><span class="line">	client.Client</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *clientWrapper)</span> <span class="title">Call</span><span class="params">(ctx context.Context, req client.Request, rsp <span class="keyword">interface</span>&#123;&#125;, opts ...client.CallOption)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> hystrix.Do(req.Service()+<span class="string">"."</span>+req.Method(), <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span></span> &#123;</span><br><span class="line">		<span class="keyword">return</span> c.Client.Call(ctx, req, rsp, opts...)</span><br><span class="line">	&#125;, <span class="function"><span class="keyword">func</span><span class="params">(err error)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">		<span class="comment">// 可以在这里自定义服务降级逻辑</span></span><br><span class="line">		log.Printf(<span class="string">"fallback error!!!!!  %v"</span>, err)</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewClientWrapper</span><span class="params">()</span> <span class="title">client</span>.<span class="title">Wrapper</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(c client.Client)</span> <span class="title">client</span>.<span class="title">Client</span></span> &#123;</span><br><span class="line">		<span class="keyword">return</span> &amp;clientWrapper&#123;c&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Configure</span><span class="params">(names []<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">// hystrix有默认的参数配置，这里可以对某些api进行自定义配置</span></span><br><span class="line">	config := hystrix.CommandConfig&#123;</span><br><span class="line">		Timeout:               <span class="number">2000</span>,</span><br><span class="line">		MaxConcurrentRequests: <span class="number">100</span>,</span><br><span class="line">		ErrorPercentThreshold: <span class="number">25</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	configs := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]hystrix.CommandConfig)</span><br><span class="line">	<span class="keyword">for</span> _, name := <span class="keyword">range</span> names &#123;</span><br><span class="line">		configs[name] = config</span><br><span class="line">	&#125;</span><br><span class="line">	hystrix.Configure(configs)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 还能结合hystrix dashboard来将服务状态动态可视化出来</span></span><br><span class="line">	hystrixStreamHandler := hystrix.NewStreamHandler()</span><br><span class="line">	hystrixStreamHandler.Start()</span><br><span class="line">	<span class="keyword">go</span> http.ListenAndServe(net.JoinHostPort(<span class="string">""</span>, <span class="string">"8181"</span>), hystrixStreamHandler)</span><br><span class="line">	log.Println(<span class="string">"Launched hystrixStreamHandler at 8181"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在服务初始化的时候只需要如下配置就能利用以上的配置来针对某些接口进行容错保护，一旦到达服务降级阈值，则会调用到降级逻辑</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hystrix.Configure([]<span class="keyword">string</span>&#123;<span class="string">"go.micro.api.user.User.GetUserInfo"</span>&#125;)</span><br><span class="line">greeterService := micro.NewService(</span><br><span class="line">	micro.Name(micro_c.MicroNameGreeter),</span><br><span class="line">	micro.WrapClient(hystrix.NewClientWrapper()),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="整体架构">整体架构</h2>
+<p>以 greeter/hello 为例，请求流程图如下：</p>
+<img src="/images/blog/2018-09-28_6.jpg" title="image">
+<ol>
+<li>访问greeter/hello</li>
+<li>Micro Api解析请求，验证身份是否有效，决定请求是否继续传递，如果有效，则将解析出来的用户信息写到header中</li>
+<li>GreeterService接收到gRPC请求并路由到Greeter.Hello方法中，调用其中的逻辑，尝试发送请求到UserService得到用户的其他信息，header也转发过去</li>
+<li>UserService根据header中得到的id查询数据库得到具体的用户信息并返回</li>
+</ol>
+<p>在服务间请求调用过程中，会有Hystrix来提供服务容错机制。在所有服务启动之前，会请求Config Service来获得对应服务的对应环境的配置信息。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://gocn.vip/question/1999" target="_blank" rel="noopener">https://gocn.vip/question/1999</a><br>
+<a href="http://sjyuan.cc/topics/" target="_blank" rel="noopener">http://sjyuan.cc/topics/</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2019-04-09-jia-gou-ru-men-xi-lie-shen-me-shi-jia-gou/" data-toggle="tooltip" data-placement="top" title="【架构入门】什么是架构">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2019-03-06-zai-awsshang-kuo-zhan-dao-shu-bai-mo-yong-hu-de-xi-tong/" data-toggle="tooltip" data-placement="top" title="【译】在AWS上扩展到数百万用户的系统">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

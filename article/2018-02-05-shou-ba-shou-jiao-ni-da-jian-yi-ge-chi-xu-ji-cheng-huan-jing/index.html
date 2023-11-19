@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          手把手教你搭建一个持续集成环境 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2018-02-05-shou-ba-shou-jiao-ni-da-jian-yi-ge-chi-xu-ji-cheng-huan-jing/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
+                            
+                        </div>
+                        <h1>手把手教你搭建一个持续集成环境</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2018-02-05
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>本文将带领你从0开始，用Vagrant + Docker + Ansible + Jenkins + Nginx + GitHub等工具和资源来搭建一条可执行可扩展的持续集成流水线，即使这些名字你都没听过也没关系，本文将会在需要的时候一一解释给你听。</p>
+<a id="more"></a>
+<p>By: 巧颖 &amp; 天一</p>
+<p>#总览<br>
+这是我们将要搭建的所有基础设施的总体架构图，我们将在本文中手把手教你搭建这样一个持续集成环境。</p>
+<img src="/images/blog/2018-02-05_1.png" title="image">
+<p>我们会在本地启动两台虚拟机，一台部署Nginx作为静态文件服务器，一台作为Jenkins服务器，在每台虚拟机内部安装Docker，使用Docker来完成Nginx与Jenkins的搭建、配置，然后手动在Jenkins配置内配置好一条Pipeline作为持续集成流水线，最后尝试提交一次代码去触发一次持续集成操作，将最新的html项目代码从Github上部署到Nginx中，实现持续集成。</p>
+<p>避免本文过长，部分源代码没有贴在文中，本文参考完成源代码在此：<a href="https://github.com/tw-wh-devops-community/cooking-chicken.git" target="_blank" rel="noopener">https://github.com/tw-wh-devops-community/cooking-chicken.git</a>。建议在自己尝试从0开始搭建的同时参考源码阅读本文。相信你一定会碰到很多坑，但坑外便是晴天。</p>
+<p>#首先我们需要两台机器<br>
+##我们需要Vagrant<br>
+###为什么呢<br>
+无论你用的操作系统是Windows、Mac还是Linux，Oracle的Virtual Box都支持，那么我们首先会使用Virtual Box来建立一个在硬件上绝对隔离的环境出来。</p>
+<p>那么Vagrant就是通过方便的命令操作来简化Virtual Box的操作，同时提供了方便的虚拟机配置模块，所以我们会使用这个工具来提升虚拟机的配置效率。</p>
+<p>###安装Vagrant<br>
+在Mac上是自带Virtual Box的，你用的版本可能需要更新才能配合Vagrant使用，Linux上请使用类似<code>sudo apt-get install virtualbox</code>的命令安装。</p>
+<p>那么先装上Vagrant吧：</p>
+<ul>
+<li>Mac（<a href="https://www.vagrantup.com/downloads.html" target="_blank" rel="noopener">https://www.vagrantup.com/downloads.html</a>）</li>
+<li>Ubuntu（<code>sudo apt-get install vagrant</code>）</li>
+</ul>
+<p>###安装Vagrant插件<br>
+由于后续操作会涉及到将Nginx机器的私钥发送给Jenkins机器来配置私钥来完成虚拟机之间的无密码访问。但私钥是在Nginx虚拟机创建之后才会由Vagrant创建的，所以需要在这个时间节点放到Jenkins目录下便于Ansible把私钥放到Jenkins虚拟机中。如果暂时不理解没有关系，请看完”开始创建世界“之后回头来看就会明白。</p>
+<p>Vagrant的provision模块可以在虚拟机启动之后在<strong>虚拟机内部</strong>执行任意脚本，但是provision模块并没有提供执行<strong>宿主机</strong>上脚本的方式，所以需要你安装如下模块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant plugin install vagrant-host-shell</span><br></pre></td></tr></table></figure>
+<p>###调试的时候比较有用的操作</p>
+<ul>
+<li>进入虚拟机：<code>vagrant ssh</code></li>
+<li>休眠：<code>vagrant suspend</code></li>
+<li>从休眠中恢复：<code>vagrant resume</code></li>
+<li>移除虚拟机所有文件：<code>vagrant destroy</code></li>
+</ul>
+<p>##开始创建世界！<br>
+###Vagrantfile<br>
+我们来新建一个工程，在根目录创建一个名为Vagrantfile的文件，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Vagrant.configure(&quot;2&quot;) do |config| #2代表配置文件的版本</span><br><span class="line">  #对于每台虚拟机的统一配置</span><br><span class="line">  config.vm.box = &quot;ubuntu/trusty64&quot;</span><br><span class="line">  config.vm.provider :virtualbox do |v|</span><br><span class="line">    v.customize [&quot;modifyvm&quot;, :id, &quot;--memory&quot;, 1024]</span><br><span class="line">    v.customize [&quot;modifyvm&quot;, :id, &quot;--cpus&quot;, 1]</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  #定义名为Nginx的主机，在宿主机上可直接访问192.168.56.101来访问Nginx</span><br><span class="line">  config.vm.define &quot;nginx&quot; do |config|</span><br><span class="line">    config.vm.hostname = &apos;nginx&apos;</span><br><span class="line">    config.vm.network :private_network, ip: &quot;192.168.56.101&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  #定义名为Jenkins的主机，在宿主机上可直接访问192.168.56.102来访问Jenkins</span><br><span class="line">  config.vm.define &quot;jenkins&quot; do |config|</span><br><span class="line">    config.vm.hostname = &apos;jenkins&apos;</span><br><span class="line">    config.vm.network :private_network, ip: &quot;192.168.56.102&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>那么现在可以启动了，在命令行内跳转到根目录，使用<code>vagrant up</code>就可以将虚拟机按上面的配置启动了，同时在启动完成之后会调用provision模块跑Ansible的对应脚本安装配置虚拟机的依赖工具。启动完成之后，那么一个隔离的环境创建完毕，接下来我们可以在里面任意玩耍了。</p>
+<p><strong>特别注意</strong>：因为第一次运行需要下载ubuntu/trusty64镜像，以及把所有的配置甚至通过Docker下载Jenkins镜像、slave镜像，以及启动Jenkins都写到了Ansible中，所以跑完<code>vagrant up</code>需要<strong>较长时间</strong>。</p>
+<p>###启动、执行顺序<br>
+基本是按Vagrant的配置文件的上下顺序来启动的。具体顺序如下：</p>
+<ol>
+<li>按Vagrantfile安装并启动Nginx虚拟机</li>
+<li>执行Nginx虚拟机依赖的provision模块</li>
+<li>按Vagrantfile安装并启动Jenkins虚拟机</li>
+<li>执行Jenkins虚拟机依赖的provision模块</li>
+</ol>
+<p>###Jenkins访问Nginx（选修，建议有时间或者将Jenkins搭建完成之后再看）<br>
+如果你能把所有环境启动起来并能访问Jenkins主页，但此时你还无法在Jenkins上直接ssh登录到Nginx，因为此时两台机器还没有互信。但是幸运的是Vagrant启动完Nginx之后就已经将私钥（可以拿这个私钥去访问Nginx，无论你是谁）放到了宿主机上，那么你可以手动将这个私钥复制到Jenkins中，然后就可以在Jenkins中访问Nginx了。</p>
+<p><strong>但是为了自动化上面的操作，进行以下的配置：</strong><br>
+Vagrant会在启动一个虚拟机之后，会在Mac上创建.vagrant文件夹并把一些关于这个虚拟机的文件放到里面，比如该虚拟机的私钥，后面可以拿到这私钥作为SSH联络的key。</p>
+<p>比如下面这段配置会在Nginx虚拟机启动之后，Jenkins虚拟机启动之前执行。由于Jenkins虚拟机需要在部署代码的时候使用到Nginx虚拟机的私钥来部署，所以需要在Jenkins虚拟机执行Ansible之前将私钥放到Jenkins的file文件夹中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">config.vm.define &quot;nginx&quot; do |config|</span><br><span class="line">  config.vm.hostname = &apos;nginx&apos;</span><br><span class="line">  config.vm.network :private_network, ip: &quot;192.168.56.101&quot;</span><br><span class="line"></span><br><span class="line">  config.vm.provision :host_shell do |host_shell|</span><br><span class="line">    host_shell.inline = &apos;vagrant/bootstrap.sh&apos; #会在主机上执行的脚本</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>另外，在Vagrantfile中，Ansible不是与两台虚拟机的配置写在一起的，那么Ansible如何判断在哪台虚拟机上安装Nginx还是Jenkins呢？因为不同的虚拟机要执行Ansible的时候会根据主机名匹配来找到对应role的tasks从而还是能找到匹配的tasks。换句话说，Nginx安装完成之后Vagrant携带Nginx相关参数执行下面这样的一行命令来用limit匹配主机与对应Ansible的tasks：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ansible-playbook \</span><br><span class="line">--connection=ssh \</span><br><span class="line">--timeout=30 \</span><br><span class="line">--extra-vars=&quot;ansible_ssh_user=&apos;vagrant&apos;&quot; \</span><br><span class="line">--limit=&quot;nginx&quot; \</span><br><span class="line">--inventory-file=playbooks/hosts \</span><br><span class="line">-vv playbooks/deploy.yml</span><br></pre></td></tr></table></figure>
+<p>##我们需要Ansible<br>
+###什么是Ansible<br>
+Ansible是一种自动化部署工具，可以用来自动化管理配置项、持续交付、（AWS）云服务管理；</p>
+<p>简单来说也就是可以批量的远程服务器上执行一系列的命令，其原理是基于ssh来和远程主机进行通信的。<br>
+###为什么用Ansible</p>
+<ul>
+<li>playbook使用的是yml语言，易读性较好；</li>
+<li>没有主节点和代理，仅仅依赖于SSH，使得应用的部署简单而轻量；</li>
+<li>提供了大量模块支持Google Compute Engine (GCE)， Amazon Web Service（AWS）；</li>
+<li>nsible支持多台服务器同时管理部署；</li>
+</ul>
+<p>###安装Ansible<br>
+Ansible是基于python开发的，需要在安装有python的机器下才能够安装Ansible</p>
+<ul>
+<li>在本机安装python：<code>brew install python</code>（Mac自带ython，因此这步可以省略，inux系统中需要安装Python）</li>
+<li>安装pip：<code>sudo apt install python-pip</code></li>
+<li>安装Ansible：<code>sudo pip install ansible</code></li>
+</ul>
+<p>其他环境的安装详情请参考：<a href="http://docs.ansible.com/ansible/latest/intro_installation.html" target="_blank" rel="noopener">http://docs.ansible.com/Ansible/latest/intro_installation.html</a></p>
+<p>###目录结构<br>
+你可以按如下目录结构去编写你的Ansible文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">├── ansible.cfg</span><br><span class="line">├── deploy.yml</span><br><span class="line">├── hosts</span><br><span class="line">└── roles</span><br><span class="line">    ├── common</span><br><span class="line">    │   └── tasks</span><br><span class="line">    │       ├── install_docker.yml</span><br><span class="line">    │       └── main.yml</span><br><span class="line">    ├── jenkins</span><br><span class="line">    │   ├── files</span><br><span class="line">    │   │   └── docker-compose.yml</span><br><span class="line">    │   └── tasks</span><br><span class="line">    │       └── main.yml</span><br><span class="line">    └── nginx</span><br><span class="line">        ├── files</span><br><span class="line">        │   └── default.conf</span><br><span class="line">        ├── tasks</span><br><span class="line">        │   └── main.yml</span><br><span class="line">        └── templates</span><br><span class="line">            └── index.html</span><br></pre></td></tr></table></figure>
+<p>####roles文件夹<br>
+roles是基于一个Ansible默认的目录结构，Ansible在执行任务的时候会去默认加载<code>templates</code>、<code>tasks</code>以及<code>handlers</code>文件夹中的文件等。我们基于roles 对内容进行分组，使得我们可以容易地将不同的环境（如Java与NodeJs）区分开来，本次Demo中的roles下有三个文件夹，分别是common、jenkins和nginx，其中每个文件夹下都会定义一些例如<code>tasks</code>任务与相关配置文件。<br>
+####role - common<br>
+前面已经说过本次demo需要在本地启动两台虚拟机，分别在内部装上Docker，在common中我们定义了安装Docker的task，这样在定义Jenkins服务器和部署nginx的服务器中都可以调用该task来安装配置Docker环境；</p>
+<p>install_docker.yml中应该包含如下内容：</p>
+<ul>
+<li>安装Docker</li>
+<li>安装docker-compose工具</li>
+<li>安装docker-py依赖包（如果我们想用Ansible的docker模块去执行docker相关命令的话需要这个依赖）</li>
+</ul>
+<p>####role - jenkins<br>
+定义安装和部署Jenkins服务器的task：其中docker-compose.yml配置文件，是用于分别对jenkins-master和jenkins_slave进行一些基本配置；task下的main.yml文件是配置一系列的安装命令，类似于在命令行中一行行输入安装和部署命令；<br>
+####role - nginx<br>
+与jenkins文件夹类似，对Nginx服务器的一些基本配置：例如Nginx配置文件default.conf，配置文件中定义了templates下的index.html作为Nginx的入口模版文件，使Nginx作为一个文件服务器。task下的main.yml文件则是与jenkins中类似，配置了安装部署命令，在使用vagrant up时通过Ansible来安装并运行Nginx服务。<br>
+###配置文件<br>
+Ansible的配置文件包括但不仅限于ansible.cfg、deploy.yml以及hosts<br>
+####ansible.cfg文件<br>
+如在本Demo中用到的几个配置：</p>
+<ul>
+<li>forks：设置在与主机通信时的默认并行进程数，默认值为5；</li>
+<li>inventory：设置主机与组之间的对应关系，在Ansible1.9之前使用的是hostfile；</li>
+<li>host_key_checking：检测主机密钥的功能，可以通过设置值为false来禁用该功能（跳过两台主机之间首次连接需要确认的过程）；</li>
+<li>nocows：设置其值为1时禁用调用一些cowsay的特性，cowsay是linux系统下一个在终端用ASCII码组成的小牛，这个小牛会说出你想要它说的话。</li>
+<li>gathering：控制默认的远程系统变量（facts）收集，有三种不同的值； 默认是<code>implicit</code>，即每一次play，变量都会被收集，除非设置<code>gather_facts: False</code>；为<code>explicit</code>时，则facts不会被收集；为<code>smart</code>时，则没有facts的新hosts将不会被扫描，用于节省fact收集；</li>
+<li>fact_caching_timeout：定义fact缓存超时时间；</li>
+<li>fact_caching：定义fact的缓存，2.4版本的Ansible支持<code>redis</code>和<code>jsonfile</code>两种格式的缓存文件；</li>
+<li>fact_caching_connection:定义cache的存储位置，根据cache文件的格式不同定义的方式不同；</li>
+</ul>
+<p>####deploy.yml文件<br>
+这是Ansible的入口配置文件：定义hosts主机、以及相应主机需要执行的tasks等；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- hosts: all</span><br><span class="line">  tasks:</span><br><span class="line">    - debug: var=ansible_distribution,ansible_env</span><br><span class="line"></span><br><span class="line">- hosts: jenkins</span><br><span class="line">  become: yes</span><br><span class="line">  roles:</span><br><span class="line">    - common</span><br><span class="line">    - jenkins</span><br><span class="line"></span><br><span class="line">- hosts: nginx</span><br><span class="line">  become: yes</span><br><span class="line">  roles:</span><br><span class="line">    - common</span><br><span class="line">    - nginx</span><br></pre></td></tr></table></figure>
+<p>####hosts<br>
+然后加上远程主机的网络相关配置，这样Ansible才能通过SSH到虚拟机中执行你写的任务哟。</p>
+<p>以如下命令为例，是为IP地址1192.168.56.102，端口号22的网络地址设置一个别名nginx，且声明其ssh private key文件的地址；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nginx \</span><br><span class="line">ansible_ssh_host=192.168.56.102 \</span><br><span class="line">ansible_connection=ssh \</span><br><span class="line">ansible_ssh_user=vagrant \</span><br><span class="line">ansible_ssh_port=22 \</span><br><span class="line">ansible_ssh_private_key_file=../.vagrant/machines/nginx/virtualbox/private_key</span><br></pre></td></tr></table></figure>
+<p>###与Vagrant结合<br>
+现在，Ansible的任务已经写完了，我们需要将Ansible与Vagrant结合，将如下代码加入到Vagrantfile中，可以在执行<code>vagrant up</code>的时候执行Ansible。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#对于每台虚拟机依赖的Ansible配置</span><br><span class="line">config.vm.provision :ansible do |ansible|</span><br><span class="line">  ansible.verbose = &quot;vv&quot;</span><br><span class="line">  ansible.playbook = &quot;playbooks/deploy.yml&quot;</span><br><span class="line">  ansible.inventory_path = &quot;playbooks/hosts&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>#虚拟机中的世界是如何构成的呢<br>
+现在你已经将所有的环境部署完成了，但是部署应用（Jenkins、Nginx）的过程还没有提及，下面将带你从Ansbile的对于每个虚拟机的任务开始，介绍相应的工具与具体的实施步骤。<br>
+##Docker<br>
+###什么是Docker<br>
+Docker是一个开源的容器应用引擎，可以理解为一个存放应用容器的平台，我们只需要简单的几行命令就可以构建一个与本地环境相对隔离的环境来运行我们的应用而不影响任何角色；</p>
+<p>基本要素：</p>
+<ul>
+<li>Container：负责应用程序的运行，包括操作系统、用户添加的文件以及元数据</li>
+<li>Images：只读模版，即常说的Docker镜像，用来运行Docker容器</li>
+<li>Dockerfile：文件指令集，用来说明如何创建Docker镜像</li>
+</ul>
+<p>###为什么要用Docker<br>
+Docker的图标：</p>
+<img src="/images/blog/2018-02-05_4.png" title="image">
+<p>把一个应用封装起来，可以在任何装有Docker的环境下运行，统一运行环境；</p>
+<p>那个大鲸鱼（或者是货轮）就是操作系统，把要交付的应用程序看成是各种货物，原本要将各种各样形状、尺寸不同的货物放到大鲸鱼上，你得为每件货物考虑怎么安放（就是应用程序配套的环境），还得考虑货物和货物是否能叠起来（应用程序依赖的环境是否会冲突）。</p>
+<p>现在使用了集装箱（容器）把每件货物都放到集装箱里，这样大鲸鱼可以用同样地方式安放、堆叠集装了，省事省力。</p>
+<p>###Docker中常用的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run 镜像名： 启动容器</span><br><span class="line">docker start／stop／restart 容器ID：开启／停止／重启容器</span><br><span class="line">docker images: 查看所有镜像列表；</span><br><span class="line">docker ps：查看所有运行中的容器；</span><br><span class="line">docker rmi：从本地移除一个或多个指定的镜像；</span><br></pre></td></tr></table></figure>
+<p>更多Docker相关内容请参考：<a href="https://yeasy.gitbooks.io/docker_practice/content/introduction/" target="_blank" rel="noopener">https://yeasy.gitbooks.io/docker_practice/content/introduction/</a><br>
+###怎么用</p>
+<p><strong>要注意的是，Ansible对应的任务是在Vagrant启动虚拟机之后执行的，是在虚拟机的内部，Docker容器的外部</strong></p>
+<p>####安装Nginx：由于我们只需要启动一个Nginx的容器，直接使用Docker中run的命令去repository中下载安装即可</p>
+<ul>
+<li>准备文件，例如default.conf,index.html</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- name: copy nginx config file</span><br><span class="line">  copy:</span><br><span class="line">    src: default.conf</span><br><span class="line">    dest: /data/nginx/default.conf</span><br><span class="line"></span><br><span class="line">- name: copy default html file</span><br><span class="line">  template:</span><br><span class="line">    src: index.html</span><br><span class="line">    dest: /data/nginx/html/index.html</span><br><span class="line">    owner: vagrant</span><br><span class="line">    group: vagrant</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用Ansible中提供的Docker模块安装Nginx，包括拉Docker images，设置ports，以及多久需要pull一次新代码等</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- name: start nginx container</span><br><span class="line">  docker:</span><br><span class="line">    name: app</span><br><span class="line">    image: nginx:alpine</span><br><span class="line">    pull: always</span><br><span class="line">    state: reloaded</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;80:80&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - /data/nginx/default.conf:/etc/nginx/conf.d/default.conf</span><br><span class="line">      - /data/nginx/html:/usr/share/nginx/html</span><br></pre></td></tr></table></figure>
+<p>####安装Jenkins：demo中需要用到jenkins-master和jenkins-slave两个container，因此使用docker-compose更加方便</p>
+<p>docker-compose.yml中定义了镜像的地址、端口号等，并通过执行它进行在Docker中的部署。其中slave节点选用了jaydp17/jenkins-slave这样一个包含Java、git、curl环境的Image方便执行持续集成任务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">services:</span><br><span class="line">  jenkins_master:</span><br><span class="line">    container_name: jenkins-master</span><br><span class="line">    image: jenkinsci/jenkins</span><br><span class="line">    restart: always</span><br><span class="line">    posts: - &quot;8080:8080&quot;</span><br><span class="line">           - &quot;50000:50000&quot;</span><br><span class="line">    volumns: demo/jenkins:/var/jenkins_home</span><br><span class="line"></span><br><span class="line">  jenkins_slave_1:</span><br><span class="line">    container_name: jenkins_slave_1</span><br><span class="line">    image: jaydp17/jenkins-slave</span><br><span class="line">    depends_on:</span><br><span class="line">      - jenkins_master</span><br><span class="line">    volumes:</span><br><span class="line">    - /data/jenkins:/var/jenkins_home</span><br></pre></td></tr></table></figure>
+<p>###Nginx<br>
+####什么是Nginx<br>
+一款轻量级的Web 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器</p>
+<p>####为什么用Nginx<br>
+首先需要一个服务器来部署我们的应用，而常用的服务器有例如apache的Apache HTTP Server、Nginx、tomcat等；<br>
+Nginx是为了解决互联网业内著名的 “C10K” 问题而生；</p>
+<blockquote>
+<p>The C10k problem is the problem of optimising network sockets to handle a large number of clients at the same time. The name C10k is a numeronym for concurrently handling ten thousand connections.</p>
+</blockquote>
+<p>其中Nginx通常用来做静态内容服务器，而tomcat一般用于做动态应用的服务器，通常称之为web容器；<br>
+Nginx相比于apache的优点：</p>
+<ul>
+<li>轻量级，同样起web服务，比apache占用更少的内存及资源；</li>
+<li>抗并发，Nginx处理请求是异步非阻塞的，而apache则是阻塞型的，在高并发下Nginx能保持低资源低消耗高性能</li>
+<li>提供负载均衡；</li>
+<li>配置简洁；</li>
+<li>社区活跃，各种高性能模块出品迅速等；</li>
+</ul>
+<p>####怎么用Nginx<br>
+在demo中写了一个role来定义安装配置Nginx需要的操作流程，用的是Docker提供的Nginx镜像，在Docker中安装配置Nginx，为了使Nginx能够启动起来，我们还需要进行一系列的配置，包括配置文件和模版文件等；default.conf就是Nginx的配置文件，此处http模块的相关配置：</p>
+<ul>
+<li>listen 80：监听的端口号是80；</li>
+<li>default_server：设定为默认虚拟主机；</li>
+<li>server_name localhost：设置虚拟主机名称为localhost；</li>
+<li>root /usr/share/nginx/html：设置web服务URL资源映射的本地文件系统的资源所在的目录；</li>
+<li>index index.html index.htm：定义默认主页面，需要自己编写并放到Ansbile对应目录；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80 default_server;</span><br><span class="line">    server_name localhost;</span><br><span class="line">    root /usr/share/nginx/html;</span><br><span class="line">    index index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还有一些其他的配置，详情请参考<a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/" target="_blank" rel="noopener">https://www.nginx.com/resources/wiki/start/topics/examples/full/</a></p>
+<p>Ansible关于Nginx的task中yml文件的配置：</p>
+<ul>
+<li>创建文件夹</li>
+<li>copy Nginx的配置文件到环境中</li>
+<li>copy模版文件</li>
+<li>以及使用Docker镜像运行Nginx</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- name: create folder</span><br><span class="line">...</span><br><span class="line">- name: copy nginx config file</span><br><span class="line">...</span><br><span class="line">- name: copy default html file</span><br><span class="line">...</span><br><span class="line">- name: start nginx container</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>##世界有了，来联通各国吧<br>
+到现在为止，你已经了解了所有我们使用的工具以及通过运行命令搭建完成了一套持续集成环境的基础设施，但是还需要对Jenkins进行一些配置才能真正做到持续集成。<br>
+###Jenkins的配置<br>
+现在你可以访问 <a href="http://192.168.56.102:8080" target="_blank" rel="noopener">http://192.168.56.102:8080</a> 了，然后页面提示需要你输入<strong>Administrator password</strong>。该密码可以通过下面的方式获取：</p>
+<ol>
+<li>进入Jenkins虚拟机：<code>vagrant ssh jenkins</code></li>
+<li>获取root权限：<code>sudo su</code></li>
+<li>进入Jenkins master容器：<code>docker exec -it jenkins_master bash</code></li>
+<li>找到密码：<code>cat /var/jenkins_home/secrets/initialAdminPassword</code></li>
+</ol>
+<p>然后将密码复制到页面上点击确定，随后点击安装推荐的插件，本文将使用到的Jenkins功能不会超出推荐的插件的范围。然后创建好用户就可以登录了。</p>
+<p>####Slave<br>
+来到主界面之后，接下来我们来配置一台slave节点来帮我们执行任务，依次点击Manage Jenkins -&gt; Manage Nodes -&gt; New Node，按照下图进行配置。</p>
+<img src="/images/blog/2018-02-05_2.png" title="image">
+<p>简单起见，用密码登录的方式进行身份验证，用户名密码都为jenkins。</p>
+<p>那么问题来了，为什么slave节点的用户名密码是jenkins呢？是在这个<a href="https://hub.docker.com/r/evarga/jenkins-slave/~/dockerfile/" target="_blank" rel="noopener">Dockerfile</a>里配置的。我们用的虽然是jaydp17/jenkins-slave，但是你可以看到这个镜像的<a href="https://hub.docker.com/r/jaydp17/jenkins-slave/~/dockerfile/" target="_blank" rel="noopener">构建文件</a>中引用了evarga/jenkins-slave，其中<code>echo &quot;jenkins:jenkins&quot; | chpasswd</code>可以设置密码。</p>
+<p>另外要注意一下，我们通过设置Host key verification strategy为Non verifying verification strategy从而关闭了slave主机的公钥检查，更多了解请参看<a href="http://www.worldhello.net/2010/04/08/1026.html" target="_blank" rel="noopener">这篇文章</a>。</p>
+<img src="/images/blog/2018-02-05_3.png" title="image">
+<p>如果你现在能在Jenkins界面上看到你刚刚创建的slave节点，那么已经完成配置了。另外，为了让部署过程仅仅在slave节点上执行来确认slave是否已经部署成功，可以尝试点击master节点右方的配置按钮将默认开启的master节点中的executors数量改为0。</p>
+<p>####创建Pipeline<br>
+接下来我们将创建一条流水线。回到Jenkins首页，然后</p>
+<ol>
+<li>点击 create new jobs</li>
+<li>选择Pipeline分类点击OK</li>
+<li>勾上Poll SCM，并填入<code>* * * * *</code>，让Jenkins每分钟帮我们check一次Github上是否有提交。</li>
+<li>Definition中选择’Pipeline script from SCM’，我们通过Jenkinsfile去定义整条Pipeline</li>
+<li>SCM中选择Git，Repository URL	填入 <a href="https://github.com/xbox1994/chicken-html.git" target="_blank" rel="noopener">https://github.com/xbox1994/chicken-html.git</a> 或者你自己创建的包含Jenkinsfile、部署脚本、index.html的项目。</li>
+<li>完成配置，点击Save，Jenkins会自动触发第一次的持续集成。</li>
+</ol>
+<p>当你能在deploy阶段看到下面的输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[chicken] Running shell script</span><br><span class="line">+ ./deploy.sh</span><br><span class="line">--------------------------start to deploy...--------------------------</span><br><span class="line">--------------------------deploy finished ! --------------------------</span><br></pre></td></tr></table></figure>
+<p>并且访问http://192.168.56.101 ，能看到下面的文字，那么恭喜你，顺利通关！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">恭喜！</span><br><span class="line">如果你能看到此页面，代码已经部署成功！可以试试修改此文件继续提交部署</span><br></pre></td></tr></table></figure>
+<p>####触发Pipeline<br>
+请尽情的提交吧，试试看Jenkins会不会把你的代码拉下来触发Pipeline。</p>
+<p>###html项目的脚本配置<br>
+即使你已经成功触发多次Pipeline，但是其中还有些配置没有讲到，这些配置隐藏<strong>在项目代码中</strong>。个人认为对于这个项目有关的配置就应该放到项目代码中，除非有其他统一的配置管理方式。</p>
+<p>比如chicken-html中的目录如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">├── Jenkinsfile</span><br><span class="line">├── deploy.sh</span><br><span class="line">└── index.html</span><br></pre></td></tr></table></figure>
+<p>####测试、构建<br>
+如果你用到gradle、maven这样的工具来管理你的项目构建。平时在开发的时候只需要运行<code>./gradlew clean build</code>和<code>./gradlew test</code>来进行构建与测试。那么到Jenkins上也是基于这些命令来进行的<br>
+####部署代码到服务器<br>
+部署代码这步操作是会在Jenkins slave节点上进行，将从Github上拉来的代码部署到Nginx服务器中，那么最简单的方式就是使用<code>scp</code>命令将需要部署的文件发送到Nginx服务器。在Ansbile脚本中已经把Nginx服务器的私钥复制到了slave节点所在的服务器中了，所以可以直接执行<code>scp</code>命令。</p>
+<p>在本文涉及到的html项目中的部署脚本如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">echo &apos;--------------------------start to deploy...--------------------------&apos;</span><br><span class="line">scp -o StrictHostKeychecking=no -i /var/jenkins_home/nginx_private_key index.html vagrant@192.168.56.102:/data/nginx/html/index.html</span><br><span class="line">echo &apos;--------------------------deploy finished ! --------------------------&apos;</span><br></pre></td></tr></table></figure>
+<p>对于Nginx服务器来说，如果配置中指定的html文件发生变化，会检测到并将最新的html文件返回给用户。</p>
+<p>####Jenkinsfile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">node&#123;</span><br><span class="line">    stage(&apos;git clone&apos;)&#123;</span><br><span class="line">       git url: &apos;https://github.com/xbox1994/chicken-html.git&apos;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stage(&apos;test&apos;)&#123;</span><br><span class="line">        sh &quot;echo &apos;test done&apos;&quot; /* 可以替换为./gradle test */</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stage(&apos;build&apos;)&#123;</span><br><span class="line">        sh &quot;echo &apos;build done&apos;&quot;/* 可以替换为./gradle clean build */</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stage(&apos;deploy&apos;)&#123;</span><br><span class="line">        sh &quot;./deploy.sh&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个文件定义了Jenkins中这个项目的Pipeline里应该如何被执行，每一步都做些什么操作，如定义了4个stage分别对应拉代码、测试、构建、部署，其中部署脚本执行的就是使用<code>scp</code>命令执行的。当然这个是最简单的Pipeline任务定义，你可以参考<a href="https://jenkins.io/doc/book/pipeline/jenkinsfile/" target="_blank" rel="noopener">https://jenkins.io/doc/book/pipeline/jenkinsfile/</a>来使用更方便的功能如“when”语句来检测上一个stage是否成功完成。</p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2018-03-18-min-jie-zhong-de-kan-ban/" data-toggle="tooltip" data-placement="top" title="敏捷中的看板">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2017-12-29-lai-chi-ji/" data-toggle="tooltip" data-placement="top" title="少年的2017年尾声">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

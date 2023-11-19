@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          从Java极速入门Go - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2018-10-07-cong-javaji-su-ru-men-go/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                            
+                        </div>
+                        <h1>从Java极速入门Go</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2018-10-07
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <a id="more"></a>
+<p>本文适合有Java开发经验且想学习Go的同学，是一篇非常适合入门Go语言的教程，本文只会涉及部分Go的核心内容，不适合想系统学习Go的同学，但也提供了系统学习的方式。</p>
+<h1 id="go语言简介">Go语言简介</h1>
+<p>下面是对Go的简单介绍，可以先了解一下，如果有哪些暂时无法理解的可以先跳过，学完【极速入门】之后回头来看就会恍然大悟。</p>
+<img src="/images/blog/2018-10-07_1.jpg" title="image">
+<h2 id="简介">简介</h2>
+<p>Go是一门语法非常简单的开源编程语言，目的是让程序开发变得更有生产效率。</p>
+<p>Go是一门静态类型的编译型语言，通过在不同平台上的相应编译器来实现跨平台特性。</p>
+<p>Go是一门广纳百家之长的语言，看起来像既像C++又像Delphi、Python，实则是吸收其他语言的优势，又针对其他语言的痛点进行设计。</p>
+<p>它的并发机制使编写能够充分利用多线程的程序变得容易，其新颖的类型系统可实现灵活的模块化程序构建，是一门为大数据、微服务、高并发、云计算而生的通用语言。</p>
+<h2 id="与java对比">与Java对比</h2>
+<ul>
+<li>面向对象。Go不完全是面向对象的语言，因为没有【对象】的概念与关键字而是提供了结构体struct关键字，并且没有类型层次结构，比如没有继承、多态、泛型的支持。但是允许面向对象的编程风格，比如可以在struct里定义对象的内容，还能结合接口灵活实现。</li>
+<li>接口。Go中的【接口】不是必须明确标注被实现才能使用某对象，而是使用<a href="https://studygolang.com/articles/214" target="_blank" rel="noopener">duck typing</a>的方式提供了一种易于使用且更为通用的不同方法。结合上一点，所以Go语言在对于构建和使用对象时更加灵活</li>
+<li>异常处理。无异常处理机制try catch，因为将异常耦合到业务代码中会导致代码更加复杂，并且倾向于定义出很多普通的错误。Go还可以利用函数多返回值来将可处理的异常作为一个返回值返回给调用者。</li>
+<li>并发编程。Java中有很多针对多线程底层操作，如互斥，条件变量和内存屏障，这些过分强调低级细节，是的多线程编程难度较大。而Go中的【CSP并发模型】让开发人员不用关心这些细节，而是通过goruntime和在channel中传递消息的方式进行通信也能实现高效的并发程序</li>
+<li>效率。程序执行速度远胜于Java，得益于Go是通过先编译链接后得到可执行文件的，而不是在运行时通过虚拟机解释运行。至于开发效率个人认为主要取决于对语言和相应框架使用的熟练程度。</li>
+<li>部署。Go编译后生成的是一个可执行文件，除了glibc外没有任何外部依赖，完全不需要操行应用所需要的各种包、依赖关系，大大减轻了维护的负担</li>
+<li>应用场景。Java的应用场景包括移动应用、应用服务器程序、客户端程序、嵌入式、大数据，可以说非常广，服务器到客户端、底层和应用层都能涵盖。Go则适合写服务器程序、大数据，以及基础设施程序如Docker、K8S，由于其语法简单、并发编程人性化、执行效率高所以在云计算领域中也是举足轻重的存在，但移动应用、嵌入式、客户端程序不是Go擅长的方向。</li>
+</ul>
+<h1 id="极速入门">极速入门</h1>
+<h2 id="环境搭建">环境搭建</h2>
+<h3 id="go语言安装">Go语言安装</h3>
+<p><a href="https://golang.org/dl/" target="_blank" rel="noopener">https://golang.org/dl/</a> 选择1.10.3版本下载</p>
+<h3 id="ide安装">IDE安装</h3>
+<p>IntelliJ IDEA中下载Go插件或者直接下载<a href="https://www.jetbrains.com/go/download/" target="_blank" rel="noopener">GoLand</a></p>
+<p>如果你不习惯Windows的快捷键设置，<a href="https://github.com/xbox1994/IDEA-Mac-Keymap-On-Windows" target="_blank" rel="noopener">IDEA-Mac-Keymap-On-Windows</a>将Mac上的Command键改成左Alt键或许可以帮到你。</p>
+<h2 id="helloworld">HelloWorld</h2>
+<p>让我们正式来体验Go语言，以下所有代码你应该先想一下大致应该如何写，然后看应该如何写，最后自己再写一遍直至跑通，有任何问题及时去搜索理解。</p>
+<p>首先还是得从hello world开始。现在IDE中创建一个项目，在项目根目录下创建一个名为<code>helloworld.go</code>的文件，输入以下代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main <span class="comment">//必须是main包才能定义出一个可执行的入口，main命名与文件名无关</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span> <span class="comment">//一个格式化输出的核心库</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123; <span class="comment">//函数命名格式：func 函数名(参数) 返回值</span></span><br><span class="line">	fmt.Println(<span class="string">"hello world!"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过IDE的运行按钮或者在命令行中输入<code>go run helloworld.go</code>运行它</p>
+<h2 id="simplespider">SimpleSpider</h2>
+<p>接下来介绍一个简单的爬虫来体验一部分Go语言的特性。不用马上动手实现它，而是从它开始简单看看Go的语法，Go的并发编程模型，等系统学习之后再来试试能不能实现。</p>
+<p>这个爬虫的工作原理如下：首先准备一些想要抓取的网页Url作为种子传给Engine，由Engine负责流程控制，Engine会把Url传给Worker中的Fetcher来下载具体的HTML文件，然后发送给Url对应的Parser解析函数得到想要抓取的信息以及当前页面上可以继续当做种子再次抓取的Url，最后将Url与对应的Parser传给Engine继续抓取。</p>
+<p>其中支持并发的Worker与单个Engine传递与接收数据使用的是go runtime与channel实现，可以来感受一下前所未有的并发编程体验。Worker数量越多，爬虫效率越高。</p>
+<img src="/images/blog/2018-10-07_2.jpg" title="image">
+<p>先在根目录下将不同模块的文件夹创建出来，有engine, fetcher, parser三个，然后在根目录把入口程序spider.go写好：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	engine.SimpleEngine&#123;  <span class="comment">// engine是我们需要实现的一个程序包，创建engine包中的SimpleEngine结构</span></span><br><span class="line">		WorkerCount: <span class="number">100</span>, <span class="comment">// worker开启数量</span></span><br><span class="line">	&#125;.Run(engine.Request&#123; <span class="comment">// 被调用的Run方法需要被定义在该结构体的内部</span></span><br><span class="line">		Url:        <span class="string">"http://www.zhenai.com/zhenghun"</span>, <span class="comment">//第一个参数是用于被抓取的网页的URL</span></span><br><span class="line">		ParserFunc: parser.ParseCityList, <span class="comment">//第二个参数是对于不同Url编写的不同的解析器</span></span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在engine文件夹中新建types.go将Request结构体定义：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Request <span class="keyword">struct</span> &#123;</span><br><span class="line">	Url        <span class="keyword">string</span></span><br><span class="line">	ParserFunc <span class="function"><span class="keyword">func</span><span class="params">([]<span class="keyword">byte</span>)</span> <span class="title">ParseResult</span> // 解析函数，不同的<span class="title">Url</span>可能对应不同的解析函数，传入<span class="title">HTML</span>的字节数组</span></span><br><span class="line">	                                    <span class="comment">// 传出HTML中解析出来的可以继续当成种子的Request和HTML中的有效信息</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> ParseResult <span class="keyword">struct</span> &#123;</span><br><span class="line">	Requests []Request <span class="comment">//从HTML中解析出来的种子</span></span><br><span class="line">	Items    []<span class="keyword">interface</span>&#123;&#125; <span class="comment">//任意类型的数组结构</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来了解一下goruntime与channel。goroutine是Go里的一种轻量级线程——协程。相对线程，协程的优势就在于它非常轻量级，进行上下文切换的代价非常的小，通过go关键字传入一个方法就能开启一个协程。</p>
+<p>channel是一种带有类型的变量类型，你可以通过它用channel操作符 <code>&lt;-</code> 在不同的协程之间来发送或者接收值。默认情况下，发送和接收操作在另一端准备好之前都会阻塞。这使得 Go 程可以在没有显式的锁或竞态变量的情况下进行同步，从而大大降低了并发编程的难度，提升了开发效率。</p>
+<p>接下来看engine中的核心代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> SimpleEngine <span class="keyword">struct</span> &#123; <span class="comment">// 创建engine结构体用以在创建时接受参数，但这并不是构造函数，Go中没有构造函数与析构函数</span></span><br><span class="line">	WorkerCount <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为SimpleEngine结构体定义Run方法。SimpleEngine为该方法的值接受者。</span></span><br><span class="line"><span class="comment">// 由于方法经常需要修改它的接收者，指针接收者比值接收者更常用；参数是可变长的类型，用来传入多个种子</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e SimpleEngine)</span> <span class="title">Run</span><span class="params">(seeds ...Request)</span></span> &#123;</span><br><span class="line">	in := <span class="built_in">make</span>(<span class="keyword">chan</span> Request) <span class="comment">// 创建种子输入channel，其中可以传递的数据为Request，worker将从这里取，engine将种子往这里放</span></span><br><span class="line">	out := <span class="built_in">make</span>(<span class="keyword">chan</span> ParseResult) <span class="comment">// 种子输出channel，其中可以传递的数据为ParseResult，worker将解析结果传到这里交给engine</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 开启若干个worker协程，等待种子被放入</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; e.WorkerCount; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="keyword">for</span> &#123;</span><br><span class="line">				<span class="comment">// 开始时所有worker都被阻塞，等待种子被传入</span></span><br><span class="line">				r := &lt;-in <span class="comment">// 创建r变量，初始值从输入channel中获取</span></span><br><span class="line">				<span class="comment">// 收到某个种子，开始解析</span></span><br><span class="line">				result, e := worker(r)</span><br><span class="line">				<span class="keyword">if</span> e != <span class="literal">nil</span> &#123;</span><br><span class="line">					<span class="keyword">continue</span></span><br><span class="line">				&#125;</span><br><span class="line">				<span class="comment">// 将任务执行结果传回engine，但是这里如果直接写out &lt;- result会无法执行，因为有循环等待产生，原因：</span></span><br><span class="line">				<span class="comment">// 想要执行这行代码必须需要有engine在执行①开始等待才行，但是engine执行这行代码的前提完成②的输入</span></span><br><span class="line">				<span class="comment">// 也就是需要有空闲的worker在等待接受in，然而此时worker正在执行本行命令</span></span><br><span class="line">				<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;out &lt;- result&#125;()</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 传入种子到输入channel</span></span><br><span class="line">	<span class="keyword">for</span> _, request := <span class="keyword">range</span> seeds &#123;</span><br><span class="line">		in &lt;- request</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123; <span class="comment">// 循环结构只有for关键字，这里是当成while(true)使用，让engine一直运行，等待worker返回的数据</span></span><br><span class="line">①		parseResult := &lt;- out</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 现在是打印得到的数据，以后将改为保存到数据库</span></span><br><span class="line">		<span class="keyword">for</span> _, item := <span class="keyword">range</span> parseResult.Items &#123; <span class="comment">// 相当于foreach，第一个返回值是index，第二个是object，_代表不使用</span></span><br><span class="line">			log.Printf(<span class="string">"Got item %v\n"</span>, item)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 存储后将后续种子发送给输入channel</span></span><br><span class="line">		<span class="keyword">for</span> _, r := <span class="keyword">range</span> parseResult.Requests &#123;</span><br><span class="line">②			in &lt;- r</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">worker</span><span class="params">(r Request)</span> <span class="params">(ParseResult, error)</span></span> &#123;</span><br><span class="line">	log.Printf(<span class="string">"Fetching %s"</span>, r.Url)</span><br><span class="line">	<span class="comment">// 下载html内容</span></span><br><span class="line">	body, e := fetcher.Fetch(r.Url)</span><br><span class="line">	<span class="keyword">if</span> e != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Printf(<span class="string">"Fetcher error with url: %s. %v"</span>, r.Url, e)</span><br><span class="line">		<span class="keyword">return</span> ParseResult&#123;&#125;, e</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 根据request里提供的解析方法解析当前html内容成为result放入队列</span></span><br><span class="line">	<span class="keyword">return</span> r.ParserFunc(body), <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>核心代码就是以上，但还需要实现负责下载的fetcher和负责解析的parser，完整代码可查看<a href="https://github.com/xbox1994/GoCrawler" target="_blank" rel="noopener">https://github.com/xbox1994/GoCrawler</a>中的crawler_standalone学习</p>
+<h3 id="依赖包安装">依赖包安装</h3>
+<p>由于GFW的关系，当你在安装某个依赖包时，可能被挡住，推荐按以下的顺序来尝试安装go的依赖包（xxx代表包的地址）</p>
+<ol>
+<li><code>go get xxx</code></li>
+<li>使用gopm安装，先下载gopm：<code>go get -v -u github.com/gpmgo/gopm</code>，然后<code>gopm get -g -v xxx</code></li>
+<li>去对应的github主页上，<code>git clone</code>下来并放到GOROOT或GOPATH目录的src文件夹下，并将下载的文件夹命名为包的地址</li>
+</ol>
+<h2 id="beego">Beego</h2>
+<p>Beego是国人开发的一款Go web框架，这里查看相关<a href="https://beego.me/docs/intro/" target="_blank" rel="noopener">简介</a></p>
+<p>它的功能全面、结构清晰、上手容易、有一定社区活跃度但代码质量不高，适合快速开发。</p>
+<p>接下来请按照官网<a href="https://beego.me/quickstart" target="_blank" rel="noopener">quickstart</a>的例子来快速体验一把。</p>
+<p>在这个例子中要注意的是，Go的方法参数传递只有值传递，没有引用传递，也就是如果传递一个任意类型的变量给某个方法，那么这个变量将被复制一份传给函数内部，所以在函数内部对这个变量进行操作则是对原变量的副本进行操作，如果想直接操作原变量的内容，使用&amp;将地址传进去即可。</p>
+<h2 id="系统学习推荐">系统学习推荐</h2>
+<p>本文仅仅是用到了小部分Go的语法和功能特性来尝试带领你入门，还有很多值得了解的比如数组的切片、duck typing 接口、反射，希望你看完之后一定不要止步于此，一切都才刚刚开始，下一步就是开始进行系统的学习了。</p>
+<p>这个<a href="https://www.zhihu.com/question/30461290" target="_blank" rel="noopener">知乎回答</a>可能对你有所帮助，但很不幸给的链接很多都需要翻墙。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://coding.imooc.com/learn/list/180.html" target="_blank" rel="noopener">https://coding.imooc.com/learn/list/180.html</a><br>
+<a href="https://golang.org/doc/faq" target="_blank" rel="noopener">https://golang.org/doc/faq</a><br>
+<a href="https://www.zhihu.com/question/21409296" target="_blank" rel="noopener">https://www.zhihu.com/question/21409296</a><br>
+<a href="https://beego.me/quickstart" target="_blank" rel="noopener">https://beego.me/quickstart</a><br>
+<a href="https://tour.go-zh.org" target="_blank" rel="noopener">https://tour.go-zh.org</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2018-10-20-wei-tuan-dui-gou-jian-devopsti-xi/" data-toggle="tooltip" data-placement="top" title="为团队构建DevOps体系">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2018-09-01-da-shang-hua-huo-wan-jie-!/" data-toggle="tooltip" data-placement="top" title="打上花火 完结！">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

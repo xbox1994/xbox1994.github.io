@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          为团队构建DevOps体系 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2018-10-20-wei-tuan-dui-gou-jian-devopsti-xi/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
+                            
+                        </div>
+                        <h1>为团队构建DevOps体系</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2018-10-20
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>在开发过程中，如果团队没有基本的DevOps体系来保证应用的稳定，便捷的自动部署，规范的部署流程，优良的开发环境，那么除了开发效率很可能是极为底下之外，团队成员也怕是会怨声载道，更别提应用的健壮性了。</p>
+<a id="more"></a>
+<h2 id="devops是什么">DevOps是什么</h2>
+<p>DevOps的定义众说纷纭，个人的理解是：</p>
+<ul>
+<li>从狭义上来说是一套实践、方法、工具，是提高交付应用程序和服务能力的一组最佳实践，为了在保证高质量的前提下缩短系统变更从提交到部署至生产环境的时间。</li>
+<li>从广义上来说是一个运动，一种文化，强调团队紧密合作，打破角色之间的隔阂从而达到提高最终交付价值。</li>
+</ul>
+<h2 id="为什么要构建devops体系">为什么要构建DevOps体系</h2>
+<img src="/images/blog/2018-10-20_1.jpg" title="image">
+<p>所以，我们需要：</p>
+<ul>
+<li>将应用部署的流程自动化起来，只需要按一个按钮就能完成在任意环境上的部署</li>
+<li>将开发、测试、部署环境统一起来并管理起来</li>
+<li>缩短从代码提交到部署到生产环境之间的时间</li>
+<li>将所有过程可视化起来，让所有人知道当前的进展</li>
+<li>将异常及时反馈给负责人并有回滚方式</li>
+</ul>
+<h2 id="devops体系的思路与实践">DevOps体系的思路与实践</h2>
+<p>思路：以提升开发部署效率这个结果为导向，以标准化、自动化、可视化为思想，以持续集成、持续交付、敏捷为核心来构建一套DevOps体系。</p>
+<img src="/images/blog/2018-10-20_2.png" title="image">
+<p>首先我们可以用上图中的内容与自己当前的工作环境进行对比，还差哪些部分，我们就补充哪些，依靠木桶效应，优先实现还未存在的部分，优先将体系的基础构建完成。</p>
+<p>当然图中的实践也不完整，可以参考下面的一些实践来开始。</p>
+<h4 id="自动化流水线持续集成">自动化流水线（持续集成）</h4>
+<p>优先级：高</p>
+<p>通过使用自动化流水线构建工具将代码的构建、测试、部署的流程规范起来，将执行的操作固定下来，去除人为因素干扰构建流程，从代码的提交到部署形成一条生产线。</p>
+<p>前置条件：</p>
+<ul>
+<li>分支策略。流水线的构建方式是通过分支策略来定的，如果有master、dev、release分支，则可能需要构建出三套流水线来分别管理这三个分支</li>
+<li>提交策略。不论是否使用持续集成的方式提交，提交的信息必须统一，提交者的姓名、提交所属的功能、提交的内容这三块内容必须要有</li>
+<li>部署步骤。确定需要部署到哪些环境中，有几个构建的步骤，如test、build、deployDev、deployTest、deployProd</li>
+<li>多项目的结构。一个项目需要是一个能让git单独追踪的项目，才能避免在自动化中影响其他项目的构建</li>
+</ul>
+<p>准备好前置条件之后就可以开始构建第一条流水线了，具体的构建工具与构建步骤因团队而异，具体构建的过程就是将所有当前的部署流程整理进构建流水线中，并使用类似Jenkinsfile这样的Pipieline as code的形式将流水线当做整个项目的一部分管理起来，因此这是工作量最大的部分。构建完成后还需要完成流水线可视化，在团队工作区域的显眼位置放置一台显示器，将当前所有流水线的工作状态显示在上面。</p>
+<h4 id="各种环境的管理">各种环境的管理</h4>
+<p>优先级：高</p>
+<ul>
+<li>统一开发、测试、部署的环境。生产环境是什么样子，测试环境与开发环境就尽量保持一致。应用的架构方式、应用运行所在的系统版本、应用运行所在的机器配置都应当保持一致，使用Docker可以保证后两者没有问题，但架构方式在开发环境难以做到，优先级其实不高，可以暂时放下。</li>
+<li>使用Ansible将构建虚拟机上各种工具、环境的过程代码化从而实现Infrastructure as code，将部署的架构也体现在其中从而实现Platform as code，便于扩展机器、问题追溯、架构优化。</li>
+<li>依赖包的管理。Java非常方便，可以自己部署一个配置管理源，所有包都从这个源里下载，但Go不太方便，可以使用vender将项目依赖的特定版本的代码管理起来，但是会碰到被墙导致无法下载的问题，目前的方式是将项目的依赖提取到一个公共代码库中，然后将公共代码库放到GOPATH中，如果有一些依赖不适合放入公共代码库，则提交到项目根目录下的vendor中。</li>
+</ul>
+<h4 id="容器化编排持续部署">容器化编排（持续部署）</h4>
+<p>优先级：高</p>
+<p>将应用使用Docker容器化，同时结合容器注册表如Nexus、AWS ECR，容器编排工具如Rancher、K8S，则可以实现应用的自动部署、动态伸缩，解放需要无数次的SCP命令。</p>
+<h4 id="团队协作的纪律">团队协作的纪律</h4>
+<p>优先级：中</p>
+<ul>
+<li>提交规范。根据分支策略拟定提交规范，主要是小步多次提交、提交信息要全面。</li>
+<li>快速反馈。在任何工作的过程中，如果觉得哪里不太高效或者有问题，需要及时提出反馈共同优化现状，被动收集反馈。</li>
+<li>长期反馈。定期召集团队成员举办retro，主动收集改进意见。</li>
+<li>高优先级修复问题。一旦流水线或监控或日志有异常，需要及时通知相关人员修复。</li>
+</ul>
+<h4 id="监控日志规范化持续运维">监控日志规范化（持续运维）</h4>
+<p>优先级：中</p>
+<p>监控：对于应用、数据库、虚拟机都应当有一套监控方式，一旦某个运行节点出现异常则需要通过一些方式通知相关人员</p>
+<p>日志：将所有应用的日志在容器内是收集，并上传到一个日志中心，并提供方便的查询工具便于全部人员查询</p>
+<h4 id="构建过程敏捷化项目管理">构建过程敏捷化（项目管理）</h4>
+<p>优先级：中（长期、穿插）</p>
+<p>前置条件：</p>
+<ul>
+<li>建立需求管理、文档中心，推荐TAPD。</li>
+</ul>
+<p>将构建的过程使用看板、迭代的方式管理起来，将实施的计划与进展展示在看板上，当做开发项目一样构建DevOps体系</p>
+<p>在构建的过程中，开发、部署步骤、系统架构的文档化也是必不可少的一环，让日后其他同事能够接收DevOps体系和已有的系统架构。文档化是穿插在各个地方的，每当完成一个任务就应当抽点时间补充一下文档。</p>
+<h4 id="部署结果可视化">部署结果可视化</h4>
+<p>优先级：低</p>
+<ul>
+<li>流水线可视化。流水线构建完成后，将所有流水线的状态用可视化工具与机器在团队内部展现出来。</li>
+<li>运维面板可视化。在测试、生产环境部署完成且监控系统到位之后，将运维面板通过可视化工具展现出来，可以实时观察当前系统运行状态。</li>
+<li>DevOps构建过程可视化。使用看板的方式将DevOps体系构建过程管理起来，先维护好TAPD电子看板，需要的话再加上物理看板。看板的资料可以查看<a href="http://www.wangtianyi.top/blog/2018/03/18/min-jie-zhong-de-kan-ban/">这里</a></li>
+</ul>
+<h2 id="落地计划">落地计划</h2>
+<p>以上的实践可以说是需要落地的具体事情，把这些事情落地成功也需要一些方法。</p>
+<p>遵循渐进式的实施顺序：</p>
+<ol>
+<li>以任意一个项目为例，将整个DevOps体系实践根据优先级落实其中，当做一个示例规范化整个体系</li>
+<li>将已有的混乱开发部署方式以第一个项目为例逐步迁移到我们搭建的架构中来</li>
+<li>基本完成之后回过头来重新审视一遍已有的体系，继续改进</li>
+</ol>
+<p>在实施的过程中的建议：</p>
+<ol>
+<li>使用看板与迭代开发的方式将我们的实施任务分配清楚，计划制定成熟</li>
+<li>在过程中将DevOps体系当前构建进展同步给所有人，将所有人的意识规范起来</li>
+<li>让你的老大与团队其他成员意识到构建DevOps体系的必要性，为长期发展做好铺垫</li>
+<li>整个过程中最大的难点可能是已有的体系也比较庞大与混乱导致迁移难度大从而需要大量时间，所以必要的时候向你的老大申请更多时间与人员来</li>
+</ol>
+<h2 id="参考">参考</h2>
+<p><a href="https://myslide.cn/slides/1218" target="_blank" rel="noopener">https://myslide.cn/slides/1218</a><br>
+<a href="https://blog.jsjs.org/?p=40" target="_blank" rel="noopener">https://blog.jsjs.org/?p=40</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2018-12-08-yi-ci-ji-yu-wei-fu-wu-kuang-jia-de-tong-yong-ya-ce-diao-you-shi-zhan/" data-toggle="tooltip" data-placement="top" title="一次简单通用的压测调优实战">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2018-10-07-cong-javaji-su-ru-men-go/" data-toggle="tooltip" data-placement="top" title="从Java极速入门Go">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>
