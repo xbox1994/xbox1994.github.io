@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          【架构入门 - 高可用篇】计算高可用 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2019-05-15-jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#架构" title="架构">架构</a>
+                            
+                        </div>
+                        <h1>【架构入门 - 高可用篇】计算高可用</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2019-05-15
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险</p>
+<a id="more"></a>
+<img src="/images/blog/2019-05-15_1.jpeg" title="image">
+<h2 id="问题">问题</h2>
+<p>计算高可用的复杂度体现在<strong>任务管理</strong>方面，比如一台机器挂了，那么上面的任务如何处理？所以设计高可用架构有以下问题：</p>
+<ol>
+<li>哪些服务器可以执行任务？第一种方式是每个服务器都能执行任务；第二种方式是特定主机可以执行任务，如etcd的leader</li>
+<li>任务如何重新执行？第一种是即使任务失败也不处理，但要保证新的任务分配到其他正常机器上执行；第二种是通过任务管理器来管理计算任务，当任务执行完成之后反馈给管理器来决定是否将任务重新分配到其他服务器上执行</li>
+</ol>
+<p>那么针对以上问题，有以下几种常见架构可供选择</p>
+<h2 id="主备">主备</h2>
+<p>主备的架构：</p>
+<ul>
+<li>主机执行所有计算任务。备机上的业务系统已经准备好启动环境（冷备）或正在运行业务系统（热备）</li>
+<li>主机故障时，将计算任务继续发送给主机，此时系统部分不可用</li>
+<li>如果主机恢复了，任务分配器继续发送任务给主机，如果不能恢复，则需要人工操作，将备机升级为主机，还需要拿掉原来的主机，且增加一台备机</li>
+</ul>
+<p>优点：简单，主备、任务分配器之间不需要交互来判断状态和自动切换的配置<br>
+缺点：人工操作不可控、系统挂掉的可能性大、备机性能的浪费<br>
+适合：使用人数不多，不太重要的后台管理系统</p>
+<h2 id="主从">主从</h2>
+<p>主从的架构：</p>
+<ul>
+<li>主机与从机同时执行计算任务</li>
+<li>主机故障时，将计算任务继续发送给主机，此时系统部分不可用</li>
+<li>如果主机不能恢复，需要人工操作，将从机升级为主机，拿掉原主机，增加新从机</li>
+</ul>
+<p>优点：系统稳定性得到部分提升、所有机器的性能充分发挥<br>
+缺点：人工操作不可控、系统挂掉的可能性大、需要对任务分配器进行任务分配的配置<br>
+适合：使用人数较多，比较重要的后台管理系统</p>
+<h2 id="对称集群">对称集群</h2>
+<p>首先定义一下集群的分类：<br>
+对称集群，就是集群中每个服务器都是执行的相同的任务<br>
+非对称集群，就是集群中的每个服务器的角色可能不同，执行不同的任务</p>
+<p>主备与主从的最大的问题在于只有固定的主备和主从两个（组）服务器，需要人工干预进行增减，不能保证服务的可用性。所以在集群方案里，系统需要完成自动切换操作</p>
+<p>对称集群的架构：</p>
+<ul>
+<li>所有机器同时执行计算任务</li>
+<li>某台机器故障时，将计算任务停止发送给它，而是发给其他机器</li>
+</ul>
+<p>这里的复杂度在于：</p>
+<p>1） 任务分配器如何分配任务？<br>
+在之前的<a href="https://www.wangtianyi.top/blog/2019/05/01/jia-gou-ru-men-gao-xing-neng-pian-ji-qun/">【架构入门 - 高性能篇】集群高性能</a>已经讲到过负载均衡算法，这里不废话了</p>
+<p>2） 任务分配器如何检测服务器状态？<br>
+一般是根据任务分配器与服务器之间传递心跳包、或者任务分配器对于发送给服务器的请求做记录，比如一段时间内超过多少个错误请求来检测的，如Nginx的配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;</span><br><span class="line">    server backend1.example.com;</span><br><span class="line">    server backend2.example.com max_fails=3 fail_timeout=30s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果NGINX未能在30秒内向服务器发送请求或未收到响应3次，则表明服务器在30秒内不可用。如果本次请求中，节点正好出现故障，Nginx将把请求转交给接下来的节点处理。所以不会影响到这次请求的正常进行。</p>
+<p>优点：系统稳定性高、所有机器的性能充分发挥<br>
+缺点：复杂度高<br>
+适合：在线服务</p>
+<h2 id="非对称集群">非对称集群</h2>
+<p>非对称集群的架构：</p>
+<ul>
+<li>集群中用某种方式来区分不同服务器的角色。如取当前存活服务器中节点ID最小的服务器作为master服务器</li>
+<li>任务分配器将不同的任务发送到不同服务器。如将A任务发送给master服务器，将B任务发送给slave服务器</li>
+<li>当服务器故障时，需要重新分配角色</li>
+</ul>
+<p>对比对称集群，复杂度更高：</p>
+<ol>
+<li>任务分配策略更复杂，需要将任务划分成不同类型到不同角色节点</li>
+<li>角色分配策略也复杂，需要ZAB/Raft算法实现Leader选举</li>
+</ol>
+<p>比如在Zookeeper中：</p>
+<ul>
+<li>任务分配器：每个节点都是任务分配器，Follower角色收到请求后判断，如果是写请求就发送给Leader角色，如果是读请求就自己处理</li>
+<li>角色分配：ZAB算法选举Leader，当Leader故障后，所有Follower角色会暂停写操作，然后开始选举，直到新的Leader选举出来之后才继续提供服务</li>
+</ul>
+<p>优点：系统稳定性高、所有机器的性能充分发挥<br>
+缺点：复杂度高<br>
+适合：大规模集群内部高性能分布式协调管理中心</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://time.geekbang.org/column/intro/81" target="_blank" rel="noopener">https://time.geekbang.org/column/intro/81</a><br>
+<a href="https://docs.nginx.com/nginx/admin-guide/load-balancer/http-health-check/" target="_blank" rel="noopener">https://docs.nginx.com/nginx/admin-guide/load-balancer/http-health-check/</a></p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2019-05-18-jia-gou-ru-men-ke-kuo-zhan-pian/" data-toggle="tooltip" data-placement="top" title="【架构入门 - 可扩展篇】">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2019-05-05-jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" data-toggle="tooltip" data-placement="top" title="【架构入门 - 高性能篇】数据库高性能">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#架构" title="架构">架构</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

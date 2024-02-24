@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          B端系统业务架构设计追问 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2024-02-24-B端系统业务架构设计追问/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#架构" title="架构">架构</a>
+                            
+                        </div>
+                        <h1>B端系统业务架构设计追问</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2024-02-24
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>内容：通义灵码问答，最后自行总结</p>
+<h1 id="b端系统业务架构设计要考虑哪些问题">B端系统业务架构设计要考虑哪些问题</h1>
+<p>目标：</p>
+<ol>
+<li>满足复杂的业务逻辑需求</li>
+<li>保证高效率、低成本和优秀的用户体验</li>
+<li>为未来可能的变化和发展留出足够的灵活性和扩展空间</li>
+</ol>
+<p>问题：</p>
+<ol>
+<li>业务流程理解与建模：
+<ol>
+<li>系统需深入理解和梳理业务运作全流程，包括正常流程、异常处理及特殊情况下的业务逻辑。</li>
+<li>通过业务流程建模（如使用BPMN等工具），明确业务环节之间的关系、依赖和流转规则。</li>
+</ol>
+</li>
+<li>模块化与解耦设计：
+<ol>
+<li>将复杂的业务拆分为独立的模块或服务，实现模块间的松耦合，提高系统的可扩展性和维护性。</li>
+<li>设计清晰的接口定义和服务契约，以便于不同模块间的数据交互和功能调用。</li>
+</ol>
+</li>
+<li>数据架构规划：
+<ol>
+<li>根据业务需求设计合理的数据库表结构，并考虑数据的一致性、完整性、安全性以及性能要求。</li>
+<li>对大数据量场景要考虑数据分区、分片、索引优化等策略，以及数据仓库、数据分析等需求。</li>
+</ol>
+</li>
+<li>可伸缩性与扩展性：
+<ol>
+<li>考虑到未来业务增长和技术升级的需求，系统应具备良好的可伸缩性，能够平滑地进行扩容和性能提升。</li>
+<li>可能的话采用微服务架构，以支持快速迭代和灵活部署。</li>
+</ol>
+</li>
+<li>用户角色权限管理：
+<ol>
+<li>B端系统通常涉及多角色操作，需要设计精细的权限体系，对不同用户或角色提供个性化的访问控制。</li>
+</ol>
+</li>
+<li>异常状态处理：
+<ol>
+<li>针对可能出现的各种异常情况进行预案设计，比如错误提示、回滚机制、预警通知等，避免因异常导致的服务中断或数据丢失。</li>
+<li>构建全面的监控体系，包括应用性能监控（APM）、日志分析、报警通知等，以便及时发现并解决潜在问题。</li>
+</ol>
+</li>
+<li>集成与兼容性：
+<ol>
+<li>考虑与其他内部系统或外部合作伙伴系统的集成方案，如API接口、消息队列、ESB企业服务总线等技术的应用。</li>
+<li>兼容多种客户端环境，包括不同浏览器、操作系统和移动设备平台。</li>
+</ol>
+</li>
+<li>性能与成本优化：
+<ol>
+<li>在满足业务需求的同时，要合理评估并优化系统资源消耗，平衡硬件投入与运维成本。</li>
+<li>对关键路径进行性能测试与调优，确保在高峰期也能提供稳定的服务。</li>
+</ol>
+</li>
+<li>合规与安全：
+<ol>
+<li>符合相关行业标准、法规要求，特别是在数据保护、隐私政策等方面要严格遵循相关规定。</li>
+<li>实现必要的安全措施，包括但不限于身份验证、授权、加密、日志审计、防火墙等。</li>
+</ol>
+</li>
+<li>持续迭代与敏捷开发：
+<ol>
+<li>建立支持快速迭代更新的开发框架和运维流程，以适应不断变化的业务需求和技术趋势。</li>
+</ol>
+</li>
+</ol>
+<h1 id="研发效能系统的架构设计要考虑哪些问题">研发效能系统的架构设计要考虑哪些问题</h1>
+<p>目标：</p>
+<ol>
+<li>提升软件开发、测试、部署和运维等各个环节的效率与质量</li>
+<li>既要充分考虑现有业务场景，也要前瞻未来发展趋势，为研发团队提供稳定、高效、智能且易于使用的工具支持</li>
+</ol>
+<p>问题：</p>
+<ol>
+<li>业务流程支持：
+<ol>
+<li>需要对研发全生命周期（从需求管理、项目规划、代码开发、构建、测试到发布上线）有深入理解，并能够通过系统架构来支撑这些流程。</li>
+<li>支持敏捷开发方法论，如Scrum或Kanban，以及DevOps最佳实践。</li>
+</ol>
+</li>
+<li>模块化与解耦：
+<ol>
+<li>构建模块化的组件和服务，实现不同功能模块之间的低耦合性，便于独立扩展和维护。</li>
+<li>设计可插拔的服务接口，以便接入不同的工具链和服务，例如源码管理工具（Git）、持续集成/持续部署(CI/CD)工具、自动化测试工具等。</li>
+</ol>
+</li>
+<li>数据流和数据架构：
+<ol>
+<li>确保系统可以高效处理并存储来自多个来源的大量实时和历史数据，如构建日志、测试报告、性能指标等。</li>
+<li>采用适合的数据模型和数据库技术，以满足查询、分析和可视化的需求。</li>
+</ol>
+</li>
+<li>扩展性和可伸缩性：
+<ol>
+<li>考虑高并发场景下的系统负载，设计可水平扩展和垂直扩展的架构，确保系统在用户量增长、数据量增大时仍能保持稳定性能。</li>
+<li>实现资源调度的智能化，根据实际负载自动调整资源配置。</li>
+</ol>
+</li>
+<li>安全性与合规性：
+<ol>
+<li>对敏感信息进行加密处理，确保数据传输和存储的安全性。</li>
+<li>符合企业内部安全策略及外部法规要求，如GDPR、ISO 27001等标准。</li>
+</ol>
+</li>
+<li>监控与告警：
+<ol>
+<li>建立健全的监控体系，包括系统健康度、服务可用性、性能瓶颈等方面的实时监控。</li>
+<li>设置合理的阈值和告警策略，及时发现并快速响应异常情况。</li>
+</ol>
+</li>
+<li>自服务和自助式体验：
+<ol>
+<li>提供直观易用的用户界面和API接口，使得团队成员可以方便地使用和定制研发效能平台上的各项服务。</li>
+<li>支持自定义工作流和自动化任务，减少人工干预，提高工作效率。</li>
+</ol>
+</li>
+<li>兼容性和集成性：
+<ol>
+<li>系统需具备良好的兼容性，能够与现有的开发工具、基础设施、云服务无缝对接，形成统一的研发环境。</li>
+<li>支持多种开发语言、框架和技术栈，以适应多样的研发团队需求。</li>
+</ol>
+</li>
+<li>持续优化与迭代：
+<ol>
+<li>架构设计应具有足够的灵活性，以便随着新的技术和最佳实践的发展而不断改进和更新。</li>
+</ol>
+</li>
+<li>成本控制：
+<ol>
+<li>在保证系统效能的同时，合理规划硬件资源和云计算资源，实现成本效益的最大化。</li>
+</ol>
+</li>
+</ol>
+<h1 id="包含开发全流程管理的功能视图如何与流程引擎结合之后设计架构不需要让其他团队开发是我们系统自己维护自定义流程提供给其他团队用">包含开发全流程管理的功能视图如何与流程引擎结合之后设计架构，不需要让其他团队开发，是我们系统自己维护自定义流程，提供给其他团队用</h1>
+<p>目标：</p>
+<ol>
+<li>流程的灵活性、扩展性以及与其他系统的集成性</li>
+<li>通过自维护自定义流程的方式，为其他团队提供便捷高效的全流程管理服务，赋能其提升研发效能</li>
+</ol>
+<p>问题：</p>
+<ol>
+<li>需求分析与功能设计：
+<ol>
+<li>明确开发全流程管理的需求，包括但不限于需求管理、版本控制、构建与集成、测试、部署、运维等环节。</li>
+<li>设计一套灵活的流程模型，支持用户通过图形化界面自定义每个环节的顺序、条件和动作。</li>
+</ol>
+</li>
+<li>流程引擎选择与集成：
+<ol>
+<li>选择一款适合的开源或商业流程引擎（如Activiti、Camunda、Drools等），它可以解析、执行并监控预定义的工作流。</li>
+<li>根据流程引擎提供的API或SDK，将其深度集成到系统中，确保流程定义能被正确解析并转化为可执行的任务流。</li>
+</ol>
+</li>
+<li>数据模型与存储设计：
+<ol>
+<li>设计适应流程管理的数据模型，包括流程定义模型、流程实例模型、任务模型以及相关的元数据模型。</li>
+<li>使用数据库持久化这些模型对象，以便在系统运行时加载、查询和更新流程状态。</li>
+</ol>
+</li>
+<li>定制化的流程设计器：
+<ol>
+<li>开发基于Web的可视化流程设计器，允许用户拖拽节点、设置连接线、配置节点属性来创建自定义流程。</li>
+<li>流程设计师应能将用户的操作实时转化为流程引擎可识别的流程定义文件（如BPMN或JSON格式）。</li>
+</ol>
+</li>
+<li>服务接口与组件化设计：
+<ol>
+<li>将每个开发流程中的关键环节抽象为独立的服务接口或者微服务，如代码提交服务、构建服务、测试服务、发布服务等。</li>
+<li>在流程引擎中，根据流程定义调用对应的服务接口执行具体任务。</li>
+</ol>
+</li>
+<li>权限与角色管理：
+<ol>
+<li>根据不同团队和角色设置不同的权限，确保只有具有相应权限的用户才能创建、编辑或查看特定的流程。</li>
+<li>对流程中的审批、流转等环节实现细粒度的权限控制。</li>
+</ol>
+</li>
+<li>监控与日志记录：
+<ol>
+<li>实现对流程执行情况的实时监控，提供可视化的流程运行状态展示和统计报表。</li>
+<li>记录详细的流程执行日志，方便用户追溯历史信息，便于排查问题和优化流程。</li>
+</ol>
+</li>
+<li>异常处理与通知机制：
+<ol>
+<li>设计健壮的异常处理策略，当流程执行遇到错误时能够自动重试、回滚或触发报警通知给相关责任人。</li>
+<li>构建事件驱动的通知机制，当流程达到某个关键点或发生异常时，通过邮件、短信或内部消息系统及时通知相关人员。</li>
+</ol>
+</li>
+<li>持续集成与持续交付（CI/CD）：
+<ol>
+<li>系统应当与现有的CI/CD工具或平台无缝对接，将自定义的开发流程嵌入到自动化构建和部署管道中。</li>
+</ol>
+</li>
+</ol>
+<h1 id="研发全流程有很多不同的视图如分支-功能-迭代视图是基于什么角度考虑设计这些视图的">研发全流程有很多不同的视图，如分支、功能、迭代视图，是基于什么角度考虑设计这些视图的？</h1>
+<p>目标：</p>
+<ol>
+<li>满足研发流程中多元化的管理视角和操作需求</li>
+<li>帮助不同角色的参与者更好地理解项目状态、协作推进工作</li>
+</ol>
+<p>问题：</p>
+<ol>
+<li>分支视图：
+<ol>
+<li>角度：版本控制与协同开发</li>
+<li>考虑因素：在分布式版本控制系统（如Git）中，分支是项目并行开发的重要机制。分支视图可以让团队成员清晰地看到代码库中各个分支的状态，包括哪些分支正在开发中、哪些已合并或废弃等信息，方便进行代码合并、冲突解决和版本管理。</li>
+</ol>
+</li>
+<li>功能视图：
+<ol>
+<li>角度：需求管理和产品规划</li>
+<li>考虑因素：功能视图关注的是产品的具体功能模块及其对应的开发进度。设计该视图有助于产品经理、项目经理以及开发人员从功能层面跟踪项目的进展，明确每个功能模块的需求、设计、实现和测试情况，确保产品按照预期的功能蓝图逐步完成。</li>
+</ol>
+</li>
+<li>迭代视图：
+<ol>
+<li>角度：敏捷开发与周期管理</li>
+<li>考虑因素：迭代视图对应敏捷开发方法论中的迭代周期管理。它体现了整个研发过程的时间线分布，将大的开发目标拆解成一系列小的可交付成果，并按时间顺序组织。通过迭代视图可以追踪每个迭代的目标、任务分配、进度、质量和风险状况，有助于团队进行短期计划、执行、回顾和调整。</li>
+</ol>
+</li>
+</ol>
+<h1 id="总结">总结</h1>
+<ol>
+<li>满足复杂的业务逻辑需求、提升业务执行效率
+<ol>
+<li>业务流程建模</li>
+<li>自服务和自助式体验</li>
+</ol>
+</li>
+<li>灵活性和扩展性以及与其他系统的集成性
+<ol>
+<li>模块化与解耦</li>
+<li>可伸缩性与扩展性</li>
+<li>集成与兼容性</li>
+</ol>
+</li>
+<li>保证高效率、低成本、安全和优秀的用户体验
+<ol>
+<li>异常处理</li>
+<li>性能</li>
+<li>成本优化</li>
+<li>合规与安全</li>
+<li>监控与告警</li>
+</ol>
+</li>
+</ol>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2023-11-18-分布式事务与seata-DTM/" data-toggle="tooltip" data-placement="top" title="分布式事务与seata/DTM">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#b端系统业务架构设计要考虑哪些问题"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">B端系统业务架构设计要考虑哪些问题</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#研发效能系统的架构设计要考虑哪些问题"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">研发效能系统的架构设计要考虑哪些问题</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#包含开发全流程管理的功能视图如何与流程引擎结合之后设计架构不需要让其他团队开发是我们系统自己维护自定义流程提供给其他团队用"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">包含开发全流程管理的功能视图如何与流程引擎结合之后设计架构，不需要让其他团队开发，是我们系统自己维护自定义流程，提供给其他团队用</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#研发全流程有很多不同的视图如分支-功能-迭代视图是基于什么角度考虑设计这些视图的"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">研发全流程有很多不同的视图，如分支、功能、迭代视图，是基于什么角度考虑设计这些视图的？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">总结</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#架构" title="架构">架构</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

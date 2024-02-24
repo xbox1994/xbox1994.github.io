@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          JVM调优入门（一）：基础知识 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2018-07-26-jvmdiao-you-ru-men-yi-ji-chu-zhi-shi/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                            
+                        </div>
+                        <h1>JVM调优入门（一）：基础知识</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2018-07-25
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>当Java程序性能达不到目标，且代码上的优化手段都已经穷尽时，通常需要调整垃圾回收器和JVM内存空间配置来进一步提高性能，这就是JVM调优。</p>
+<p>在调优的时候，我们必须要知道调的是什么，为什么要这样调，这些跟基础知识密不可分。</p>
+<p>比如要知道内存结构、垃圾收集机制、算法、收集器，还要知道如何从GC日志中得到调试的效果，那么本系列文章将带你回顾调优用到的JVM基础知识。然后实战调优一把，最后我会总结出一个调优的套路，不论在实战还是面试中都能用上</p>
+<a id="more"></a>
+<h2 id="jvm内存结构">JVM内存结构</h2>
+<img src="/images/blog/2018-07-26_1.png" title="image">
+<p>按线程是否共享分为以下区域：</p>
+<h3 id="线程共享">线程共享</h3>
+<ul>
+<li>方法区: 存储已被虚拟机加载的类信息、方法信息、常量、静态变量、字节码、JIT编译后的本地代码，并使用永久代来实现方法区。1.8中用元空间替代了永久代，元空间并不在虚拟机中，而是使用本地内存，元空间中可能还存在短指针数据区CCS</li>
+<li>堆区: 最大的一块区域，用于存放对象的区域，1.7之后常量池移到这里</li>
+</ul>
+<h3 id="线程私有">线程私有</h3>
+<ul>
+<li>虚拟机栈: 每个方法执行时在其中创建一个栈帧，用于存储局部变量、操作数栈、动态链接、方法出口等信息</li>
+<li>本地方法栈: 功能与虚拟机栈相同，为native方法服务</li>
+<li>程序计数器: 存放当前正在执行的指令的地址</li>
+</ul>
+<h3 id="堆上的内存内配">堆上的内存内配</h3>
+<p>图上是的不同区域的比例是可以配置的</p>
+<img src="/images/blog/2018-07-26_2.png" title="image">
+<p>新生代（Young Generation）：大多数对象在新生代中被创建，其中很多对象的生命周期很短</p>
+<p>新生代内又分三个区：一个Eden区，两个Survivor区，大部分对象在Eden区中生成。每次使用Eden和其中一块Survivor。当回收时，将Eden和Survivor中还存活的对象一次性地拷贝到另外一块Survivor空间上，最后清理掉Eden和刚才用过的Survivor</p>
+<p>老年代（Old Generation）：在新生代中经历了N次垃圾回收后仍然存活的对象，就会被放到年老代，或者大对象直接进入老年代。该区域中对象存活率高。</p>
+<p>因为堆是几乎所有对象创建、销毁的地方，所以堆就是我们要调优的重点，比如设置合适的新生代与老年代的大小、设置进入老年代的条件。</p>
+<h2 id="gc回收机制">GC回收机制</h2>
+<h3 id="回收哪些对象">回收哪些对象</h3>
+<p>满足以下两点的对象将被回收：</p>
+<ol>
+<li>通过GC Roots作为起点的向下搜索形成引用链，没有搜到该对象，这是第一次标记。</li>
+<li>在finalize方法中没有逃脱回收（将自身被其他对象引用），这是第一次标记的清理。</li>
+</ol>
+<p>GC Roots：虚拟机栈中引用的对象、方法区中类静态属性引用的对象、方法区中常量引用的对象、本地方法栈中JNI（Native方法）引用的对象。</p>
+<p>不可达对象：通过一系列的GC Roots的对象作为起点，从这些节点开始向下搜索，搜索所走过的路径称为引用链，当一个对象到GC Roots没有任何引用链相连时则此对象是不可用的。</p>
+<h3 id="垃圾回收算法">垃圾回收算法</h3>
+<ul>
+<li>复制算法：将内存划分成大小相等的两块，每次只使用其中一块，但一块用完了触发GC，可达性分析完成之后，将活的对象复制到另外一块，然后把原来的一块清除掉。但空间利用率低</li>
+<li>标记-清除：可达性分析完成之后，首先标记出所有需要回收的对象，标记完成后统一回收被标记的对象。但会产生大量碎片，导致无法分配大对象从而导致频繁GC</li>
+<li>标记-整理：可达性分析完成之后，首先标记出所有需要回收的对象，让所有存活的对象向一端移动。但比较耗时。</li>
+</ul>
+<p>而主流虚拟机（Hotspot VM）中使用&quot;分带垃圾回收&quot;，因为对象的生命周期不同，所以针对不同生命周期的对象可以采取不同的回收方式，以便提高回收效率，比如：</p>
+<p>新生代因为每次GC都有大批对象死去，只需要付出少量存活对象的复制成本且无碎片所以使用“复制算法”，将可用内存按容量划分为Eden、from survivor、to survivor，分配的时候使用Eden和一个survivor，Minor GC后将存活的对象复制到另一个survivor，然后将原来已使用的内存一次清理掉</p>
+<p>老年代因为存活率高、没有分配担保空间，所以使用“标记-清理”或者“标记-整理”算法</p>
+<h2 id="垃圾收集器">垃圾收集器</h2>
+<h3 id="分类">分类</h3>
+<p>按执行方式分类：</p>
+<ul>
+<li>串行：Serial、Serial Old</li>
+<li>并行（关注吞吐量）：Parallel Scavenge、Parallel Old、ParNew</li>
+<li>并发（关注停顿时间）：CMS、G1</li>
+</ul>
+<p>按收集区域分类：</p>
+<ul>
+<li>新生代收集器：Serial、ParNew、Parallel Scavenge</li>
+<li>老年代收集器：Serial Old、Parallel Old、CMS</li>
+<li>整堆收集器：G1</li>
+</ul>
+<h3 id="并行与并发">并行与并发</h3>
+<p>这里的并行与并发与程序执行的并行与并发是不同的。</p>
+<p>程序执行中：</p>
+<ul>
+<li>并行：系统能处理多个任务，且同时还能处理多个的任务处理机制</li>
+<li>并发：系统能处理多个任务，但同时只能处理一个的任务处理机制</li>
+</ul>
+<p>垃圾收集器中：</p>
+<ul>
+<li>并行：用户线程处于等待状态，多条垃圾收集线程同时工作。适合计算、后台处理这样的弱交互场景。</li>
+<li>并发：用户线程与垃圾收集线程同时工作（但也会出现用户线程等待的情况）。适合Web。</li>
+</ul>
+<h3 id="吞吐量与停顿时间">吞吐量与停顿时间</h3>
+<p>吞吐量 = 应用程序线程用时占程序总用时的比例。JVM参数：<code>-XX:GCTimeRatio=n</code>，设置吞吐量大小，它的值是一个 0-100 之间的整数。系统将花费不超过 1/(1+n) 的时间用于垃圾收集。</p>
+<p>停顿时间 = 垃圾收集时中断应用的时间。JVM参数：<code>-XX:MaxGCPauseMillis</code></p>
+<p>关系：吞吐量越高，停顿时间越低。同时也是衡量垃圾收集器好坏的参数。</p>
+<h3 id="串行收集器">串行收集器</h3>
+<p>串行收集器Serial是最古老的收集器，只使用一个线程去回收，可能会产生较长的停顿</p>
+<p>新生代使用Serial收集器<code>复制</code>算法、老年代使用Serial Old<code>标记-整理</code>算法</p>
+<p>参数：<code>-XX:+UseSerialGC</code>，默认开启<code>-XX:+UseSerialOldGC</code></p>
+<h3 id="并行收集器">并行收集器</h3>
+<p>并行收集器Parallel关注<strong>可控的吞吐量</strong>，能精确地控制吞吐量与最大停顿时间是该收集器最大的特点，也是1.8的Server模式的默认收集器，使用多线程收集。ParNew垃圾收集器是Serial收集器的多线程版本。</p>
+<p>新生代<code>复制</code>算法、老年代<code>标记-整理</code>算法</p>
+<p>参数：<code>-XX:+UseParallelGC</code>，默认开启<code>-XX:+UseParallelOldGC</code></p>
+<h3 id="并发收集器">并发收集器</h3>
+<p>并发收集器CMS是以<strong>最短停顿时间</strong>为目标的收集器。G1关注能精确控制<strong>停顿时间</strong>且垃圾回收效率高。</p>
+<p>CMS针对老年代，有初始标记、并发标记、重新标记、并发清除四个过程，标记阶段会Stop The World，使用<code>标记-清除</code>算法，所以会产生内存碎片。</p>
+<p>参数：<code>-XX:+UseConcMarkSweepGC</code>，默认开启<code>-XX:+UseParNewGC</code></p>
+<p>G1将堆划分为多个大小固定的独立区域，根据每次允许的收集时间优先回收垃圾最多的区域，使用<code>标记-整理</code>算法，是1.9的Server模式的默认收集器</p>
+<p>参数：<code>-XX:+UseG1GC</code></p>
+<h3 id="垃圾收集器的配合使用方式">垃圾收集器的配合使用方式</h3>
+<img src="/images/blog/2018-07-26_3.png" title="image">
+<h3 id="如何选择垃圾收集器">如何选择垃圾收集器</h3>
+<ol>
+<li>需要停顿时间能超过1秒且想要一个可控的吞吐量时，使用并行收集器</li>
+<li>如果停顿时间重要且不超过1秒，使用并发收集器</li>
+<li>如果内存小于100M，使用串行或者JVM自己选</li>
+<li>如果是单核，且没有系统停顿要求，使用串行或者JVM自己选</li>
+</ol>
+<h2 id="stop-the-world">Stop The World</h2>
+<p>Java中Stop-The-World机制简称STW，是在执行垃圾收集算法时，Java应用程序的其他所有线程都被挂起。Java中一种全局暂停现象，全局停顿，所有Java代码停止，native代码可以执行，但不能与JVM交互</p>
+<p>STW总会发生，不管是新生代还是老年代，比如CMS在初始标记和重复标记阶段会停顿，G1在初始标记阶段也会停顿，所以并不是选择了一款停顿时间低的垃圾收集器就可以避免STW的，我们只能尽量去减少STW的时间。</p>
+<p>那么为什么一定要STW？因为在定位堆中的对象时JVM会记录下对所有对象的引用，如果在定位对象过程中，有新的对象被分配或者刚记录下的对象突然变得无法访问，就会导致一些问题，比如部分对象无法被回收，更严重的是如果GC期间分配的一个GC Root对象引用了准备被回收的对象，那么该对象就会被错误地回收。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://www.cnblogs.com/ityouknow/p/5614961.html" target="_blank" rel="noopener">https://www.cnblogs.com/ityouknow/p/5614961.html</a><br>
+<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/collectors.html#sthref28" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/collectors.html#sthref28</a><br>
+<a href="https://stackoverflow.com/questions/16695874/why-does-the-jvm-full-gc-need-to-stop-the-world" target="_blank" rel="noopener">https://stackoverflow.com/questions/16695874/why-does-the-jvm-full-gc-need-to-stop-the-world</a><br>
+周志明，深入理解Java虚拟机[M]，机械工业出版社，2013.</p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2018-07-26-jvmdiao-you-ru-men-er-shi-zhan-diao-you-parallelshou-ji-qi/" data-toggle="tooltip" data-placement="top" title="JVM调优入门（二）：实战调优Parallel收集器">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2018-07-20-javasheng-chan-huan-jing-xia-wen-ti-pai-cha/" data-toggle="tooltip" data-placement="top" title="Java生产环境下问题排查">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

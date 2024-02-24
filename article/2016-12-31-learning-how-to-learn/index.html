@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Learning how to Learn - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2016-12-31-learning-how-to-learn/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#学习" title="学习">学习</a>
+                            
+                        </div>
+                        <h1>Learning how to Learn</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2016-12-31
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>在过去的很多年时间里,我很少,其他人也很少告诉我们自己该如何学习,而是告诉你时间是挤出来的,把时间花到学习上是唯一提高学习成绩的方法.</p>
+<p>如果我能早一些看到<learning how to learn>,或者说如果我能早一些意识到这一点,把其中的理论实践下去可能会以自己为例反驳上面的观点.</learning></p>
+<a id="more"></a>
+<p>我们时常听到一些感觉很矛盾的传说:某人特牛逼,学习总是名列前茅,还经常花时间去干别的事,如打篮球,玩游戏.我原来会觉得这种人肯定是天才,脑袋绝顶聪明那种,老师会告诉我们他是晚上熬夜用功.其实老师没有错,对绝大多数人来说,用功的自己比不用功的自己更强一些.<br>
+但是为什么就不能教一些学习的方法技巧给我们呢,一股脑将知识填给我们,不知道我们会因此忽略掉漏掉多少重要的东西,短暂的自习时间,没有机会让自己进入发散的思考模式.这是一个让我们自己花很大的代价去探索学习的路线的学习模式.</p>
+<p>有两个大学老师给了我很深的印象,其中一个老师仅仅只是在四年中只会见上几面的实验课老师,他不会像其他老师用书本和例题对我们狂轰滥炸,而是用一种引导式的方法教会我们如何走向正确的解题方向</p>
+<p><em><strong>然而现在开始学会学习,为时不晚</strong></em></p>
+<p>一个月的时间将这门课过完一遍,一定要马上总结不然过一段时间就会如同失忆般问自己,“我什么时候看过这个东西?”</p>
+<p>这是用Xmind画出来的在这门课中我觉得比较关键的知识和方法,红星标注的是具体学习方法</p>
+<img src="/images/blog/learning_how_to_learn.png" class="left" width="1000" height="1000" title="image images">
+<p>这门课程从大脑工作原理开始,用生动形象的比喻和通俗易懂的语言结合现有神经学心理学研究成果告诉了一个可能的正确学习的方式.</p>
+<p>了解到其中提到的几个学习方法或应试技巧(如番茄工作法,过度学习,交替学习,先难后易,Test List)其实对我们已经是很大的帮助了,剩下的只是自己去实践了.</p>
+<p>##集中模式VS发散模式<br>
+###集中模式<br>
+运用已有知识进行习惯性的输出.就像Windows自带的三维弹球中的密集缓冲区一样,弹球在他们之间飞快的穿梭,但是仅限于缓冲区内部,一旦脱离密集缓冲区,弹球会失去约束力被重力引导到其他地区.<br>
+优点:已走过的老路无比通畅<br>
+缺点:难以突破习惯性思维</p>
+<p>###发散模式<br>
+思维不专注在某一细节,不局限于某一方向思考问题.三维弹球中的其他区域虽然没有密集缓冲区那样可以让弹球保持稳定的飞速运动,但一旦触发到某个机关,往往会触发到意向不到的情况.<br>
+优点:是很多创新,灵感,解决问题的新思路的来源<br>
+缺点:难以专注细节,无法考虑全面</p>
+<p>###技巧:学会转换<br>
+在爱迪生工作的休息间隙,他会拿着一个滚珠小憩一会,当他将要入睡的时候手会自觉松开,滚珠落地将他惊醒.<br>
+集中精力开始工作,发散思维得到联想,成千上万个灵感涌入爱迪生的脑袋.最简单的实践就是,集中精力工作之后将难题记住,午间休息时试图带入思考入睡.</p>
+<p>##组块<br>
+大脑中小而紧凑的信息包,每个组块相当于一小块记忆,组块越多是构造组块帝国的基石,但如何创造众多组块联系在一起的关系同样是非常重要的.如同用砖块砌墙,砖块重要,水泥与瓦工同样重要.<br>
+###如何组织信息包<br>
+1.集中注意力<br>
+当我们试图get一个新知识时,集中注意力是废话一样的存在.<br>
+我的某高中老师讲过关于他的一个经历,当年他和一个成绩特别好的同学同桌时,每次他想上课找这个同桌唠唠嗑,该同桌都是一脸嫌弃并对他抛出了一个异常,然后他默默的掏出了自己的…自己玩去了</p>
+<p>2.理解基本含义<br>
+这里涉及到学习的假象,自己以为这个基本含义我知道了,但是一到别人问你,一到考试的时候一脸懵逼,“我记得我知道这个东西啊,怎么感觉又不是这个样子?”.自信的小伙子,不要以为你真的学会了哦!<br>
+<em><strong>没有教会他人是绝对不能说自己完全掌握的哦</strong></em><br>
+Recall &amp;&amp; Self-test是发现假象的最好方式,用回顾所学知识和自测的方式来发现自己存在的问题.当你尝试过一次之后会立马发现,某些东西确实还没有掌握的那么清楚.当然加入学习小组帮助别人或者他人帮助自己学习也是非常好的方法,但不要变成了一个游戏小组</p>
+<p>3.获取背景知识,得到应用场景<br>
+&quot;我会C/C++/R/Phthon/Java/Ruby/JS/Delphi/Shell语言,并且我会熟练使用它们&quot;.简历中如果有这句话看起来是非常耀眼.但是如果现在为我们自己的一个特定需求去挑选一个最合适的语言去开发,我们会如何选择?<br>
+就像工具箱你有几百个工具,但不知道什么时候应该使用哪一个,那么工具只会变成一堆破铜烂铁.</p>
+<p>##学习的三大难题:假象 &amp;&amp; 遗忘 &amp;&amp; 拖延症<br>
+###假象<br>
+同上理解基本含义</p>
+<p>###遗忘VS记忆<br>
+工作记忆:有意识的处理事情时会调用的记忆区间,正常人大概可以同时关注4个工作记忆区间</p>
+<p>长期记忆:工作记忆转化而来,比工作记忆稳定,但是依然需要间隔重复法来稳定记忆</p>
+<p>我们在完成一件事情的时候我们的大脑只会在工作记忆区间寻觅需要的记忆,长期记忆会被调用到工作记忆区间协同工作.然而工作记忆非常不稳定,需要及时转化为长期记忆来长期储存.</p>
+<p>下面是一些转化的技巧:<br>
+<strong><em>间隔重复法/保证正常休息/用线索构建记忆宫殿</em></strong></p>
+<p>###拖延症<br>
+原理:想学一个东西,但是由于某些原因,会产生一定的痛苦,没有办法坚持下去,然后就开始寻找可以令自己开心起来的东西,最后的结果是这个东西永远没有学会</p>
+<p><strong>_必杀技:番茄工作法 _</strong><br>
+25分钟工作+5分钟奖励时间让你告别痛苦,专注过程.一切基于一个事实:一旦开始着手于你要完成的事,你就会发现其实并不是那么痛苦.</p>
+<p>##鼓励师<br>
+万万没有想到这门课里会出现一个鼓励师,给一个大大的赞!<br>
+###不需要羡慕天才<br>
+1.智商天注定,现实已成定局,无法改变.<br>
+2.天才的优势导致了天才的劣势:能同时拥有很多工作记忆区块看起来什么都可以游刃有余,但是工作记忆锁住了思维,阻止了创新的思路.<br>
+3.蠢材的劣势构建了蠢材的优势:比天才少一些习惯性的思路,有可以轻松调取其他长期记忆的能力,从而多一些解决问题的思路,只要坚持努力下去就会有收获.<br>
+4.打开一扇窗的同时关了一道门.</p>
+<p>###现实如此吗<br>
+很遗憾,现实不是如此,世界的进步大部分来源于天才.詹姆斯·瓦特的多项蒸汽机关键技术.33岁任清华国学研究院导师的赵元任.莫扎特14岁时,在罗马的西斯廷小教堂听了一首经文歌的演唱后,就能凭记忆把它一个音一个音地默写出来.<br>
+现实有太多例子,送自己一个连接https://www.zhihu.com/question/34054445</p>
+<p>天才毕竟是少数,教育体系一定是要满足大多数的情况,因材施教很难实现,那我们就放任自己了吗?</p>
+<p>###天才VS蠢材<br>
+<strong><em>天才足够堕落可以变得比蠢材更加蠢材,蠢材足够努力可以变得比天才更加天才.</em></strong></p>
+<p>对的!一定有方法和技巧可以维护世界的平衡!<br>
+<em><strong>专练最难的部分可以提升相关天赋,多一种解决思路,多一些经验可以在下次决战的一瞬间秒杀天才</strong></em></p>
+<p>##后记<br>
+原理上写的并不多,因为原理比较容易理解,我更需要的是可以应用的学习方法与意识(在手旁放了一本&lt;代码整洁之道&gt;发现我的代码真的变整洁了不少0.0).我总是喜欢在写一个东西的时候放上自己的评论,有点跑偏主题的意思,并且在最后一定要加上一个PS/后记.其实博客没那么多规定啦,毕竟这是属于我的地方,6点写到10点,是真的没感觉时间过的这么快.</p>
+<p>对于我来说最大的问题是遗忘,所以间隔重复法对我来说应该效果很好.然而现在最大的问题是前端快要把我逼疯了QAQ.</p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2017-01-08-mou-ci-you-hua-shi-jian-nginxshi-na-lai-gan-shi-yao-de/" data-toggle="tooltip" data-placement="top" title="记一次性能优化探索-Nginx有什么用">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2016-12-25-ni-de-ming-zi-./" data-toggle="tooltip" data-placement="top" title="你的名字。">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#学习" title="学习">学习</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

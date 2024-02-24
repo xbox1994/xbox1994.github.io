@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [译][MicroService 2]构建微服务:使用API网关 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2017-04-22-yi-microservies-2-building-microservices-using-an-api-gateway/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#MicroService" title="MicroService">MicroService</a>
+                            
+                        </div>
+                        <h1>[译][MicroService 2]构建微服务:使用API网关</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2017-04-22
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>七部曲中的第一篇是关于设计，构建和部署微服务。讨论了微服务的好处和缺点，尽管一系列的微服务有一定的复杂性，但是它们对于复杂应用来说还是通用的理想选择。这是第二篇文章关于讨论使用API网关来构建微服务。</p>
+<a id="more"></a>
+<p>#Building MicroService: Using an API Gateway</p>
+<p>当你选择将应用程序构建为一组微服务时，你需要决定你的客户端将如何与微服务交互。在单体应用中只有一组（通常是复制的，负载均衡的）接口。在微服务架构中，每个微服务都暴露一系列通常是细粒度的接口。在这篇文章中，我们将研究微服务如何对客户端到应用程序之间的交互带来的影响并且提出一种使用API网关的方法。</p>
+<p>略过单体应用的客户端-服务器交互方式。</p>
+<p>相反的，当用微服务架构，对产品详情数据的展示是基于多个微服务的。下面是一些属于展现产品细节页面的潜在微服务</p>
+<ul>
+<li>Shopping Cart Service</li>
+<li>Order Service</li>
+<li>Catalog Service</li>
+<li>Review Service</li>
+<li>Inventory Service</li>
+<li>Shipping Service</li>
+<li>Recommendation Service(s)</li>
+</ul>
+<p><img src="https://cdn.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part2-2_microservices-client.png" alt></p>
+<p>##客户端直接与微服务通信<br>
+理论上，一个客户端可以直接向每个微服务通信。每个微服务都有自己的接口(<a href="https://serviceName.api.company.name" target="_blank" rel="noopener">https://serviceName.api.company.name</a>)。这个URL将映射到微服务的负载均衡器来分发可用实例之间的请求。为了得到产品详情，移动客户端将发送请求到每个服务器然后得到全部。</p>
+<p>不幸的是，这个方式有很多难点和限制。</p>
+<ol>
+<li><strong>客户端将发送太多请求</strong>。在此示例中的客户端必须发送7个独立的请求。在更复杂的应用中还可能发更多。亚马逊在输出他们的产品页面的时候需要数百个微服务。当一个客户端通过LAN发送请求，这可能会非常低效，并且通过移动网络的话是不太实际的。这个方法也使客户端太复杂。</li>
+<li><strong>客户端直接调用微服务可能会使用对网络不友好的协议</strong>。一个服务可能使用Thrift二进制RPC而另一个用AMQP消息协议。两个协议对浏览器或者防火墙都不友好并且最好是在内部使用。一个应用应该在防火墙之外使用HTTP或者WebSocket之类的协议。</li>
+<li><strong>难以重构微服务</strong>。随着时间的推移我们可能想去改变系统去划分为服务。比如我们可能将两个服务合并或者将一个服务拆分成更多服务。然而，客户端也将大改。</li>
+<li><strong>译者觉得安全性也非常重要</strong></li>
+</ol>
+<p>##用API网关<br>
+更好的一个方式是使用API网关。它是系统的单个入口服务器。它类似于面向对象的外观模式。它封装了内部系统架构并且提供了每个客户端定制的API。它可能还有其他的职责比如身份验证、监控、负载均衡、缓存、请求整理和管理还有静态相应处理。</p>
+<p><img src="https://cdn.wp.nginx.com/wp-content/uploads/2016/04/Richardson-microservices-part2-3_api-gateway.png" alt></p>
+<p>它负责请求的路由、组合和协议转换。全部的请求都先通过它。它然后将请求路由到合适的微服务。它也会调用多个微服务然后合并结果来处理请求。它可以在HTTP/WEBSOCKET/和WEB不友好的协议之间进行转换。</p>
+<p>它还可以为每个客户端提供自定义API。它通常暴露一个粗粒度API给移动客户端。比如产品详情。它可以提供一个API让移动端接受全部的产品详情。它通过调用各种服务-产品、建议、评论然后合并结果。</p>
+<p>一个很好的例子是<a href="http://techblog.netflix.com/2013/02/rxjava-netflix-api.html" target="_blank" rel="noopener">Netflix API Gateway</a>。Netflix流媒体服务可用于数百种不同类型的设备包括电视，机顶盒，智能手机，游戏，平板灯。最初，Netflix实体提供一个<a href="http://www.programmableweb.com/news/why-rest-keeps-me-night/2012/05/15" target="_blank" rel="noopener">one-size-fits-all</a>的API给他们的流媒体服务。但是他们发现这样不好因为有各种设备和独特需求。今天，他们使用API网关提供定制的API给每个不同的设备，通过特定的设备适配代码。一个适配器通常通过调用平均六到七个后台服务来处理每个请求。现在Netflix API网关处理数十亿个请求。</p>
+<p>##API网关的优缺点<br>
+主要优点是封装了应用内部结构。而不是必须调用特定的服务，客户端与网关的交互很简单。API网关为每种类型的客户端提供了特定的API。这减少了客户端和应用之间的往返次数。也简化了客户端代码。</p>
+<p>缺点是API网关是一个必须被开发、部署、管理的高可用组件。还有一个风险是它变成开发瓶颈。开发人员必须更新API网关来暴露每个微服务接口。因此更新API网关的过程越少越好。然而，对于大多数现实世界的应用，使用API网管是有意义的。</p>
+<p>##API网关的实现<br>
+####性能和可扩展性<br>
+只有少数几家公司每天需要处理数十亿请求。然而，对于大多数应用来说，性能和可扩展性是非常重要的。因此，在支持异步、非阻塞IO的平台上构建API网关是有道理的。有很多不同技术可以实现可扩展的API网关。在JVM上你可以用基于NIO的框架比如Netty、Vertx、Spring Reactor、或者JBoss Undertow。在非JVM平台可以用NodeJS，它是基于Chrome的JavaScript引擎建立的。然后作者安利了NGINX PLUS。</p>
+<p>####用反应式编程模型<br>
+API网关直接路由一些请求到后端服务，也通过调用多个后端服务然后聚合结果来处理请求。对于一些请求，比如产品细节的请求，对于后端服务的请求是彼此独立的。为了最小化相应时间，API网关应该同时处理独立请求。然而有时候，请求有依赖关系。API网关在路由请求到后端之前，可能首先需要通过调用身份验证服务来验证请求。相似的，API网关必须首先得到客户的资料才能得到用户希望获取的清单，然后检索每个产品的信息。另一个又去的例子是<a href="http://techblog.netflix.com/2013/02/rxjava-netflix-api.html" target="_blank" rel="noopener">Netflix Video Grid</a></p>
+<p>用传统的异步方法写API组合代码很快会将你带到回调地狱。代码将被纠缠，很难去理解，容易出错。一个号的方法是使用反应式来编写API网关的代码。反应式抽象的例子包括Scala的Future，Java8中的Completable和JavaScript中的Promise。还有Reactive Extensions（也叫Rx或者ReactiveX），，是被微软开发给.Net平台用的。Netflix为JVM创建RxJava给他们自己的API网关。还有为JavaScript服务的RxJS，它在浏览器和NodeJS都可以。用反应式方法将让你写出简单高效的API网关代码。</p>
+<p>####服务调用<br>
+基于微服务的应用是分布式系统并且必须用进程间通信机制。有两种进程间通信的风格。一个是用基于消息的异步机制。一些是使用消息代理，如JMS或者AMQP。其他的，如Zeromq，直接与服务通信。其他风格就是同步通信如HTTP或者Thrift。系统通常会同时使用异步和同步的方式。甚至使用每个样式的多个实现。因此，API网关需要支持各种通信机制。</p>
+<p>####服务发现<br>
+API网关需要知道与其通信的每个微服务的位置（IP和端口）。在传统应用中，你可能会将位置固定起来，但是在现代的基于云服务的应用中这是一个非常重要的问题。基础设施服务，比如消息代理将通常有系统环境变量指定的静态位置。但是确定应用服务的位置并不容易。应用服务有可以动态分配位置。此外，服务的一组实例由于动态伸缩或者升级可能动态地更改。因此API网关像系统中其他服务客户端一样，需要用系统服务发现机制：服务器端发现或者客户端发现。后面有一篇文章将具体地解释服务发现。现在值得注意的是如果系统用客户端发现，那么API网关必须能查询服务注册表，这是所有微服务实例和他们位置的数据库。</p>
+<p>####处理部分失败<br>
+当一个服务调用其他服务时就可能出现回复缓慢或者不可用的问题。API网关不应该无限期等待下游服务。然而，怎样处理失败是取决于特定方案和哪些服务会失败。比如推荐服务在产品细节中没有了相应，API网关应该返回其他产品细节给客户端因为它们对用户来说依然有用。推荐可以是空的或者被硬编码的推荐列表替代。然而，如果产品信息服务挂掉的话API网关应该返回客户端错误提示。</p>
+<p>API网关可以返回缓存数据。例如因为产品价格变化不频繁，API网关可以返回缓存价格如果定价服务部稳定。数据可以被API网关自己缓存或者被存储在外部缓存Redis或者Memcached中。通过返回默认或者缓存数据，API网关确保系统故障不会影响用户体验。</p>
+<p><a href="https://github.com/Netflix/Hystrix" target="_blank" rel="noopener">Netflix Hystrix</a>是一个非常有用的库，是用来编写调用远端服务的代码。Hystrix将超出指定阈值的调用设为超时。它实现了断路器模式，这阻止了客户端不必要的等待无响应的服务。如果错误率超过指定阈值，Hystrix将跳闸，所有的请求都将马上失败。Hystrix允许你在请求失败定义一个回退操作。如果你用JVM，那你一定要考虑用Hystrix。</p>
+<p>##总结<br>
+对于大多数基于微服务的应用，实现一个API网关是有意义的，它充当了一个简单的系统入口。API网关负责请求路由、组合和协议转换。它为每个客户端提供自定义API。API网关还可以掩盖后台故障通过返回缓存或者默认数据。在下一篇文章中，我们将介绍服务间的交互。</p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2017-05-05-gou-jian-wei-fu-wu-wei-fu-wu-jia-gou-zhong-de-jin-cheng-jian-tong-xin/" data-toggle="tooltip" data-placement="top" title="[译][MicroService 3]构建微服务:微服务架构中的进程间通信">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2017-04-16-microservies-1-introduction-to-microservies/" data-toggle="tooltip" data-placement="top" title="[译][MicroService 1]介绍微服务">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#MicroService" title="MicroService">MicroService</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

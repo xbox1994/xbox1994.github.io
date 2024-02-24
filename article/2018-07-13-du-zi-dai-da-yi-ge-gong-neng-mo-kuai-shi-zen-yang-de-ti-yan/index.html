@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          独自带大一个功能模块是怎样的体验 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2018-07-13-du-zi-dai-da-yi-ge-gong-neng-mo-kuai-shi-zen-yang-de-ti-yan/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                            
+                        </div>
+                        <h1>独自带大一个功能模块是怎样的体验</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2018-07-13
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>最近被安排了，要实现一个脚本任务功能，还要能让已存在的模块复用上。现在来完整的记录和总结一下历时两个月完成它的过程，提供给自己复习以及初学者入门。</p>
+<a id="more"></a>
+<h1 id="背景">背景</h1>
+<p>本项目是一个云平台异构纳管平台，愿景是将客户所使用的所有的云平台的资源通过我们的平台管理起来，同时提供部门管理功能方便权限控制。这次要实现的功能是：脚本任务管理。</p>
+<p>你可以访问<a href="http://www.nicescale.com/" target="_blank" rel="noopener">nicescale</a>来感受一下类似的功能。脚本任务管理的确看起来不算一个复杂的功能，但是涉及到的内容还不少，比如脚本管理、任务管理、执行目标管理、代理节点管理。其中复杂的地方在于四个资源之间的相互查询、执行任务的实现方式与任务结果的通信方式、在执行目标上执行SSH命令的方式。</p>
+<h1 id="需求分析与设计阶段">需求分析与设计阶段</h1>
+<p>在一开始，我们便开了一次同步需求的会议，产品经理将功能的需求原因、核心价值、需要的功能、简单的UI设计讲给我们听，要实现哪些大的功能，随后进入设计阶段。</p>
+<h2 id="功能角度上的功能与数据库设计">功能角度上的功能与数据库设计</h2>
+<p>思路：<br>
+（一）：需求分析：理清整个大功能的所有小功能，比如脚本管理、任务管理、执行目标管理。还要分析出各个小功能中的所有具体功能，并列出输入与输出。直到能画出一张能展示出各个小功能之间的关系的图即可，比如</p>
+<img src="/images/blog/2018-07-13_1.png" title="image">
+<p>（二）：逻辑设计：理性且细致地分析出每个功能需要的表有哪些，关联查询的话关联表有哪些，特别是一对多，多对多关系要想的非常清楚，使用<strong>ER图</strong>进行逻辑建模，宁愿多花时间在这一步，也不要到开发的时候才发现有问题。这样才能对你自己设计的表负责，大大减少重新设计的可能，值得一提的是，设计与调研阶段花了一个月才完成，开发阶段仅仅花了两周就基本完成。<br>
+（三）：物理设计：根据ER图的关系，遵循<a href="http://linusrush.blog.163.com/blog/static/14073829020110903958457/" target="_blank" rel="noopener">数据库三个范式</a>的要求，将所有表的字段与关系设计出来。要注意不一定全部使用外键关联的方式来建表，如果该表是以快照的方式存储的话，就不能使用外键关联其他表而是将其他表的字段放到这个表中，比如脚本任务管理功能中的任务日志。</p>
+<p>对于具体的字段如何选择，那么从空间以及性能上考虑的原则是<strong>当一个列可以选择多个数据类型时，应当优先选择数字类型其次是日期或二进制类型，最后是字符类型；对于相同级别的数据类型，应当优先选择占用空间小的数据类型。</strong> 但是从项目初期的开发便利与灵活性上来说，<strong>尽量使用VARCHAR与DATETIME来存储</strong>即可，在日后调优的过程中考虑性能和空间的因素。</p>
+<p>完成之后将所有表的关系图用MySQLWorkbench中的【Reverse Engineer…】画出来，将所有的需求串起来在脑海里模拟一遍，看有没有哪里进行增删改查的时候不太顺畅、表之间的关联关系太复杂的地方。</p>
+<h2 id="工程角度上代码模块的设计">工程角度上代码模块的设计</h2>
+<p>思路：<br>
+（一）：单一职责。用这样的方式设计出不同的功能模块，让他们专注于自己的功能即可，也方便日后优化。比如将涉及到业务的部分使用消息这个数据结构去承载并且提供返回结果处理接口而不是写到执行模块与调度模块中<br>
+（二）：保持松耦合。使用消息队列将任务的执行、收集执行结果与业务模块解耦，不用等待消息的立即返回</p>
+<p>所以我对将该功能拆成三个相对独立的模块，分别提供不同的服务。总的来说，模块的拆分是为了：系统之间的解耦、已存在功能的复用、独立优化各个不同模块的性能。</p>
+<h3 id="三个模块">三个模块</h3>
+<p>业务模块：<br>
+脚本管理、任务管理、执行目标管理、代理节点管理之间单独的增删改查以及相互的连接查询<br>
+提供用户创建任务的接口以及监听执行结果返回的消息队列</p>
+<p>执行模块：<br>
+线程池执行方式：可配置<br>
+避免重复消费：幂等性、记录消息ID如果已经处理过就抛弃<br>
+监听待执行消息队列，提供任务执行方式：SSH命令、直接调用某个服务</p>
+<p>调度模块：<br>
+封装quartz，定义消息通信结构：任务名、组、目标地点、任务内容、定时类型、定时表达式、开始时间<br>
+提供业务模块调用REST接口</p>
+<img src="/images/blog/2018-07-13_3.png" title="image">
+<p>整个流程：<br>
+（一）：业务模块接到创建任务的指令，通过REST请求发送任务信息到调度模块创建调度任务。<br>
+（二）：当到达任务执行时间时，调度模块会执行该任务，将任务发送到某个消息队列中，期待业务或者功能模块消费<br>
+（三）：执行模块从消息队列中拿到任务之后，执行具体的任务，将任务的结果发送到执行结果返回的队列<br>
+（四）：业务模块拿到消息之后将返回结果记录到表中，为前端提供查询逻辑</p>
+<h3 id="问题">问题</h3>
+<p>大量任务同时执行的并发问题：使用消息队列在调度模块与执行模块中进行通信，执行模块返回执行结果到业务模块也是。</p>
+<p>任务执行超时不返回结果问题：执行模块中限制超时时间，超出时间返回错误消息，同时尽量保证执行模块与消息队列的稳定行；定时任务去清理无返回结果的异常任务</p>
+<h1 id="调研阶段">调研阶段</h1>
+<p>上面是功能上的设计、数据库里表的设计，但是有很多地方需要调研才有把握，比如调度任务模块、SSH在代理节点上执行命令、提供在执行目标中信任本系统的方式。</p>
+<p>下面举几个例子，这些都<strong>必须自己写出符合业务场景的Demo出来能让之后实现的时候直接或间接调用</strong>：</p>
+<ul>
+<li>基础执行功能：使用JSch实现，能分别获得stderr和stdout的输出</li>
+<li>调度任务模块：使用quartz实现，数据库方面需要创建一些quartz的特定表，同时维护自己的任务管理表</li>
+<li>将公钥放到执行目标里：在用户填写完需要的字段之后，还需要让用户填写SSH密码来把CMP的public key放到执行目标上，或者告知用户在执行目标上执行如下命令：<code>【PUBLIC KEY】 &gt;&gt; $auth_keyfile</code></li>
+</ul>
+<h1 id="开发阶段">开发阶段</h1>
+<p>要是设计阶段与调研阶段做的比较完善的话，开发阶段反而轻松很多，因为基本上所有的问题已经在设计与调研阶段问题与答案弄清楚了，开发阶段仅仅是把答案写下来而已。</p>
+<p>这个阶段需要关心的是能否使用符合当前代码风格，使用简单优雅的方式实现代码，不一定写到完美，可以放到日后重构。</p>
+<p>另外，在增删改查的时候除了把查询的逻辑理清楚之外，还要考虑修改和删除操作会不会影响已经存在的资源，比如脚本被删除/修改或执行目标被删除/修改之后，当前正在执行的任务应当如何执行？当前数据库中，任务与脚本、执行目标的关联字段是否被更新。</p>
+<h1 id="测试阶段">测试阶段</h1>
+<p>本测试阶段仅涉及手动测试，自动化测试不涉及，或应包含在开发阶段。</p>
+<p>严格来说，首先需要写出测试用例，然后一条一条进行手动测试，将通过与不通过的用例标识出来反馈给开发人员。我们也来写一次测试用例。</p>
+<p>关于测试用例的写法有太多太多，建议自行学习，本人也不是专业的测试人员，<strong>但作为一个专业的开发人员，会写基本的测试用例也是必须要掌握的。同时请尊重自己的劳动成果，珍惜测试人员的辛勤劳动，把握住提升自己测试能力与逻辑能力的机会。</strong></p>
+<p>下面是这个功能模块的测试用例，能力有限，写的一般，但基本涵盖所有操作与业务逻辑，且用例的设计逻辑清晰，性价比比较高，便于快速高效测试。</p>
+<p>设计要点在于：<br>
+（一）：用例要包含所有界面上的直接操作<br>
+（二）：从业务上理解功能的意义，从而能涵盖到一些组合操作与隐藏逻辑<br>
+（三）：要有异常测试的意识，比如同时操作、边界测试、并发情况<br>
+（四）：对修改与删除操作进行关联性测试，删除某资源引用的另一个资源或者该资源会不会导致该资源不可用</p>
+<img src="/images/blog/2018-07-13_2.png" title="image">
+<p>写完这些测试用例我就拿去测试了一遍，后面标注为红色的状态的就是测试不通过的一些，你看效果多明显，比自己随心所欲地乱测有条理多了，覆盖面也会更加完善。当然，除了我写出来的基本功能的测试用例，压力/性能测试、用户权限测试、并发测试、浏览器兼容测试也是非常有必要的，这里不多说了，感兴趣的同志请关注ThoughtWorks公众号，上面有很多测试方面的文章。</p>
+<h1 id="优化阶段">优化阶段</h1>
+<h2 id="代码重构">代码重构</h2>
+<p>为了完成项目赶进度也是常有的事情，为了交付代码写得烂也是可以理解，作为有追求的程序猿，重构这一步实在是太重要了，这是一个非常难得的一个提升自己编码能力、优化代码结构的机会。</p>
+<p>《代码整洁之道》写的非常不错，建议当做入门级重构教材学习，会帮你建立起一个重构的意识，有了意识便很好了，接下来通过优化自己的代码来实践吧。另外，很多重构的做法已经在你所在的项目代码里存在了，看看别人是怎么写的吧，同时记得多google来优化你的想法。</p>
+<h2 id="优化功能">优化功能</h2>
+<p>在功能上，能否进一步强化从而带来更多的业务价值、商业机会？比如在执行目标上能否支持除了shell之外的更多语言（python）？能否提供一些常用功能的脚本让用户去选择而不是用户自己去写？能否提供自动失败之后重试机制？提供脚本、执行目标、任务的分组便于管理？提供脚本的历史版本以供用户参考？将当前任务执行状态进行可视化？</p>
+<p>在性能上，能否进一步优化？用Redis将常用数据缓存起来？优化大量任务同时返回结果时的数据库操作？</p>
+<h1 id="总结">总结</h1>
+<p>敏捷开发：以用户的需求进化为核心，采用迭代、循序渐进的方法进行软件开发。<br>
+瀑布模型：是最典型的预见性的方法，严格遵循预先计划的需求、分析、设计、编码、测试的步骤顺序进行。<br>
+总的来说，本文写的像是介绍瀑布模型的一个案例，因为一个功能的从无到有比较偏向于严格的流程与设计。但并不是这样，文章里没有写到的是，我们功能的上线思路是将最核心的功能完成，立即交付于用户使用体验，拿到实际场景中的不足之后持续快速修改，发布新版本，这又是敏捷开发的核心。所以<strong>开发方式的定义不重要，重要的是选用符合当前团队与业务场景的开发方式</strong>。</p>
+<p>在做的过程中，主要在设计与调研阶段中犯过不少问题，比如设计阶段对于数据库的关联关系考虑的不全面，在调研的时候遗漏过关键问题，导致开发的时候修改数据库结构与以前调研过的实现方式，这是因为没有经验与套路导致的，那么本文也主要是总结这些套路，让自己在以后有一套比较<strong>系统</strong>的解决问题的方式。</p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2018-07-20-javasheng-chan-huan-jing-xia-wen-ti-pai-cha/" data-toggle="tooltip" data-placement="top" title="Java生产环境下问题排查">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2018-06-24-shou-ba-shou-jiao-ni-she-ji-bing-shi-xian-yi-ge-ji-yu-redisde-fen-bu-shi-suo/" data-toggle="tooltip" data-placement="top" title="手把手教你实现一个基于Redis的分布式锁">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

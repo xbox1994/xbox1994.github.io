@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Java多线程与高并发(二):线程安全性 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2018-04-28-javagao-bing-fa-xi-lie-er-xian-cheng-an-quan-xing/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                            
+                        </div>
+                        <h1>Java多线程与高并发(二):线程安全性</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2018-04-28
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>面试官：你能说说什么是线程安全吗？</p>
+<a id="more"></a>
+<h1 id="线程安全性">线程安全性</h1>
+<p>当多个线程访问某个类时，不管运行时环境采用<strong>何种调度方式</strong>或者<strong>这些线程将如何交替执行</strong>，并且在调用代码中<strong>不需要任何额外的同步</strong>，这个类都<strong>能表现出正确的行为</strong>，那么这个类就是线程安全的。</p>
+<ul>
+<li>原子性：同一时刻只能有一个线程对它操作</li>
+<li>可见性：一个线程对内存的修改能让其他线程观察到</li>
+<li>有序性：指令执行顺序，杂乱无序</li>
+</ul>
+<h1 id="原子性">原子性</h1>
+<h2 id="atomic包">Atomic包</h2>
+<h3 id="atomicinteger">AtomicInteger</h3>
+<p>AtomicInteger中的incrementAndGet方法就是乐观锁的一个实现，使用自旋（循环检测更新）的方式来更新内存中的值并通过底层CPU执行来保证是更新操作是原子操作。方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndAddInt</span><span class="params">(Object var1, <span class="keyword">long</span> var2, <span class="keyword">int</span> var4)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var5;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        var5 = <span class="keyword">this</span>.getIntVolatile(var1, var2);</span><br><span class="line">    &#125; <span class="keyword">while</span>(!<span class="keyword">this</span>.compareAndSwapInt(var1, var2, var5, var5 + var4)); </span><br><span class="line">    			<span class="comment">//compareAndSwapInt(obj, offset, expect, update)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> var5;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先这个方法通过getIntVolatile方法，使用<strong>对象的引用与值的偏移量得到当前值</strong>，然后调用compareAndSwapInt检测如果obj内的value和expect相等，就证明没有其他线程改变过这个变量，那么就更新它为update，如果这一步的CAS没有成功，那就采用<strong>自旋</strong>的方式继续进行CAS操作。</p>
+<p>在赋值的时候保证原子操作的原理是通过CPU的cmpxchgl与lock指令的支持来实现AtomicInteger的CAS操作的原子性，具体可参考这里，<a href="https://juejin.im/post/5a73cbbff265da4e807783f5" target="_blank" rel="noopener">https://juejin.im/post/5a73cbbff265da4e807783f5</a></p>
+<p>疑问：这个方法是先得到值，再更新值，所以必须保证更新的值是在原来的基础上更新的，所以采用CAS进行更新，那么为什么不使用直接更新值然后返回值的方式来做呢？因为更新值的前提是获取值，这是两部汇编级别的操作，仅仅更新值是无法获取到值的。</p>
+<h3 id="aba问题">ABA问题</h3>
+<p>如果一个值原来是A，变成了B，又变成了A，那么使用CAS进行检查时会发现它的值没有发生变化，但是实际上却变化了。这就是CAS的ABA问题。</p>
+<p>常见的解决思路是使用版本号。在变量前面追加上版本号，每次变量更新的时候把版本号加一，那么A-B-A 就会变成1A-2B-3A。</p>
+<p>AtomicStampedReference来解决ABA问题。这个类的compareAndSet方法作用是首先检查当前引用是否等于预期引用，并且当前标志是否等于预期标志，如果全部相等，则以原子方式将该引用和该标志的值设置为给定的更新值。</p>
+<h3 id="循环时间长开销大问题">循环时间长开销大问题</h3>
+<p>上面我们说过如果CAS不成功，则会原地自旋，如果长时间自旋会给CPU带来非常大的执行开销。</p>
+<h2 id="synchronized">synchronized</h2>
+<p>是线程并发控制的关键字，能通过锁来管理多个线程的同时执行该代码块时的执行方式。</p>
+<ul>
+<li>修饰代码块、方法：作用于调用的对象</li>
+<li>修饰静态方法、类：作用于类所有对象</li>
+</ul>
+<p>可以用以下代码试试</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> test)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">                System.out.println(test);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Main m1 = <span class="keyword">new</span> Main();</span><br><span class="line">        Main m2 = <span class="keyword">new</span> Main();</span><br><span class="line"></span><br><span class="line">        ExecutorService executorService = Executors.newCachedThreadPool();</span><br><span class="line">        executorService.execute(() -&gt; m1.test(<span class="number">1</span>));</span><br><span class="line">        executorService.execute(() -&gt; m2.test(<span class="number">2</span>));</span><br><span class="line">        executorService.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="对比">对比</h2>
+<h3 id="synchronized">synchronized</h3>
+<p>不可中断<br>
+同步不激烈时，synchronized是很合适的，因为编译程序通常会尽可能的进行优化synchronize<br>
+同步激烈时，synchronized的性能会下降<br>
+编码难度低，可读性非常好</p>
+<h3 id="reentrantlock">ReentrantLock</h3>
+<p>可中断<br>
+同步不激烈时，性能稍微比synchronized差点<br>
+同步激烈时，维持常态<br>
+提供了多样化的同步，比如有时间限制的同步，可以被Interrupt的同步（synchronized的同步是不能Interrupt的）等</p>
+<h3 id="atomic">Atomic</h3>
+<p>同步不激烈时，性能比synchronized差点<br>
+激烈的时候，维持常态，且优于ReentrantLock<br>
+只能同步一个值，一段代码中只能出现一个Atomic的变量，多于一个同步无效</p>
+<p>所以，我们写同步的时候，<strong>优先考虑synchronized，如果有特殊需要，再进一步优化</strong>。ReentrantLock和Atomic如果用的不好，不仅不能提高性能，还可能带来灾难。</p>
+<h1 id="可见性">可见性</h1>
+<h2 id="共享变量在线程间不可见的原因">共享变量在线程间不可见的原因</h2>
+<p><strong>共享变量更新后的值没有在工作内存与主内存间及时更新</strong></p>
+<p>下面就是解决同步更新的不同方式。</p>
+<h2 id="synchronized">synchronized</h2>
+<p>JMM的规范中提供了synchronized具备的<strong>可见性</strong>：</p>
+<ul>
+<li>线程解锁前，必须把共享变量的最新值刷新到主内存</li>
+<li>线程加锁时，将清空工作内存中共享变量的值，从主内存中读取最新的值</li>
+</ul>
+<h2 id="volatile">volatile</h2>
+<p>volatile变量具有 synchronized 的<strong>可见性</strong>特性，但是<strong>不具备原子性</strong></p>
+<h3 id="内存屏障">内存屏障</h3>
+<p>内存屏障指令为<strong>CPU指令级别</strong>的操作</p>
+<ul>
+<li>对声明为volatile的变量进行写操作时，会在写操作后加入一条store屏障指令，将本地内存中的共享变量值刷新到主内存</li>
+<li>读操作时，会在读操作前加一条load屏障指令，从主内存中读取共享变量</li>
+</ul>
+<h3 id="防止指令重排序">防止指令重排序</h3>
+<ul>
+<li>对声明为volatile的变量进行写操作时，会在写之前加上storestore屏障，禁止之前的写操作与本次写操作重排序，在写之后加上storeload屏障，禁止之后的操作与本次写或读操作重排序</li>
+<li>读，会在读之前加上loadload屏障来禁止下面所有普通读操作和本次读操作重排序，再加上loadstore屏障来禁止下面所有的写操作与本次读操作重排序</li>
+</ul>
+<h3 id="适用场景">适用场景</h3>
+<p>对变量的写操作不依赖当前值。如果依赖当前值，那么两个线程同时执行x++的操作时，因为x++有三步，先获得x的值，然后加一，最后赋值，如果同时获得了x的值，那么就重复累加了。</p>
+<p>比如以下就是通过变量的值通知另一个线程要执行相关任务：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> <span class="keyword">boolean</span> inited = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//线程1</span></span><br><span class="line">context = <span class="keyword">new</span> Context();</span><br><span class="line">inited = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//线程2</span></span><br><span class="line"><span class="keyword">while</span>(!inited)&#123;</span><br><span class="line">	sleep(<span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line">start()</span><br></pre></td></tr></table></figure>
+<h1 id="有序性">有序性</h1>
+<p>JMM中，允许编译器与CPU对指令进行重排序，重排序会影响多线程并发执行的正确性。</p>
+<h2 id="volatilesynchronizedlock来保证">volatile/synchronized/lock来保证</h2>
+<h2 id="happends-before">Happends-Before</h2>
+<ul>
+<li>程序次序规则：一个线程内，按照代码顺序，书写在前面的操作先行发生于书写在后面的操作；</li>
+<li>锁定规则：一个unLock操作先行发生于后面对同一个锁lock操作；</li>
+<li>volatile变量规则：对一个变量的写操作先行发生于后面对这个变量的读操作；</li>
+<li>传递规则：如果操作A先行发生于操作B，而操作B又先行发生于操作C，则可以得出操作A先行发生于操作C；</li>
+<li>线程启动规则：Thread对象的start()方法先行发生于此线程的每个一个动作；</li>
+<li>线程中断规则：对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生；</li>
+<li>线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行；</li>
+<li>对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始；</li>
+</ul>
+<p>讲真，这些不要死记，但一定都要理解，并且在看到相关的代码的时候要反映到。</p>
+<h2 id="参考">参考</h2>
+<p><a href="http://coding.imooc.com/class/195.html" target="_blank" rel="noopener">http://coding.imooc.com/class/195.html</a><br>
+以及其他超连接引用</p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2018-04-30-javagao-bing-fa-xi-lie-san-dui-xiang-de-an-quan-fa-bu-yu-gong-xiang-ce-lue/" data-toggle="tooltip" data-placement="top" title="Java多线程与高并发(三):对象的安全发布与共享策略">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2018-04-28-javagao-bing-fa-xi-lie-yi-bing-fa-ji-chu-yu-mo-ni-gong-ju/" data-toggle="tooltip" data-placement="top" title="Java多线程与高并发(一):并发基础与模拟工具">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          【架构入门 - 高性能篇】集群高性能 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2019-05-01-jia-gou-ru-men-gao-xing-neng-pian-ji-qun/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#架构" title="架构">架构</a>
+                            
+                        </div>
+                        <h1>【架构入门 - 高性能篇】集群高性能</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2019-05-01
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>做到集群高性能其实非常简单，三个字【加机器】</p>
+<p>但加机器之后带来的是机器之间配合和集群管理的复杂度，对应也会有解决方案</p>
+<a id="more"></a>
+<img src="/images/blog/2019-05-01_0.jpg" title="image">
+<h2 id="负载均衡">负载均衡</h2>
+<p>任务分配是高性能集群主要的复杂性体现，所以选择一个合适的负载均衡器和算法是必须的</p>
+<h3 id="分类">分类</h3>
+<p><strong>DNS</strong></p>
+<p>最简单的方式，一般用来实现地理级别的均衡（AWS Route53就是）。比如来自美国的访问就分配给位于美国的服务器，来自中国的访问就分配给位于中国的服务器</p>
+<p>优点：</p>
+<ul>
+<li>简单、成本低：负载均衡交给了DNS服务器做，不需要自己维护设备</li>
+<li>提升访问速度：实现了就近访问，提升性能</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>更新不及时：DNS有一定的缓存时间，一旦修改DNS配置，还是会访问到之前的服务，导致失败，这也不是负载均衡的目的</li>
+<li>扩展性差：无法根据业务特点做一些特殊处理和负载均衡策略</li>
+</ul>
+<p><strong>硬件负载均衡</strong></p>
+<p>单独通过硬件设备来实现负载均衡，比如F5、A10</p>
+<p>优点：</p>
+<ul>
+<li>功能强大：支持各个层级的负载均衡、全面的负载均衡算法</li>
+<li>性能强大：100万以上的并发</li>
+<li>稳定性高：商用负载均衡经过大规模使用表现稳定</li>
+<li>安全防护：防火墙、防DDOS功能</li>
+</ul>
+<p>缺点：<strong>贵</strong></p>
+<p><strong>软件负载均衡</strong></p>
+<p>单独通过负载均衡软件来实现负载均衡。比如Nginx（7层）、LVS（4层），区别在于协议和灵活性，Nginx支持HTTP、Email协议以及对应逻辑处理，LVS支持TCP，所有TCP协议基础的都能做</p>
+<p>优点：</p>
+<ul>
+<li>简单：维护、部署</li>
+<li>便宜：不要钱</li>
+<li>灵活：4层和7层的选择、业务扩展的选择</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>性能一般</li>
+<li>功能不如硬件负载均衡</li>
+<li>没有防火墙</li>
+</ul>
+<p><strong>典型负载均衡架构</strong></p>
+<img src="/images/blog/2019-05-01_1.jpg" title="image">
+<ul>
+<li>地理级别：分别部署服务器到广州、北京、上海三个机房，用户访问时，DNS路由到对应机房</li>
+<li>集群级别：每个机房都用上F5，将请求路由到上海集群1或2或3/广州集群1或2或3/北京集群1或2或3</li>
+<li>机器级别：通过Nginx路由到机器1或2</li>
+</ul>
+<h3 id="算法">算法</h3>
+<p><strong>轮询</strong></p>
+<p>不关心服务器负荷状态，直接按顺序轮流分配到服务器上，只要服务器在运行，就分配，即使服务器负载特别高难以处理请求，这样明显不合理，但优点是简单</p>
+<p><strong>加权轮询</strong></p>
+<p>负载均衡系统根据配置的权重，将请求路由到对应服务器上，比如某些机器性能高，某些机器性能差，就将高权重分配给性能高的机器</p>
+<p><strong>负载最低优先</strong></p>
+<p>将请求路由到当前负载最低的服务器上，比如Nginx可以通过HTTP请求数量来判断服务器当前负载，还可以自己写一个根据CPU压力来分配的负载均衡系统，但是系统复杂度上升，甚至需要为负载均衡器单独开发算法并部署然后碰到一堆莫名其妙的问题，实际的应用场景反而没有轮询用的多</p>
+<p><strong>性能最优</strong></p>
+<p>将请求分配给处理速度最快的服务器，从而达到最快响应速度，但是同样存在判断处理速度的算法问题</p>
+<p><strong>Hash</strong></p>
+<p>根据请求的IP或者其他信息进行Hash运算，将相同Hash值的请求分配到同一台服务器上，这主要是为了满足业务需求，比如不用分布式Session的集群就可以通过这个方式来实现Session，用户的Session只保存在某台服务器上，后台不需要同步到所有机器或持久化下来；或者AB测试中将某些用户分配到固定的机器上实现粘性会话</p>
+<h2 id="缓存">缓存</h2>
+<p>除了任务分配、其他中间件的使用也是能够大大提升集群性能的，特别是缓存、消息队列，在特定的场景下有非常惊人的效果</p>
+<p>比如在多读少写、不写的情景下，存储系统的写性能没问题，但读性能远远不够。下面是一些常见的缓存架构存在的问题，避免这些问题就能做出一个好的缓存架构</p>
+<h3 id="缓存问题">缓存问题</h3>
+<p><strong>缓存穿透</strong></p>
+<p>查询一个数据库中不存在的数据，比如商品详情，查询一个不存在的ID，如果此时去查数据库，那么每次都会访问数据库，如果有人恶意破坏，很可能直接对数据库造成过大地压力</p>
+<p>当通过某一个key去查询数据的时候，如果对应在数据库中的数据都不存在，我们将此key对应的value设置为一个默认的值。</p>
+<p><strong>缓存雪崩</strong></p>
+<p>在高并发的环境下，如果此时key对应的缓存失效，此时有多个进程就会去同时去查询数据库，然后再去同时设置缓存。这个时候如果这个key是系统中的热点key或者同时失效的数量比较多时，数据库访问量会瞬间增大，造成过大的压力</p>
+<p>将系统中key的缓存失效时间均匀地错开、或者通过分布式锁加锁保护</p>
+<p><strong>热点key</strong></p>
+<p>缓存中的某些Key(可能对应用与某个促销商品)对应的value存储在集群中一台机器，使得所有流量涌向同一机器，成为系统的瓶颈，该问题的挑战在于它无法通过增加机器容量来解决。</p>
+<ol>
+<li>客户端热点key缓存：将热点key对应value并缓存在客户端本地，并且设置一个失效时间。</li>
+<li>将热点key分散为多个子key，然后存储到缓存集群的不同机器上，这些子key对应的value都和热点key是一样的。</li>
+</ol>
+<h3 id="使用策略">使用策略</h3>
+<p><strong>延迟加载</strong></p>
+<p>读：当读请求到来时，先从缓存读，如果读不到就从数据库读，读完之后同步到缓存且添加过期时间<br>
+写：当写请求到来时，只写数据库</p>
+<p>优点：仅对请求的数据进行一段时间的缓存，没有请求过的数据就不会被缓存，节省缓存空间；节点出现故障并不是致命的，因为可以从数据库中得到<br>
+缺点：缓存数据不是最新的；【缓存击穿】；【缓存雪崩】</p>
+<p><strong>直写</strong></p>
+<p>读：当读请求到来时，先从缓存读，如果读不到就从数据库读，读完之后同步到缓存且设置为永不过期<br>
+写：当写请求到来时，先写数据库然后同步到缓存，设置为永不过期</p>
+<p>优点：缓存数据是最新的，无需担心缓存击穿、失效问题，编码方便<br>
+缺点：大量数据可能没有被读取的资源浪费；节点故障或重启会导致缓存数据的丢失直到有写操作同步到缓存；每次写入都需要写缓存导致的性能损失</p>
+<p>永不过期的缓存会大量占用空间，可以设置过期时间来改进，但是会引进【缓存失效】问题，需要注意解决</p>
+<p><strong>如何选择</strong></p>
+<p>如果需要缓存与数据库数据保持实时一致，则需要选择直写方式<br>
+如果缓存服务很稳定、缓存的可用空间大、写缓存的性能丢失能够接受，选择直写方式比较方便实现<br>
+否则选择延迟加载，同时注意解决引进的问题</p>
+<h3 id="缓存集群架构">缓存集群架构</h3>
+<p><strong>主从</strong><br>
+<img src="https://github.com/xbox1994/2018-Java-Interview/raw/master/images/redis%E4%B8%BB%E4%BB%8E.png" alt></p>
+<p>用一个redis实例作为主机，其余的实例作为从机。主机和从机的数据完全一致，主机支持数据的写入和读取等各项操作，而从机则只支持与主机数据的同步和读取。因而可以将写入数据的命令发送给主机执行，而读取数据的命令发送给不同的从机执行，从而达到读写分离的目的。</p>
+<p>问题是主从模式如果所连接的redis实例因为故障下线了，没有提供一定的手段通知客户端另外可连接的客户端地址，因而需要手动更改客户端配置重新连接。如果主节点由于故障下线了，那么从节点因为没有主节点而同步中断，因而需要人工进行故障转移工作。为了解决这两个问题，在2.8版本之后redis正式提供了sentinel（哨兵）架构。<br>
+<strong>哨兵</strong><br>
+<img src="https://github.com/xbox1994/2018-Java-Interview/raw/master/images/redis%E5%93%A8%E5%85%B5.png" alt></p>
+<p>由Sentinel节点定期监控发现主节点是否出现了故障，当主节点出现故障时，由Redis Sentinel自动完成故障发现和转移，并通知应用方，实现高可用性。</p>
+<p><strong>集群</strong><br>
+<img src="https://github.com/xbox1994/2018-Java-Interview/raw/master/images/redis%E9%9B%86%E7%BE%A4.png" alt></p>
+<p>redis主从或哨兵模式的每个实例都是全量存储所有数据，浪费内存且有木桶效应。为了最大化利用内存，可以采用集群，就是分布式存储。集群将数据分片存储，每组节点存储一部分数据，从而达到分布式集群的目的。</p>
+<p>上图是主从模式与集群模式的区别，redis集群中数据是和槽（slot）挂钩的，其总共定义了16384个槽，所有的数据根据一致哈希算法会被映射到这16384个槽中的某个槽中；另一方面，这16384个槽是按照设置被分配到不同的redis节点上。</p>
+<p>但集群模式会直接导致访问数据方式的改变，比如客户端向A节点发送GET命令但该数据在B节点，redis会返回重定向错误给客户端让客户端再次发送请求，这也直接导致了必须在相同节点才能执行的一些高级功能（如Lua、事务、Pipeline）无法使用。另外还会引发数据分配的一致性hash问题可以参看<a href="https://github.com/crossoverJie/JCSprout/blob/master/MD/Consistent-Hash.md" target="_blank" rel="noopener">这里</a></p>
+<p><strong>如何选择</strong></p>
+<ol>
+<li>集群的优势在于高可用，将写操作分开到不同的节点，如果写的操作较多且数据量巨大，且不需要高级功能则可能考虑集群</li>
+<li>哨兵的优势在于高可用，支持高级功能，且能在读的操作较多的场景下工作，所以在绝大多数场景中是适合的</li>
+<li>主从的优势在于支持高级功能，且能在读的操作较多的场景下工作，但无法保证高可用，不建议在数据要求严格的场景下使用</li>
+</ol>
+<h2 id="消息队列">消息队列</h2>
+<p>缓存是在高并发读的场景下很有用，消息队列则是在需要异步交互的系统中发挥到作用，比如：</p>
+<p><strong>优点</strong></p>
+<ol>
+<li>减少请求响应时间。比如注册功能需要调用第三方接口来发短信，如果等待第三方响应可能会需要很多时间</li>
+<li>服务之间解耦。主服务只关心核心的流程，其他不重要的、耗费时间流程是否如何处理完成不需要知道，只通知即可</li>
+<li>流量削锋。对于不需要实时处理的请求来说，当并发量特别大的时候，可以先在消息队列中作缓存，然后陆续发送给对应的服务去处理</li>
+</ol>
+<p><strong>缺点</strong></p>
+<ol>
+<li>系统可用性降低。系统引入的外部依赖越多，越容易挂掉。</li>
+<li>系统复杂度提高。保证消息没有重复消费？处理消息丢失的情况？保证消息传递的顺序性？</li>
+</ol>
+<p><strong>消息重复消费问题</strong></p>
+<p>消费端处理消息的业务逻辑保持幂等性，在消费端实现</p>
+<p>或</p>
+<p>利用一张日志表来记录已经处理成功的消息的ID，如果新到的消息ID已经在日志表中，那么就不再处理这条消息，在消息系统实现</p>
+<p><strong>消息丢失问题</strong></p>
+<p>生产者弄丢了数据？</p>
+<p>生产者将数据发送到 RabbitMQ 的时候，可能数据就在半路给搞丢了<br>
+RabbitMQ 提供的事务功能，就是生产者发送数据之前开启 RabbitMQ 事务。然后发送消息，如果消息没有成功被 RabbitMQ 接收到，那么生产者会收到异常报错。但吞吐量会下来，因为太耗性能<br>
+可以开启confirm模式，你每次写的消息都会分配一个唯一的 id，然后如果写入了 RabbitMQ 中，RabbitMQ 会给你回传一个ack消息，告诉你说这个消息 ok 了。事务机制是同步的，但confirm机制是异步的，发送个消息之后就可以发送下一个消息，RabbitMQ 接收了之后会异步回调你一个接口通知你这个消息接收到了。所以用confirm机制</p>
+<p>RabbitMQ 弄丢了数据？</p>
+<p>RabbitMQ 自己挂掉导致数据丢失<br>
+开启 RabbitMQ 的持久化，消息写入之后会持久化到磁盘，哪怕是 RabbitMQ 自己挂了，恢复之后会自动读取之前存储的数据</p>
+<p>消费端弄丢了数据？</p>
+<p>RabbitMQ 如果丢失了数据，主要是因为你消费的时候，刚消费到，还没处理，结果进程挂了，比如重启了，RabbitMQ 认为你都消费了，这数据就丢了<br>
+关闭 RabbitMQ 的自动ack，可以通过一个 api 来调用就行，然后每次你自己代码里确保处理完的时候，再在程序里ack一把。RabbitMQ 就认为你还没处理完，这个时候 RabbitMQ 会把这个消费分配给别的 consumer 去处理，消息是不会丢的</p>
+<p><strong>消息顺序性</strong></p>
+<p>消息有序指的是可以按照消息的发送顺序来消费。例如：一笔订单产生了 3 条消息，分别是订单创建、订单付款、订单完成。消费时，要按照顺序依次消费才有意义<br>
+消息体通过hash分派到队列里，每个队列对应唯一一个消费者。比如下面的示例中，订单号相同的消息会被先后发送到同一个队列中：</p>
+<p><img src="https://github.com/xbox1994/2018-Java-Interview/raw/master/images/%E6%B6%88%E6%81%AF%E9%A1%BA%E5%BA%8F%E6%80%A7.jpg" alt></p>
+<p>在获取到路由信息以后，会根据MessageQueueSelector实现的算法来选择一个队列，同一个订单号获取到的肯定是同一个队列</p>
+<h3 id="消息集群模式">消息集群模式</h3>
+<p><strong>普通集群模式</strong></p>
+<p>在多台机器上启动多个 RabbitMQ 实例。你创建的 queue，只会放在一个 RabbitMQ 实例上，但是每个实例都同步 queue 的元数据（元数据可以认为是 queue 的一些配置信息，通过元数据，可以找到 queue 所在实例）。你消费的时候，实际上如果连接到了另外一个实例，那么那个实例会从 queue 所在实例上拉取数据过来。</p>
+<p>缺点是不能保证高可用、还有拉去数据的开销、以及单实例的性能瓶颈，所以这个方案是为了提高吞吐量的</p>
+<p><strong>镜像集群模式</strong></p>
+<p>每个 RabbitMQ 节点都有这个 queue 的一个完整镜像，包含 queue 的全部数据的意思。然后每次你写消息到 queue 的时候，都会自动把消息同步到多个实例的 queue 上。任何一个机器宕机了，没事儿，其它机器（节点）还包含了这个 queue 的完整数据，别的 consumer 都可以到其它节点上去消费数据。</p>
+<p>缺点是即时满足了高可用，但因为同步数据量太重导致难以扩展节点，也没有在架构上实现负载均衡，可以参考Redis的集群模式进行优化。</p>
+<p><strong>Kafka的高可用性</strong></p>
+<p>Kafka 一个最基本的架构认识：为大数据而生的消息系统，由多个 broker 组成，每个 broker 是一个节点；你创建一个 topic，这个 topic 可以划分为多个 partition，每个 partition 可以存在于不同的 broker 上，每个 partition 就放一部分数据，从而可以存储大量数据且难以丢失</p>
+<p>每个 partition 的数据都会同步到其它机器上，形成自己的多个 replica 副本。所有 replica 会选举一个 leader 出来，那么生产和消费都跟这个 leader 打交道，然后其他 replica 就是 follower。写的时候，leader 会负责把数据同步到所有 follower 上去，读的时候就直接读 leader 上的数据即可</p>
+<p>如果某个 broker 宕机了，该 broker上面的 partition 在其他机器上都有副本的，如果这上面有某个 partition 的 leader，那么此时会从 follower 中重新选举一个新的 leader 出来，大家继续读写那个新的 leader 即可。这就有所谓的高可用性了</p>
+<p><img src="https://github.com/xbox1994/2018-Java-Interview/raw/master/images/kafka%E9%9B%86%E7%BE%A4.png" alt></p>
+<h2 id="参考">参考</h2>
+<p><a href="https://time.geekbang.org/column/intro/81" target="_blank" rel="noopener">https://time.geekbang.org/column/intro/81</a><br>
+<a href="https://github.com/xbox1994/2018-Java-Interview/blob/master/MD/%E6%95%B0%E6%8D%AE%E5%BA%93-Redis.md" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview/blob/master/MD/数据库-Redis.md</a></p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2019-05-05-jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/" data-toggle="tooltip" data-placement="top" title="【架构入门 - 高性能篇】数据库高性能">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2019-04-29-dan-nan-de-ji-ge-gao-neng/" data-toggle="tooltip" data-placement="top" title="🥚男的几个高能">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#架构" title="架构">架构</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

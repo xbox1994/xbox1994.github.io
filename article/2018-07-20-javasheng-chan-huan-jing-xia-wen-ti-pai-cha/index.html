@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Java生产环境下问题排查 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2018-07-20-javasheng-chan-huan-jing-xia-wen-ti-pai-cha/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                            
+                        </div>
+                        <h1>Java生产环境下问题排查</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2018-07-20
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>在生产环境中，我们无法通过断点调试、新增log、可视化工具去立马查看当前的运行状态和拿到错误信息，此时，借助Java自带的命令行工具以及相关dump分析工具以及一些小技巧，可以大大提升我们排查问题的效率</p>
+<a id="more"></a>
+<h2 id="运行参数">运行参数</h2>
+<p>下面会列出一些常用且非常有效的命令以及参数来查看运行时Java程序的信息，从而辅助你了解程序运行状态。还有大量可用的功能由其他参数提供，自行参阅<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/toc.html" target="_blank" rel="noopener">oracle文档</a></p>
+<h3 id="查看jvm参数">查看JVM参数</h3>
+<p><code>jps -l</code> 查看所有正在运行的Java程序，同时显示启动类类名，获取到PID</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4706 org.apache.catalina.startup.Bootstrap</span><br><span class="line">5023 sun.tools.jps.Jps</span><br></pre></td></tr></table></figure>
+<p><code>jinfo -flags PID</code> 查看运行时进程参数与JVM参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Attaching to process ID 28987, please wait...</span><br><span class="line">Debugger attached successfully.</span><br><span class="line">Server compiler detected.</span><br><span class="line">JVM version is 25.171-b11</span><br><span class="line">Non-default VM flags: -XX:CICompilerCount=3 -XX:InitialHeapSize=132120576 -XX:MaxHeapSize=2092957696 -XX:MaxNewSize=697303040 -XX:MinHeapDeltaBytes=524288 -XX:NewSize=44040192 -XX:OldSize=88080384 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC</span><br><span class="line">Command line:  -Dspring.config.location=application.properties -Dspring.profiles.active=staging</span><br></pre></td></tr></table></figure>
+<p><code>java -XX:+PrintFlagsFinal -version</code> 查看当前虚拟机默认JVM参数</p>
+<h3 id="查看即时gc状态">查看即时GC状态</h3>
+<p><code>jstat -gc PID 1000 10</code> 每秒查看一次gc信息，共10次</p>
+<p>输出比较多的参数，每个字段的解释参看 <a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstat.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstat.html</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT   </span><br><span class="line">512.0  512.0   15.3   0.0    4416.0   1055.2   11372.0     7572.5   14720.0 14322.5 1664.0 1522.8     40    0.137   8      0.039    0.176</span><br></pre></td></tr></table></figure>
+<p>期间可能碰到提示<code>sun.jvm.hotspot.runtime.VMVersionMismatchException: Supported versions are 24.181-b01. Target VM is 25.171-b11</code>的问题，原因在于安装了多个版本，使用<code>which</code>、<code>ls -l</code>可简介定位到与当前执行Java程序相同的Java版本</p>
+<h2 id="错误排查">错误排查</h2>
+<h3 id="内存问题">内存问题</h3>
+<p>内存泄露导致OOM？内存占用异常的高？这是生产环境常常出现的问题，Java提供dump文件供我们对内存里发生过的事情进行了记录，我们需要借助一些工具从中获取有价值的信息。</p>
+<h4 id="导出dump文件">导出Dump文件</h4>
+<ol>
+<li>提前对Java程序加上这些<strong>参数</strong>印dump文件 <code>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./</code></li>
+<li>对正在运行的程序使用<strong>jmap</strong>：<code>jmap -dump:format=b,file=heap.hprof PID</code></li>
+</ol>
+<h4 id="分析dump文件">分析Dump文件</h4>
+<p>如果Dump文件不太大的话，可以传到 <a href="http://heaphero.io/index.jsp" target="_blank" rel="noopener">http://heaphero.io/index.jsp</a> 来分析</p>
+<p>文件比较大，且想进行更加系统的分析，推荐使用<a href="https://www.eclipse.org/mat/" target="_blank" rel="noopener">MAT</a>分析，有如下几种常用查看方式</p>
+<ol>
+<li>首页中的【Leak Suspects】能推测出问题所在</li>
+<li>点击【Create a histogram from an arbitrary set of objects】查到所有对象的数量</li>
+<li>右键点击某个对象【Merge Shortest Paths to GC Roots】-&gt; 【exclude all phantom/weak/soft etc. references】能查询到大量数量的某个对象是哪个GC ROOT引用的</li>
+</ol>
+<h3 id="线程问题">线程问题</h3>
+<p>任务长时间不退出？CPU 负载过高？很可能因为死循环或者死锁，导致某些线程一直执行不被中断，但是不报错是最烦人的，所以日志里看不到错误信息，并且又不能用dump文件分析，因为跟内存无关。这个时候就需要用线程分析工具来帮我们了。</p>
+<h4 id="导出jstack文件">导出jstack文件</h4>
+<p>使用<code>jstack PID &gt; 文件</code>，如果失败请加<code>-F</code>参数，如果还失败请使用Java程序启动时使用的用户执行jstack，下面是jstack的部分输出格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">          线程名                                                              PID的16进制</span><br><span class="line">&quot;http-nio-8080-Acceptor-0&quot; #17 daemon prio=5 os_prio=0 tid=0x00007fac2c4bd000 nid=0x29f4 runnable [0x00007fac192f6000]</span><br><span class="line">   java.lang.Thread.State: RUNNABLE（tomcat的工作线程正在运行，有NEW/RUNNABLE/BLOCKED/WAITING/TIMED_WATING/TERMINATED状态）</span><br><span class="line">        at sun.nio.ch.ServerSocketChannelImpl.accept0(Native Method)</span><br><span class="line">        at sun.nio.ch.ServerSocketChannelImpl.accept(ServerSocketChannelImpl.java:422)</span><br><span class="line">        at sun.nio.ch.ServerSocketChannelImpl.accept(ServerSocketChannelImpl.java:250)</span><br><span class="line">        - locked &lt;0x00000000faf845a8&gt; (a java.lang.Object)</span><br><span class="line">        at org.apache.tomcat.util.net.NioEndpoint$Acceptor.run(NioEndpoint.java:682)</span><br><span class="line">        at java.lang.Thread.run(Thread.java:748)</span><br></pre></td></tr></table></figure>
+<p>jstack的输出可以看到所有的线程以及他们的状态，我们就可以看有哪些我们自己创建的正在运行的线程，那很可能就是那个一直在执行的线程了，此时<strong>线程名</strong>就格外重要了，所以建议创建新线程时指定有意义的线程名。当然，通过PID查找也非常方便。</p>
+<h4 id="排查步骤">排查步骤</h4>
+<ol>
+<li><code>top</code> 查看到哪个java程序负载高</li>
+<li><code>top -p PID -H</code> 查看该进程所有进程的运行状态</li>
+<li>记录下高负载的线程ID，<code>printf &quot;&amp;x&quot; PID</code>转换成16进制</li>
+<li><code>jstack PID &gt; 文件</code></li>
+<li>在jstack文件中用转换成16进制之后的线程ID查询线程运行堆栈</li>
+<li>从堆栈中了解到线程在执行什么任务，并结合业务与代码判断问题所在</li>
+</ol>
+<h2 id="参考">参考</h2>
+<p><a href="https://coding.imooc.com/class/241.html" target="_blank" rel="noopener">https://coding.imooc.com/class/241.html</a><br>
+<a href="https://crossoverjie.top/2018/07/08/java-senior/JVM-Troubleshoot/" target="_blank" rel="noopener">https://crossoverjie.top/2018/07/08/java-senior/JVM-Troubleshoot/</a></p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2018-07-26-jvmdiao-you-ru-men-yi-ji-chu-zhi-shi/" data-toggle="tooltip" data-placement="top" title="JVM调优入门（一）：基础知识">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2018-07-13-du-zi-dai-da-yi-ge-gong-neng-mo-kuai-shi-zen-yang-de-ti-yan/" data-toggle="tooltip" data-placement="top" title="独自带大一个功能模块是怎样的体验">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

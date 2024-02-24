@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Java多线程与高并发(六):高并发解决思路 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2018-05-11-javaduo-xian-cheng-yu-gao-bing-fa-liu-gao-bing-fa-jie-jue-si-lu/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                            
+                        </div>
+                        <h1>Java多线程与高并发(六):高并发解决思路</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2018-05-11
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>本系列的最后一篇，主要提供一些高并发场景的解决思路，实现的细节虽然需要在实战中学习，但解决的思路一定要有。</p>
+<a id="more"></a>
+<h1 id="扩容">扩容</h1>
+<h2 id="垂直扩容纵向扩展">垂直扩容（纵向扩展）</h2>
+<p>提高单个服务（服务器、数据库）自身能力</p>
+<p>但会增大单个服务中其他软件设施的依赖与管理、服务内部复杂度</p>
+<h2 id="水平扩容横向扩展">水平扩容（横向扩展）</h2>
+<p>增加更多服务成员</p>
+<p>但会增加网络、数据库IO开销、管理多个服务器的难度</p>
+<h2 id="对数据库的扩容方案">对数据库的扩容方案</h2>
+<h3 id="确定业务类型">确定业务类型</h3>
+<ul>
+<li>读操作多：采用垂直扩容方案（redis、CDN）。采用水平扩容没有太大的意义，因为性能的瓶颈不在写操作，所以不需要实时去完成，用更多的服务器来分担压力性价比太低。所以针对单个系统去强化它的读性能就可以了</li>
+<li>写操作多：采用水平扩容方案（HBase、增加服务器、数据库）。也可以考虑垂直扩容提升单个数据库的性能，但会发现资金与硬盘的IO能力是有限的，所以需要增加更多数据库来分担写的压力。</li>
+</ul>
+<h1 id="缓存">缓存</h1>
+<p>应用需要支撑大量并发量，但数据库的性能有限，所以使用缓存来减少数据库压力与提高访问性能</p>
+<h2 id="特征">特征</h2>
+<ul>
+<li>命中率 = 命中数 / （命中数 + 没有命中数）</li>
+<li>最大空间：缓存最大空间</li>
+<li>清空策略：FIFO/LFU/LRU/过期时间/随机</li>
+</ul>
+<p>FIFO：最先进入缓存的数据，在缓存空间不足时被清除，为了保证最新数据可用<br>
+LFU(Least Frequently Used)：最近最不常用，基于访问次数，去除命中次数最少的元素<br>
+LRU(Least Recently Used)：最近最少使用，基于访问时间，在被访问过的元素中去除最久未使用的元素</p>
+<h2 id="本地缓存guava-cache"><a href="http://shift-alt-ctrl.iteye.com/blog/2193617" target="_blank" rel="noopener">本地缓存Guava Cache</a></h2>
+<p>其实编程时候写的成员变量、静态变量、常亮也被看做缓存</p>
+<h2 id="分布式缓存redis"><a href="http://www.runoob.com/redis/redis-intro.html" target="_blank" rel="noopener">分布式缓存Redis</a></h2>
+<h2 id="高并发缓存问题">高并发缓存问题</h2>
+<h3 id="缓存一致性">缓存一致性</h3>
+<img src="/images/blog/2018-05-11_1.png" title="image">
+<p><a href="https://www.zhihu.com/question/36413559" target="_blank" rel="noopener">全量、增量同步</a></p>
+<p><a href="https://ouyblog.com/2017/04/Redis%E7%BC%93%E5%AD%98%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7" target="_blank" rel="noopener">根据业务需求决定分布式锁</a></p>
+<h3 id="缓存并发">缓存并发</h3>
+<img src="/images/blog/2018-05-11_2.png" title="image">
+<p>当大量请求访问同一个没有被缓存的数据的时候，会发送大量请求给数据库，导致数据库压力过大，还会导致一致性问题，所以解决方式就是在缓存获取的时候加上针对单个数据的锁，直到缓存被重建成功得到最新数据</p>
+<h3 id="缓存击穿穿透">缓存击穿/穿透</h3>
+<img src="/images/blog/2018-05-11_3.png" title="image">
+<p>查询一个数据库中不存在的数据，比如商品详情，查询一个不存在的ID，每次都会访问DB，如果有人恶意破坏，很可能直接对DB造成过大地压力。</p>
+<p>解决方案：当通过某一个key去查询数据的时候，如果对应在数据库中的数据都不存在，我们将此key对应的value设置为一个默认的值。</p>
+<h3 id="缓存失效">缓存失效</h3>
+<p>在高并发的环境下，如果此时key对应的缓存失效，此时有多个进程就会去同时去查询DB，然后再去同时设置缓存。这个时候如果这个key是系统中的热点key或者同时失效的数量比较多时，DB访问量会瞬间增大，造成过大的压力。</p>
+<p>解决方案：</p>
+<ol>
+<li>将系统中key的缓存失效时间均匀地错开</li>
+<li>当我们通过key去查询数据时，首先查询缓存，如果此时缓存中查询不到，就通过分布式锁进行加锁</li>
+</ol>
+<h3 id="热点key">热点key</h3>
+<p>缓存中的某些Key(可能对应用与某个促销商品)对应的value存储在集群中一台机器，使得所有流量涌向同一机器，成为系统的瓶颈，该问题的挑战在于它无法通过增加机器容量来解决。</p>
+<p>解决方案：</p>
+<ol>
+<li>客户端热点key缓存：将热点key对应value并缓存在客户端本地，并且设置一个失效时间。</li>
+<li>将热点key分散为多个子key，然后存储到缓存集群的不同机器上，这些子key对应的value都和热点key是一样的。</li>
+</ol>
+<h1 id="消息队列">消息队列</h1>
+<p>消息队列是为了解决<strong>生产和消费的速度不一致</strong>导致的问题，有以下好处：</p>
+<ol>
+<li>减少请求响应时间。比如注册功能需要调用第三方接口来发短信，如果等待第三方响应可能会需要很多时间</li>
+<li>服务之间解耦。主服务只关心核心的流程，其他不重要的、耗费时间流程是否如何处理完成不需要知道，只通知即可</li>
+<li>流量削锋。对于不需要实时处理的请求来说，当并发量特别大的时候，可以先在消息队列中作缓存，然后陆续发送给对应的服务去处理</li>
+</ol>
+<p>如果想要实现一个消息队列，可以参考<a href="https://zhuanlan.zhihu.com/p/21649950" target="_blank" rel="noopener">这里</a><br>
+最简单的消息队列就是一个消息转发器，基本功能只有三个：消息存储、消息发送、消息删除，可使用LinkedBlockingQueue、ConcurrentLinkedQueue实现</p>
+<h1 id="应用拆分"><a href="http://www.wangtianyi.top/blog/2017/06/01/yi-microservies-7-jiang-ju-wu-ba-zhong-gou-cheng-wei-fu-wu/">应用拆分</a></h1>
+<p>之前翻译过的一篇博文已经提到，如何将已经存在的巨无霸单体应用重构成微服务，点击上面链接即可</p>
+<h1 id="限流">限流</h1>
+<img src="/images/blog/2018-05-11_5.png" title="image">
+<p>限流是为了解决高并发情况下，大量请求导致数据库或服务器压力过大出现延迟或出错的方式，在图中，如果一次性将100多万数据发送给master库，那么服务器与数据库的IO性能将会被大量占用，导致其他服务对数据库的不可用，master库还需要很久的时间将数据同步给slave库</p>
+<p>控制某段代码在一定时间内的执行次数，可通过<a href="https://blog.csdn.net/jiesa/article/details/50412027" target="_blank" rel="noopener">Guava</a>或Semaphore实现</p>
+<h1 id="降级与熔断"><a href="http://sjyuan.cc/topics/micro-service/service-fault-tolerant-protected-with-hytrix/" target="_blank" rel="noopener">降级与熔断</a></h1>
+<h1 id="数据库切库-分库-分表">数据库切库、分库、分表</h1>
+<h2 id="切库">切库</h2>
+<p>切库：数据库读写分离导致的数据库切换操作</p>
+<p>当单个数据库的读写性能达到瓶颈的时候，可根据业务来判断读与写的比重，然后通过将数据库设置为Master-Slave模式完成读写分离并配置好所有库的读写权限。<br>
+当查询业务多余读取业务的时候，通过负载均衡，将查询的操作分担给不同的从库，从而减轻主库的压力。</p>
+<p><a href="https://www.imooc.com/article/22556" target="_blank" rel="noopener">可以通过Spring注解来完成配置</a></p>
+<h2 id="分库分表"><a href="https://zhuanlan.zhihu.com/p/24036067" target="_blank" rel="noopener">分库分表</a></h2>
+<p>当单库的性能达到瓶颈，或当单表容量达到瓶颈，通过SQL与索引的优化之后还是很慢，那么就需要分表</p>
+<p>水平分表：表结构保持不变，根据固定的ID将数据划分到不同表中，需要在写入与查询的时候进行ID的路由<br>
+垂直分表：将表结构根据数据的活跃度拆分成多个表，来分别提高不同的单表处理能力</p>
+<p>问题：</p>
+<ol>
+<li>事务问题。在执行分库之后，由于数据存储到了不同的库上，数据库事务管理出现了困难。如果依赖数据库本身的分布式事务管理功能去执行事务，将付出高昂的性能代价；如果由应用程序去协助控制，形成程序逻辑上的事务，又会造成编程方面的负担。</li>
+<li>跨库跨表的join问题。在执行了分库分表之后，难以避免会将原本逻辑关联性很强的数据划分到不同的表、不同的库上，我们无法join位于不同分库的表，也无法join分表粒度不同的表，结果原本一次查询能够完成的业务，可能需要多次查询才能完成。</li>
+<li>额外的数据管理负担和数据运算压力。额外的数据管理负担，最显而易见的就是数据的定位问题和数据的增删改查的重复执行问题，这些都可以通过应用程序解决，但必然引起额外的逻辑运算。</li>
+</ol>
+<h2 id="参考">参考</h2>
+<p><a href="http://coding.imooc.com/class/195.html" target="_blank" rel="noopener">http://coding.imooc.com/class/195.html</a><br>
+以及其他超连接引用</p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2018-06-24-shou-ba-shou-jiao-ni-she-ji-bing-shi-xian-yi-ge-ji-yu-redisde-fen-bu-shi-suo/" data-toggle="tooltip" data-placement="top" title="手把手教你实现一个基于Redis的分布式锁">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2018-05-08-javagao-bing-fa-wu-xian-cheng-chi/" data-toggle="tooltip" data-placement="top" title="Java多线程与高并发(五):线程池">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

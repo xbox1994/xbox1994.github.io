@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          敏捷中的看板 - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2018-03-18-min-jie-zhong-de-kan-ban/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#敏捷" title="敏捷">敏捷</a>
+                            
+                        </div>
+                        <h1>敏捷中的看板</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2018-03-18
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>很荣幸，第一份工作就进入了提倡敏捷开发的TW，进的第一个团队也是比较规范使用看板方法的团队。什么敏捷开发、看板方法，在学校的时候是从来没听过的，甚至进公司前一年还在学校学习如何通过瀑布开发方式来完成项目，当时觉得瀑布过于死板，但是又想不到有什么好的方法。</p>
+<a id="more"></a>
+<p>#什么是敏捷开发<br>
+一种以用户的<strong>需求进化</strong>为核心、高效<strong>快速迭代</strong>的<strong>软件开发方式</strong>而已，只要符合了敏捷的元素，你就可以说用的是敏捷，敏捷开发没有固定的方式去要求你必须要通过某种具体的行为要求这么做。</p>
+<p>下面是著名的敏捷宣言，可以让我们更加了解敏捷是个什么玩意儿。</p>
+<blockquote>
+<p>个体和互动 高于 流程和工具<br>
+工作的软件 高于 详尽的文档<br>
+客户合作 高于 合同谈判<br>
+响应变化 高于 遵循计划</p>
+</blockquote>
+<p>简单来说，通过强调个体之间互动来替换掉死板的工具与文档，让甲方与乙方想的东西尽可能的一致来齐心协力地完成软件的需求调研、开发与维护。</p>
+<p>说起来简单吧？落地下来却很困难，首先把这种思想传播开来，让那些大量不接受新鲜事物、顽固不化、已经按老套路工作很久的人来接受一种全新的方式是非常困难的。其次，又需要有专业的敏捷教练来将这些抽象的概念用比较能落地的方式来帮助原有团队进行过程曲折的敏捷转型。但即使是这样，渴望获得提升、改进工作效率的人更是大有人在，面对困难他们迎难而上。</p>
+<p>本文则是本人参考《看板实战》且基于对敏捷的理解，对一种敏捷开发方式-看板方法的简单总结。</p>
+<p>#什么是看板方法<br>
+##精益生产<br>
+20世纪初，大规模的生产流水线一直是现代工业生产的主要特征。但是第二次世界大战以后，社会进入了一个市场需求向多样化发展的新阶段，相应地要求工业生产向多品种、小批量的方向发展。为了顺应这样的时代要求，由日本丰田汽车公司首创的精益生产，作为多品种、小批量混合生产条件下的高质量、低消耗进行生产的方式在实践中摸索、创造出来了。这就是精益生产的起源。</p>
+<p><strong>精益生产</strong>的基本思想可以用一句话来概括，即：Just In Time（JIT），翻译为中文是“旨在需要的时候，按需要的量，生产所需的产品”。换句话说，<strong>以顾客需求为拉动，消灭浪费和快速反应为核心，使企业以最少的投入获取最佳的运作效益和提高对市场的反应速度</strong>。</p>
+<p>##看板方法</p>
+<img src="/images/blog/2018-03-18_1.png" title="image">
+<p>看板方法是<strong>一种基于精益生产，为了促进工作项目在整个价值链中快速流动的高效管理软件开发的方法</strong>，同时看板需要结合很多可以落地的具体实践，下面会以实践为中心，更加深入认识看板方法。</p>
+<p>#看板方法原则一：可视化<br>
+##简介<br>
+在丰田组装厂中，首先吸引住你的是他们使用可视化和声音来跟踪进度、显示状态，公司处处都有巨大的显示屏说明工厂不通部分的用途，并通过巨大的信号板来显示生产状态。如果工人碰到问题，他会拉动绳索出发信号板上的灯表明这里出了问题，问题长时间不解决甚至会终止生产线。</p>
+<p>那么这就是可视化原则的本质：确保必要的信息可视化，促使人们有效协作，同时通过了解工作流如何进行来做出改进。</p>
+<p>##看板墙<br>
+在软件开发过程中，目前人类发现最能清晰流畅表现出团队成员工作状态与整个工作流的方式就是看板墙。</p>
+<img src="/images/blog/2018-03-18_2.png" title="image">
+<p>我们需要四种材料来启动我们的看板墙：</p>
+<ol>
+<li>白板</li>
+<li>至少四种不同颜色的便利贴</li>
+<li>每个成员的大头照</li>
+<li>黑、红色可擦彩笔</li>
+</ol>
+<p>我们将不同的开发阶段分成以下类别：</p>
+<ol>
+<li>业务分析</li>
+<li>可以开发</li>
+<li>正在开发</li>
+<li>开发完毕</li>
+<li>测试中</li>
+<li>测试完毕</li>
+<li>已经上线</li>
+<li>被阻塞</li>
+</ol>
+<p>我们还需要为一些特殊情况开辟紧急修复通道，比如Hot fix线上BUG，那么这条通道平时用的并不多，所以讲其安排在下方，但是一旦有内容，必须特殊对待。比如我们将这条通道设置为UAT与线上环境的紧急BUG区域，一旦通道中出现便利贴，所有开发、测试人员将第一优先级处理它。这样，我们的看板墙就建立完成了！</p>
+<p>##工作项<br>
+就是指便利贴，我们应该怎么样用好便利贴呢？</p>
+<p>首先我们将不同的开发任务分成以下类别，并通过颜色区分开来：</p>
+<ol>
+<li>业务卡（白色）</li>
+<li>BUG卡（红色）</li>
+<li>技术卡（蓝色）</li>
+</ol>
+<p>然后，我们将我们的<strong>工作内容</strong>写到便利贴上，写什么呢？一个例子是：作为管理员，我想看到这个网站的访问量报告，以便我能做出预测然后安排我的工作。那么其中要体现出来的关键点有：面向的对象、要做什么、完成这项工作的意义。并且一定要用简单明了的表达方式写出来让每个人都能快速理解。</p>
+<p>接下来将<strong>跟踪标识</strong>写到左上角，比如“#1313”，如果你使用JIRA或者Trello这样的电子看板墙工具，与之保持同步是非常重要的。</p>
+<p>然后将<strong>截止日期</strong>写到右上角，比如“三天内完成”。</p>
+<p>最后将自己的<strong>大头照</strong>也贴在上面，将工作项放置到看板墙上对应的位置。</p>
+<p>最后补一句，我们还需要一个<strong>进度指示器</strong>来跟踪这个工作项的进展情况，比如每过一天就添上“正”的一笔，来表明这个工作项用了多久，与截止日期有没有冲突，如果有，是什么情况，这些工作会在后面提到的每日站会中进行。</p>
+<img src="/images/blog/2018-03-18_3.png" title="image">
+<p>##准入准出的标准<br>
+什么时候才能将看板墙上的便利贴从所在的地方移入到下一个阶段呢？那么我们一定要定义好一个准入准出的标准。</p>
+<p>例如，从可以开发到正在开发，在挪到正在开发之前，我们需要与业务分析师、测试人员、用户体验设计师一起来将这张便利贴上的工作任务沟通清楚，要做什么，做到什么程序，具体的业务逻辑、UI设计应该怎么实现。当所有角色都清楚要做什么并且对这个工作任务没有疑问之后，才可以将便利贴移到正在开发，然后开发人员就可以动手实现了。</p>
+<p>##每日站会</p>
+<img src="/images/blog/2018-03-18_4.png" title="image">
+<p>看板墙已经建立起来了，能把工作的状态显示给团队，但是我们真正利用好它还需要一些其他工作，每日站会就是一个必要的实践。</p>
+<p>每日站会就是为了让大家能注意到我们的看板墙的内容，专门安排的一部分时间。建议运行方式如下：</p>
+<ul>
+<li>进行站会的时间：将这个会议当做一天工作的开始，这样就可以在当日的工作中解决站会中需要解决的问题。</li>
+<li>确保会议简短：最多15分钟。不需要把细节都讲清楚，只需要将前一天做的事情、碰到的问题、今天要做的工作简短地告诉大家即可。</li>
+<li>停止不涉及多数人的讨论：每次站会需要一个owner，他将负责站会的顺利进行，当出现两三个人开始进行只有他们的细节讨论之后应该立即制止，并安排他们在会后进行。</li>
+<li>更新工作项上的进度指示器：在原来工作项的进度指示器上添上一笔，如果进度跟不上了，与工作项的负责人协商解决。</li>
+<li>站会开始后，最先关注的应该是阻塞阶段中的在制品。</li>
+</ul>
+<p>#看板方法原则二：限制在制品<br>
+##在制品（work in progress, WIP）<br>
+指的是手头上正在处理的所有事情，包括正在处理的、等待验收、已经等在你的收件箱但是还没处理的工作项。</p>
+<p>用我在上面对开发阶段的分类来说的话，需求分析师已经将很多需求分析完成了，并写到了工作项中，然后堆积在可以开发的阶段，这些已经编写但是被搁置起来等待实现的工作项是你的在制品。属于还没处理的工作项。</p>
+<p>##在制品过多的影响<br>
+接上面举的例子，如果是属于还没处理的工作项，在制品堆积则会导致长时间搁置之后，整体环境发生的变化，客户的想法也发生了变化，直接导致工作项中的说明完全失效。</p>
+<p>如果是属于正在处理的工作项，那么上下文切换会花费你大量的时间。我们人比作CPU的话，大部分只能是单核的，一旦要你同时做两件事是非常困难的，即使是真正的单核CPU也需要在时间片轮转调度的切换过程中花费时间。并且有大量研究表明人同时做两件事的工作效率与工作质量是非常低的。</p>
+<p>##限制在制品</p>
+<p>还记得那张我们看板墙上的数字（5、∞、8）吗？这就是我们为了限制在制品数量给的一个<strong>WIP阈值</strong>。</p>
+<p>那么我们要如何限制呢？这需要一个比较灵活的答案，它取决于</p>
+<ul>
+<li>
+<p>所在的组织持续改进的动力有多大</p>
+</li>
+<li>
+<p>团队的规模以及团队可投入的工作时间</p>
+</li>
+<li>
+<p>正在处理的工作项的类型和规模</p>
+</li>
+</ul>
+<p>那么如何设置这个WIP阈值呢？有一种比较简单粗暴的做法：首先直接把WIP与人员数量的比例设置为1:1，即每个人只能同时处理一个WIP。但是立马会碰到问题，如果有个WIP发生阻塞，那么那个WIP的工作人员岂不是没事干了？在这个情况下，再去适当调高WIP的限制。</p>
+<p>WIP的限制越低越好，因为这样每个人都能专注于工作在某个WIP上，同时也能积极的去解决发生阻塞的WIP上。但是实际情况会糟的多，为了符合实际情况同时能通过精益的方式迭代改进WIP限制，另一种限制WIP的做法则是将比例设置为2:1，然后定时比如每两个星期减少20%的WIP限制。这样在降低WIP限制、使WIP在系统中更快的流动的同时集成了持续改进的精益思想，来帮助团队养成有节奏的持续评估的习惯是非常好的。</p>
+<p>##目的<br>
+一定不要忘了我们限制WIP的目的，绝对不是为了压榨员工提出来的，而是改善工作方式与流程！</p>
+<p>#看板方法原则三：管理流动<br>
+##流动的价值<br>
+流动是丰田生产愿景的基石。单件连续流是一个系统，为客户创造价值的部分在流程中从一步移到下一步。如果做到了单件流，对于丰田来说就能没有库存、没有延期、没有批量、没有队列、没有生产过剩，只需要交付客户需要的东西，而且能立即交付。</p>
+<p>其次，流动还能暴露系统中存在的问题，为了解决阻塞或者更快的流动，我们需要改进什么？同时这也是一个非常能引发团队成员思考的方式。</p>
+<p>##小明流不动了<br>
+举个例子，在今天的站会上，有一个WIP在正在开发的阶段呆了有10天，正字都写了两个了，但是现在一看它的截止日期已经过了5天，我直接询问小明你到底怎么了，你开发效率这么慢的吗？他竟然说不管我事，因为别人没做完，所以他要等别人做完才能继续。</p>
+<p>OK，这里会有很多问题，我们一件一件来说：</p>
+<ol>
+<li>
+<p>为什么过截止日期的第一天没有人注意到？其实大家都注意到了，但是大家没提出来，因为在大家的潜意识中给一点宽限的时间也行，但正是这种“友好”的人文关怀，让我们的问题没有及时发现，耽误了开发的进程。</p>
+</li>
+<li>
+<p>小明说他的工作被别人阻塞了，别人没做完他也无法继续了。这里我们可以发现WIP的限制可能太低，从而导致小明也无法去拿一个新的WIP继续工作；还能发现小明负责开发的这个WIP和另一个WIP有严重的依赖关系，我们在以后挑选WIP进行开发的时候需要更加注意。</p>
+</li>
+</ol>
+<p>那么从这个简单的例子我们可以看到，为了保持看板墙的流动，我们引发了讨论与思考，并且优化了WIP限制于开发流程。这些就是流动管理与价值！</p>
+<p>##帮助流动的方式<br>
+###限制WIP<br>
+在制品越少，流动越快，能发现的改进空间更大。</p>
+<p>###消除阻塞<br>
+我们分类来说，外部阻塞与内部阻塞。</p>
+<p>如果是被第三方阻塞，比如等待第三方提供接口却迟迟不完成，在无法直接帮助开发的情况下，建议定时踢屁股（提醒），如果踢不动，向相关上级部门反映，同时将WIP移到阻塞阶段。</p>
+<p>如果是内部阻塞，比如开发碰到难以解决的问题，在站会上发现之后，站会的owner应该安排更有经验的成员帮助被阻塞的人解决问题，当然自发的寻求帮助与主动帮助是更加提倡的。</p>
+<p>###缩短等待时间<br>
+将工作项保持较小的尺寸且尺寸相近<br>
+小工作项会缩短前置时间并且降低WIP的数量。大工作项会难以估算而且有隐藏的问题也无法暴露除非开始拆分它。</p>
+<p>如果尺寸相近，流动将更加平滑且可预测性提升，从而有助于建立互信并避免使用“特殊需求”的快速通道。</p>
+<p>###跟踪在制品的进度<br>
+还有一种方式是使用Cycle time，通过周期性检查看板工作状态是否正常（如每个星期一次）来跟踪WIP的进度从而发现看板墙流动的隐患。</p>
+<p>Cycle time即<strong>生产周期</strong>，生产周期反应了一个开发任务从进入开发状态，到最后交付，整个过程的总的时间。生产周期当然是越小越好，能更快速响应外部变化更好，能快速满足业务需求更好。所以周期性地对生产周期进行总结能发现一些隐患并能更精确的评估项目开发效率与更新项目进度。</p>
+<img src="/images/blog/2018-03-18_5.png" title="image">
+<p>比如我们以从开发阶段（Dev）到测试完成阶段（QA Done）统计，从7.11号到7.17号内我们完成了两个WIP，可以明确的看到在开发阶段平均花费了4.8天，但是实际上预估只需要两天就可以完成，后来我们问了那两位开发人员，他们说其实是花了4天完成，并且没有及时在电子看板上把WIP移到开发完成阶段，所以导致统计结果是这样。对于测试阶段比较正常，测试平均花费1.5天，测试完毕到上线只间隔了1.3天，符合我们原来计划的一周上线一次的打算。</p>
+<p>那么按上面的统计以及分析结果，我们可以做一些持续改进的策略，如要求大家及时挪卡，对卡的估点考虑更细一些。对目前的开发效率也有了一个整体的评估，再依据项目计划定位项目进度，从而让项目经理采取下一步的策略。</p>
+<p>#其他<br>
+以上是在看板方法的基础实践，还有一些高级实践比如对工作项的估算技术、定期回顾（Retro）没有提到，有兴趣的可参看《看板实战》。</p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2018-04-28-javagao-bing-fa-xi-lie-yi-bing-fa-ji-chu-yu-mo-ni-gong-ju/" data-toggle="tooltip" data-placement="top" title="Java多线程与高并发(一):并发基础与模拟工具">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2018-02-05-shou-ba-shou-jiao-ni-da-jian-yi-ge-chi-xu-ji-cheng-huan-jing/" data-toggle="tooltip" data-placement="top" title="手把手教你搭建一个持续集成环境">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#敏捷" title="敏捷">敏捷</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

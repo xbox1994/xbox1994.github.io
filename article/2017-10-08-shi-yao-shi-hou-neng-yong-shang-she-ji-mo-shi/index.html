@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9302170960404440" crossorigin="anonymous"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          什么时候能用上设计模式？ - 王天一 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.wangtianyi.top/article/2017-10-08-shi-yao-shi-hou-neng-yong-shang-she-ji-mo-shi/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                            
+                        </div>
+                        <h1>什么时候能用上设计模式？</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 王天一 on
+                            2017-10-08
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">硬核难度</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于作者</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>这是原本我觉得在这一生中很难碰到的开发实践。</p>
+<a id="more"></a>
+<p>#前言</p>
+<p>粗略来说，公认的设计模式有GoF的23种设计，分为创建型、结构型、行为型。在我读大学的时候把其中十几种比较常用的模式总结过一遍，工作一年之后比较惭愧，只记得单例、简单工厂、外观、观察者模式了。</p>
+<p>但是，前几天在项目中有一位比较资深的同事，将业务代码使用一种设计模式实现之后，让我感觉死而复生一般对设计模式再一次产生了浓厚的兴趣。</p>
+<p>#业务中例子（管道-过滤器模式）</p>
+<p>##问题描述<br>
+从很多不同的服务中得到了某些资源，需要将这些资源根据某些条件筛选或者拼接出业务逻辑上需要的资源，那么就需要一些处理了，当处理逻辑复杂起来，并且各个处理逻辑之间可能还有特定的联系，写在一个方法或者一个类中就显得这个方法或类职责太过杂乱了。</p>
+<p>比如有一个Person类，需要过滤他名字中间的敏感字、对年龄作范围的检测，这些操作之间没有强相关的依赖，顺序可以乱，也可以多一个逻辑少一个逻辑，这就比较像Struts2中拦截器的可插拔的特点了。对于这种场景，为了方便扩展、调整，且不对原来的类进行修改（开闭原则），可以利用到要讲到的管道-过滤器模式。</p>
+<p>##设计</p>
+<img src="/images/blog/2017-10-08.png" title="image">
+<p>代码请见：<a href="https://github.com/xbox1994/DesignPattern/tree/master/src/PipelineFilter" target="_blank" rel="noopener">这里</a></p>
+<p>核心模型：</p>
+<ul>
+<li>Manager：提供注册过滤器的方法，并将注册过的过滤器保存起来；提供开始过滤方法，将context依次传给所有过滤器。</li>
+<li>Context：将需要被过滤的实体以及过滤实体需要的信息保存在一起。</li>
+<li>Filter：过滤器，使用接口实现，必须提供filter方法，也可以增加getPriority方法便于排序。</li>
+<li>Person/Rule：需要被过滤的实体、过滤所需信息。</li>
+</ul>
+<p>那么有了这样一套模式，我们可以在代码上清晰很多，一个过滤器类对应一种过滤规则；增加或删除规则只需要自己控制是否注册；调用也非常简单，构造出实体与信息之后交给Manager即可。以后，不管是增加或者删除规则，还是调整过滤的依赖，都非常方便，但缺点是并不是所有过滤器都需要context中传递的所有值。</p>
+<p>值得提到的另一点是，Servlet中过滤器、Struts2的拦截器与这种模式有异曲同工之妙，都是将需要被处理的实体一层一层传递下去，不过是使用其他方式实现的，比如递归。其实设计模式是总结出来的一些套路，贯穿不同模式之间的思路才是精髓！</p>
+<p>#框架中的例子<br>
+##单例+简单工厂模式<br>
+单例与工厂模式的一个经典应用场景在于Spring中IoC容器对于Bean的管理。在使用xml方式定义，创建bean的时候，定义如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean name=&quot;accountDao&quot; class=&quot;com.test.dao.impl.AccountDaoImpl&quot;/&gt;</span><br><span class="line">&lt;bean name=&quot;accountService&quot; class=&quot;com.test.service.impl.AccountServiceImpl&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;accountDao&quot; ref=&quot;accountDao&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>然后在AccountServiceImpl中提供set方式就能这样用到Spring帮我们创建的bean了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testByXml</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    ApplicationContext applicationContext=<span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"spring/spring-ioc.xml"</span>);</span><br><span class="line"></span><br><span class="line">    AccountService accountService= (AccountService) applicationContext.getBean(<span class="string">"accountService"</span>);</span><br><span class="line">    accountService.doSomething();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Spring对每个被管理的类默认生成的是单例，并且对每个类都会生成特定的单例工厂对象，然后调用DefaultSingletonBeanRegistry中的double check lock方式得到需要的产品对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">getSingleton</span><span class="params">(String beanName, <span class="keyword">boolean</span> allowEarlyReference)</span> </span>&#123;</span><br><span class="line">		Object singletonObject = <span class="keyword">this</span>.singletonObjects.get(beanName);</span><br><span class="line">		<span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; isSingletonCurrentlyInCreation(beanName)) &#123;</span><br><span class="line">			<span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">				singletonObject = <span class="keyword">this</span>.earlySingletonObjects.get(beanName);</span><br><span class="line">				<span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; allowEarlyReference) &#123;</span><br><span class="line">					ObjectFactory&lt;?&gt; singletonFactory = <span class="keyword">this</span>.singletonFactories.get(beanName);</span><br><span class="line">					<span class="keyword">if</span> (singletonFactory != <span class="keyword">null</span>) &#123;</span><br><span class="line">						singletonObject = singletonFactory.getObject();</span><br><span class="line">						<span class="keyword">this</span>.earlySingletonObjects.put(beanName, singletonObject);</span><br><span class="line">						<span class="keyword">this</span>.singletonFactories.remove(beanName);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> (singletonObject != NULL_OBJECT ? singletonObject : <span class="keyword">null</span>);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>注意singletonObject = singletonFactory.getObject();这句，singletonFactory在初始化容器的时候已经简简单单一行，就将根据配置或注解寻找符合条件的类的这样一个非常复杂的创建对象的过程完成了（可以跟进去瞧瞧），完全不需要调用者了解其中到底做了什么，这就是简单工厂模式的好处。</p>
+<p>其次，对于单例模式，好处则是在web应用中避免多次调用API时重复创建对象、将资源。但需要注意的是，是否需要懒加载以及线程安全则取决于单例模式的实现方式，<a href="https://github.com/xbox1994/DesignPattern/tree/master/src/Singleton" target="_blank" rel="noopener">这里</a>有示例代码。</p>
+<p>##代理模式<br>
+代理模式提供了一种方式，为某个对象的行为添加其他操作，如日志记录，性能统计，安全控制，事务处理。</p>
+<p><img src="https://www.ibm.com/developerworks/cn/java/j-lo-spring-principle/image020.png" alt></p>
+<p>在图中，接口类Subject只有一个方法，在编译时无法对它的实现类的对象增添方法，那么在不影响原本类的设计下动态地为它的行为添加其他操作是非常有价值的。</p>
+<ul>
+<li>降低耦合度</li>
+<li>使系统容易扩展</li>
+<li>简化需求实现，提高代码复用性</li>
+</ul>
+<p>在Spring中使用JDK动态代理和CGLIB动态代理。JDK动态代理通过反射来接收被代理的类，并且要求被代理的类必须实现一个接口。JDK动态代理的核心是InvocationHandler接口和Proxy类。</p>
+<p>第二种方式是选择CGLIB（Code Generation Library），是一个代码生成的类库，可以在运行时动态的生成某个类的子类，注意，CGLIB是通过继承的方式做的动态代理，因此如果某个类被标记为final，那么它是无法使用CGLIB做动态代理的。<br>
+#回到标题<br>
+那么我们在什么时候才能用上设计模式？上面举了几个设计模式的常见使用例子，个人觉得在下面几种场景下可能需要设计模式。</p>
+<ol>
+<li>写给别人看的时候</li>
+<li>代码逻辑比较庞杂，理解困难的时候</li>
+<li>日后需要经常修改扩展的时候</li>
+<li>有一个优秀程序员的追求的时候</li>
+<li>写框架的时候</li>
+</ol>
+<p>网上有一种观点是：设计模式是从已经写好的代码中提炼出来的，不是在还没写代码的时候设计出来的。<br>
+在没有需求没有代码的时候讨论设计模式的好处是完全没有意义的。后半句我非常赞同，但是前半句不敢苟同，设计模式确实是从以前写出来的代码中提炼出来的，但是我已经学习到了一些设计模式，那么在我以后将要但是还没写代码的时候就可以按照需求去使用相应的设计模式去进行代码设计，有何不可呢。</p>
+<h2 id="号外号外">号外号外</h2>
+<p>最近在总结一些针对<strong>Java</strong>面试相关的知识点，感兴趣的朋友可以一起维护~<br>
+地址：<a href="https://github.com/xbox1994/2018-Java-Interview" target="_blank" rel="noopener">https://github.com/xbox1994/2018-Java-Interview</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/2017-10-22-cong-urlkai-shi-,ding-wei-shi-jie/" data-toggle="tooltip" data-placement="top" title="从URL开始，定位世界">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2017-09-11-kai-yuan-chan-pin-shang-ye-hua-cheng-gong-shi-yi-chong-zen-yang-de-ti-yan/" data-toggle="tooltip" data-placement="top" title="开源产品商业化成功是一种怎样的体验">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#后台" title="后台">后台</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.wangtianyi.top/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>
