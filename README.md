@@ -11,4 +11,4 @@ hexo server
 
 hexo clean && hexo deploy
 
-hexo new post "2023-11-18-分布式事务与seata/DTM"
+hexo new post "2024-02-24-B端系统业务架构设计追问"
