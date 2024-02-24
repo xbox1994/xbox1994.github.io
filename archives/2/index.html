@@ -17,7 +17,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://www.wangtianyi.top/page/5/">
+    <link rel="canonical" href="http://www.wangtianyi.top/archives/2/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -133,14 +133,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">关于作者</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">关于作者</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -210,31 +210,33 @@
 
 <div class="post-preview">
 
-    <a href="/article/2017-10-22-cong-urlkai-shi-,ding-wei-shi-jie/">
+    <a href="/article/2019-05-15-jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">
         <h2 class="post-title">
                                  
-            从URL开始，定位世界
+            【架构入门 - 高可用篇】计算高可用
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            从我们输入URL并按下回车键到看到网页结果之间发生了什么？换句话说，一张网页，要经历怎样的过程，才能抵达用户面前？下面来从一些细节上面尝试一下探寻里面的秘密。
+            计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险
 
-#前言：键盘与硬件中断
-说到输入URL，当然是从手敲键盘开始。对于键盘，生活中用到的最常见的键盘有两种：薄膜键盘、机械键盘。
 
-薄膜键盘：由面板、上电路、隔离层、下电路构成。有外观优美、寿命较长、成本低廉的特点，是最为流行的键盘种类......
+问题
+计算高可用的复杂度体现在任务管理方面，比如一台机器挂了，那么上面的任务如何处理？所以设计高可用架构有以下问题：
+
+哪些服务器可以执行任务？第一种方式是每个服务器都能执行任务；第二种方式是特定主机可以执行任务，如etcd的leader
+任务如何重新执行？第一种是即使任务失败也不处理，但......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2017-10-22
+            2019-05-15
         </p>
         <div class="tags">
             
-              <a href="/tags/#后台" title="后台">后台</a>
+              <a href="/tags/#架构" title="架构">架构</a>
             
         </div>
     
@@ -244,31 +246,34 @@
 
 <div class="post-preview">
 
-    <a href="/article/2017-10-08-shi-yao-shi-hou-neng-yong-shang-she-ji-mo-shi/">
+    <a href="/article/2019-05-05-jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">
         <h2 class="post-title">
                                  
-            什么时候能用上设计模式？
+            【架构入门 - 高性能篇】数据库高性能
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            这是原本我觉得在这一生中很难碰到的开发实践。
+            单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同
 
-#前言
-粗略来说，公认的设计模式有GoF的23种设计，分为创建型、结构型、行为型。在我读大学的时候把其中十几种比较常用的模式总结过一遍，工作一年之后比较惭愧，只记得单例、简单工厂、外观、观察者模式了。
-但是，前几天在项目中有一位比较资深的同事，将业务代码使用一种设计模式实现之后，让我感觉死而复生一般对设计模式再一次产生了浓厚的兴趣。
-#业务中例......
+
+SQL - 读写分离
+基本原理是将数据库读写操作分散到不同节点上，从而分散读写压力到不同的节点上
+
+一主一从或一主多从都可以；主机负责读写操作，从机负责读操作，每个机器都需要同时工作；主机通过复制将数据同步到从机，每个节点都存储了所有的数据
+复制延迟
+MySQ......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2017-10-08
+            2019-05-05
         </p>
         <div class="tags">
             
-              <a href="/tags/#后台" title="后台">后台</a>
+              <a href="/tags/#架构" title="架构">架构</a>
             
         </div>
     
@@ -278,182 +283,25 @@
 
 <div class="post-preview">
 
-    <a href="/article/2017-09-11-kai-yuan-chan-pin-shang-ye-hua-cheng-gong-shi-yi-chong-zen-yang-de-ti-yan/">
+    <a href="/article/2019-05-01-jia-gou-ru-men-gao-xing-neng-pian-ji-qun/">
         <h2 class="post-title">
                                  
-            开源产品商业化成功是一种怎样的体验
+            【架构入门 - 高性能篇】集群高性能
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            Docker：泻药
+            做到集群高性能其实非常简单，三个字【加机器】
+但加机器之后带来的是机器之间配合和集群管理的复杂度，对应也会有解决方案
 
-##从前的Docker
-2013年年初，一个叫做dotCloud的PaaS供应商将其内部项目Docker开源之后，Docker便慢慢进入我们的视野，这家公司甚至卖出所有PaaS业务，改名为Docker.Inc，专注于Docker的开发与推广。
-2014年，Docker公司进行了多次收购，当年6月，Docker 1.0版本正式发布。同时发布Swarm、Machine与Co......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2017-09-11
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#生活绝非编码" title="生活绝非编码">生活绝非编码</a>
-            
-        </div>
-    
 
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2017-07-30-spring-cloudzhong-yi-chang-chu-li-de-tao-lu/">
-        <h2 class="post-title">
-                                 
-            Spring Cloud中异常处理的套路
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            异常在Java中有两种分类：Error（OutOfMemoryError之类的我们自己程序无法处理的非常严重的错误，Java推荐不catch，让程序随之崩溃）、Excepiton（NullPointerException之类的并不致命的错误，Java觉得indicates conditions that a reasonable application might want to catch......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2017-07-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2017-07-16-yi-bei-zi-zuo-hao-yi-jian-shi/">
-        <h2 class="post-title">
-                                 
-            一辈子做好一件事
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            再过一个月，婆婆和你就已经走了两年了，这两年我偶尔会想起你们，每逢佳节的时候想到婆婆，不逢佳节的时候也会像到婆婆；看到有水的地方会想到你，没看到水的时候也会想到你。
-
-打我记事起，爷爷刚刚去世，平时最关心的蜂箱婆婆还保养的好好的，每年还能从婆婆那里拿到不少蜂蜜。虽然自己不喝，但每年年初，婆婆给我家还是送了喝不完的蜂蜜。
-每年过年的时候基本上要回家一趟，那一趟路少说3个小时的车程，慢的话4个小......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2017-07-16
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#生活绝非编码" title="生活绝非编码">生活绝非编码</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2017-07-08-wan-zhuan-wei-fu-wu-ce-shi/">
-        <h2 class="post-title">
-                                 
-            玩转微服务测试
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            本文会讲到在微服务中，测试如何在基于其意义的基础上如何配合微服务的特点被完成，不会涉及到类似测试技巧、测试性能等实现细节，但看完你会明白的是要写什么、为什么在微服务中这样写。
-与单体应用测试不同的是，微服务架构中服务之间的通信非常频繁，不同服务之间的接口变更亦是如此，所以契约测试会占更重要的地位，也是本文的重点。
-
-#单元测试如何写
-首先一定要明白单元测试测的是什么。
-最小可测试单元进行检查......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2017-07-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MicroService" title="MicroService">MicroService</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2017-06-23-jian-ting-qi-de-qian-shi-jin-sheng/">
-        <h2 class="post-title">
-                                 
-            监听器的前世今生
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            对不起我的文章中没有粗体或者高亮，只有格式的不同，因为格式已经足够明显提醒你了并且每句话都是不是废话。
-
-#世界上最早的监听器不是Servlet中的
-其实这篇文章有一半与主题无关。请原谅我当了一次标题党。万恶的标题党，我自己都难以根据题目了解文章内容了。
-对于大部分Java开发者来说，第一次听说监听器这个翻译过来的词汇的时候是在学习Servlet的时候听说的，还记得当年用HttpSessio......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2017-06-23
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2017-06-13-dui-ci-slash-cdyu-fen-zhi-mo-xing-de-li-jie/">
-        <h2 class="post-title">
-                                 
-            对CI/CD与分支模型的理解
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            最近从前项目上刚下来，经历了项目中分支策略的重大变更，完成了对部署策略替换的实现，现在想把自己了解到的这方面知识记录以及总结一下，深入自己对其的理解程度。
-
-#CI/CD
-##概念
-CI (Continuous Integration)和CD (Continuous Delivery)是敏捷中非常重要的概念，它以持续、敏捷的思想对项目开发、发布流程有一个具体的指导性实践。
-###持续集成
+负载均衡
+任务分配是高性能集群主要的复杂性体现，所以选择一个合适的负载均衡器和算法是必须的
+分类
+DNS
+最简单的方式，一般用来实现地理级别的均衡（AWS Route53就是）。比如来自美国的访问就分配给位于美国的服务器，来自中国的访问就分配给位于中国的服务器
+优点：
 
 ......
         </div>
@@ -461,11 +309,11 @@ CI (Continuous Integration)和CD (Continuous Delivery)是敏捷中非常重要�
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2017-06-13
+            2019-05-01
         </p>
         <div class="tags">
             
-              <a href="/tags/#DevOps" title="DevOps">DevOps</a>
+              <a href="/tags/#架构" title="架构">架构</a>
             
         </div>
     
@@ -475,31 +323,31 @@ CI (Continuous Integration)和CD (Continuous Delivery)是敏捷中非常重要�
 
 <div class="post-preview">
 
-    <a href="/article/2017-06-09-yi-ci-nao-bao-plus-inceptionde-guo-cheng/">
+    <a href="/article/2019-04-29-dan-nan-de-ji-ge-gao-neng/">
         <h2 class="post-title">
                                  
-            一次小型脑暴+Inception的过程
+            🥚男的几个高能
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            在Beach上呆久了就会觉得无聊，然后最无聊的老司机来干大事啦，虽然整个流程只花了一个半小时。
+            一拳超人第二季放送开始啦，写点儿东西送给老师和自己
+Note：Music自动播放哦~
 
-#动机
-我们这几天自己在学一些新东西嘛，然后光自己学挺无聊的，如果能把他们结合自己的想法去做个东西出来不更好吗？这就是我们这次脑暴的动机啦。
-#脑暴
-首先把我们最近干的事情以及自己想做的东西都列出来，每个人谈谈学习经历、想法出现的动机，反正就是全部列出来。我就说我最近在看GoCD想去贡献源代码去......
+
+上大学的时候被这个🥚头男深深吸引了，主要还是这个男人的拳头实在太猛了，一出场就是无敌的存在，第一次让我为反派担心
+因为很少有故事是这样讲的：男主一开始就无敌了，然后各种因缘巧合干掉了无数个在他面前装逼的小喽啰，男主装完逼之后还觉得没什么意思。但这就是引人入胜、夺人眼球的关键，然后就进入了🥚男的套路了......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2017-06-09
+            2019-04-29
         </p>
         <div class="tags">
             
-              <a href="/tags/#Inception" title="Inception">Inception</a>
+              <a href="/tags/#生活绝非编码" title="生活绝非编码">生活绝非编码</a>
             
         </div>
     
@@ -509,30 +357,217 @@ CI (Continuous Integration)和CD (Continuous Delivery)是敏捷中非常重要�
 
 <div class="post-preview">
 
-    <a href="/article/2017-06-08-yi-microservies-6-xuan-ze-yi-ge-wei-fu-wu-bu-shu-ce-lue/">
+    <a href="/article/2019-04-20-jia-gou-ru-men-gao-xing-neng-pian-dan-ji/">
         <h2 class="post-title">
                                  
-            [译][MicroService 6]选择一个微服务部署策略
+            【架构入门 - 高性能篇】单机高性能
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            选择一个微服务部署策略
+            做到单机高性能其实非常简单，一个字【钱】
+但钱的力量远远不够，还需要把钱花在刀刃上
 
-#动机
-部署一个单体应用意味着运行多个相同的单个副本，并且通常是比较大的应用。你通常配置N个服务器（物理或虚拟），并且在每个上面跑M个应用的实例。单体应用的部署不总是很简单的，但是比部署微服务简单多了。
-微服务包含很多服务。服务又可能是用不同的语言和框架写的。每个服务都是一个有自己特定部署、资源、缩放和监控需求的小型应用。比如你需要根据服务来为每个服务启动一定量的实......
+
+协作方式
+在高并发场景中，必须要让服务器同时维护大量请求连接，可能是一个服务进程创建另一个进程，也可能是一个服务线程去创建另一个线程，但连接结束后进程或线程就销毁了，这是一个巨大的浪费
+一个自然的想法就是通过创建一个进程/线程池从而达到资源复用，一个进程/线程可以处理多个连接
+那么如何处理多个连接？
+同步......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2017-06-08
+            2019-04-20
         </p>
         <div class="tags">
             
-              <a href="/tags/#MicroService" title="MicroService">MicroService</a>
+              <a href="/tags/#架构" title="架构">架构</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2019-04-09-jia-gou-ru-men-xi-lie-shen-me-shi-jia-gou/">
+        <h2 class="post-title">
+                                 
+            【架构入门】什么是架构
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            对于想要入门架构的小白来说，我们必须要了解以下问题：
+
+什么是架构
+架构的目的
+架构的复杂度来源
+做架构需要具备的能力
+
+
+
+什么是架构
+软件架构指软件系统的顶层结构
+系统：泛指由一群有关联的个体组成，根据某种规则运作，能完成个别元件不能单独完成的工作的群体。比如微信就是一个系统
+顶层结构：系统可分为系统与子系统，差别在于系统可能是另外一个大系统的子系统。比如微信系统中还包含聊天、登录、支付......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2019-04-09
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#架构" title="架构">架构</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2019-03-26-ji-yu-go-microde-wei-fu-wu-jia-gou-ben-di-shi-zhan/">
+        <h2 class="post-title">
+                                 
+            基于Go Micro的微服务架构本地实战
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            本项目Github地址：https://github.com/xbox1994/GoMicroExample
+
+简介
+Go Micro是一个插件化的基础微服务框架，它是一部分微服务工具的集合。基于该框架可以构建出微服务应用程序。Micro的设计哲学是“可插拔”的插件化架构。在架构之外，它默认实现了consul作为服务发现，通过http、protobuf、进行通信。里面包含几乎所有微服务组件，......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2019-03-26
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#后台" title="后台">后台</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2019-03-06-zai-awsshang-kuo-zhan-dao-shu-bai-mo-yong-hu-de-xi-tong/">
+        <h2 class="post-title">
+                                 
+            【译】在AWS上扩展到数百万用户的系统
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+第一步：弄清用例与约束
+
+收集需求和问题的范围
+通过问问题来弄清用例与约束
+讨论假设
+
+我们假定以下用例
+用例
+解决这个问题需要采用迭代的方法：
+
+基准/负载测试
+瓶颈检测
+评估替代方案来解决瓶颈
+重复以上
+
+这是将基本设计升级为可扩展设计的良好模式
+除非你有AWS的背景或者正在申请AWS的相关职位，否则在AWS上的实现细节不需要了解。然而大部分在这里讨论的原理可以应用到除了AWS以外更通......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2019-03-06
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#架构" title="架构">架构</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2019-01-12-jia-gou-ru-men-xi-lie-cong-ye-wu-dao-ping-tai-de-si-wei-zhuan-bian/">
+        <h2 class="post-title">
+                                 
+            【架构入门】从业务到平台的思维转变
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+一个需求：抽奖系统
+如果你接到了一个开发需求：开发一个抽奖活动的后台系统。第一反应如果是打开IDEA，新建一个项目，输入项目名：lottery。然后开始根据需求着手开始进行设计数据库，api，然后进行开发，这是太平常不过的开发流程。
+过了一段时间，你又接到一个类似的需求：开发另一个抽奖活动的后台系统，但是里面的一些业务逻辑、流程处理不太一样，然后就把前一个完成的后台系统复制过来，准备开始修......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2019-01-12
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#架构" title="架构">架构</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2018-12-30-oauth2yuan-li-yu-linkedinde-di-san-fang-fen-xiang-shi-zhan/">
+        <h2 class="post-title">
+                                 
+            OAuth2原理与LinkedIn的第三方分享实战
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+OAuth是什么
+开放授权（OAuth）是一个开放标准，允许用户让第三方应用访问该用户在某一网站上存储的私密的资源（如照片，视频，联系人列表），而无需将用户名和密码提供给第三方应用。在全世界得到广泛应用，目前的版本是2.0版。
+比如我的应用需要实现在领英上替用户分享一个动态，但是只有得到用户的授权才能在我的应用中调用领英的API进行分享操作，如果直接让用户把用户名密码传到我的应用，确实可以......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2018-12-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#后台" title="后台">后台</a>
             
         </div>
     
@@ -547,12 +582,12 @@ CI (Continuous Integration)和CD (Continuous Delivery)是敏捷中非常重要�
 <ul class="pager">
     
         <li class="previous">
-            <a href="/page/4/">&larr; Newer Posts</a>
+            <a href="/">&larr; Newer Posts</a>
         </li>
     
     
         <li class="next">
-            <a href="/page/6/">Older Posts &rarr;</a>
+            <a href="/archives/3/">Older Posts &rarr;</a>
         </li>
     
 </ul>
@@ -589,11 +624,11 @@ CI (Continuous Integration)和CD (Continuous Delivery)是敏捷中非常重要�
             
         
             
-            <a href="/tags/#学习" title="学习" rel="1">学习</a>
+            <a href="/tags/#后台" title="后台" rel="23">后台</a>
             
         
             
-            <a href="/tags/#后台" title="后台" rel="23">后台</a>
+            <a href="/tags/#学习" title="学习" rel="1">学习</a>
             
         
             
@@ -601,11 +636,11 @@ CI (Continuous Integration)和CD (Continuous Delivery)是敏捷中非常重要�
             
         
             
-            <a href="/tags/#MicroService" title="MicroService" rel="7">MicroService</a>
+            <a href="/tags/#翻译" title="翻译" rel="1">翻译</a>
             
         
             
-            <a href="/tags/#翻译" title="翻译" rel="1">翻译</a>
+            <a href="/tags/#MicroService" title="MicroService" rel="7">MicroService</a>
             
         
             
@@ -855,21 +890,6 @@ CI (Continuous Integration)和CD (Continuous Delivery)是敏捷中非常重要�
 <img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 
 </html>

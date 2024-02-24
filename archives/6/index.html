@@ -17,7 +17,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://www.wangtianyi.top/page/4/">
+    <link rel="canonical" href="http://www.wangtianyi.top/archives/6/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -133,14 +133,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">关于作者</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">关于作者</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -210,38 +210,30 @@
 
 <div class="post-preview">
 
-    <a href="/article/2018-05-11-javaduo-xian-cheng-yu-gao-bing-fa-liu-gao-bing-fa-jie-jue-si-lu/">
+    <a href="/article/2017-06-01-yi-microservies-7-jiang-ju-wu-ba-zhong-gou-cheng-wei-fu-wu/">
         <h2 class="post-title">
                                  
-            Java多线程与高并发(六):高并发解决思路
+            [译][MicroService 7]将巨无霸重构成微服务
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            本系列的最后一篇，主要提供一些高并发场景的解决思路，实现的细节虽然需要在实战中学习，但解决的思路一定要有。
-
-扩容
-垂直扩容（纵向扩展）
-提高单个服务（服务器、数据库）自身能力
-但会增大单个服务中其他软件设施的依赖与管理、服务内部复杂度
-水平扩容（横向扩展）
-增加更多服务成员
-但会增加网络、数据库IO开销、管理多个服务器的难度
-对数据库的扩容方案
-确定业务类型
-
-读操作多：采用垂直扩容方案（......
+            
+#微服务重构概述
+将单体应用程序转换成微服务的过程是应用程序现代化的一种形式。
+你应该逐步重构单体应用程序而不是重写。随着时间的推移，单体应用实现的功能量会减少，知道它完全消失或者成为另一个微服务。这种策略类似于在在高速上以70英里/小时驾驶汽车，但是比重写风险小多了。
+Martin Fowler将这种应用现代化策略看做扼杀者应用。名字来源于热带雨林中发现的扼杀者藤蔓。一只藤蔓生在一棵树上......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2018-05-11
+            2017-06-01
         </p>
         <div class="tags">
             
-              <a href="/tags/#后台" title="后台">后台</a>
+              <a href="/tags/#MicroService" title="MicroService">MicroService</a>
             
         </div>
     
@@ -251,251 +243,26 @@
 
 <div class="post-preview">
 
-    <a href="/article/2018-05-08-javagao-bing-fa-wu-xian-cheng-chi/">
+    <a href="/article/2017-05-19-dockerjin-jie-yu-shi-zhan--bi-ji-ji-ben-zhi-shi-pian/">
         <h2 class="post-title">
                                  
-            Java多线程与高并发(五):线程池
+            《Docker进阶与实战》笔记-基本知识篇
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-new Thread弊端
-
-每次启动线程都需要new Thread新建对象与线程，性能差。线程池能重用存在的线程，减少对象创建、回收的开销。
-线程缺乏统一管理，可以无限制的新建线程，导致OOM。线程池可以控制可以创建、执行的最大并发线程数。
-缺少工程实践的一些高级的功能如定期执行、线程中断。线程池提供定期执行、并发数控制功能
-
-ThreadPoolExecutor
-核心变量
-在创建线程池时......
+#Docker简介
+##历史与发展
+2013年dotCloutd的PaaS服务商将内部项目Docker开源。这家公司随后出售PaaS，改名为Docker.Inc，专注Docker的开发与推广
+Docker是一个开源的容器引擎，得益于容器技术带来的轻量级虚拟化，以及Docker在分层镜像应用上的创新，Docker在磁盘占用、性能和效率方面比传统虚拟化都有非常明显的提高，开始蚕食传统虚拟化的市......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2018-05-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-05-01-javagao-bing-fa-xi-lie-si-juc/">
-        <h2 class="post-title">
-                                 
-            Java多线程与高并发(四):java.util.concurrent包
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            面试官：你用过JUC的哪些工具类？
-前面从基础开始，到线程安全的实现、对象的发布与共享，涉及到很多线程安全的类与工具，JDK1.5开始，提供了更加方便强大的线程同步管理工具包JUC让我们使用，这个也是面试与实践中的重点，本文结合源代码作一些比较落地的讲解。
-
-
-报告面试官，JUC中有非常多的类，将部分类按功能进行分类，分别是：
-
-之前提到过的原子atomic包
-比synchronized功能......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-05-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-04-30-javagao-bing-fa-xi-lie-san-dui-xiang-de-an-quan-fa-bu-yu-gong-xiang-ce-lue/">
-        <h2 class="post-title">
-                                 
-            Java多线程与高并发(三):对象的安全发布与共享策略
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            面试官：你知道如何发布或共享一个对象吗？
-
-发布对象：使一个对象能够被其他线程、其他作用域的代码所使用。
-变量逸出原有作用域
-12345678910111213141516import java.util.Arrays;public class Main &#123;    private String[] strs = &#123;"1", "2", "3"&#125;;    publi......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-04-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-04-28-javagao-bing-fa-xi-lie-er-xian-cheng-an-quan-xing/">
-        <h2 class="post-title">
-                                 
-            Java多线程与高并发(二):线程安全性
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            面试官：你能说说什么是线程安全吗？
-
-线程安全性
-当多个线程访问某个类时，不管运行时环境采用何种调度方式或者这些线程将如何交替执行，并且在调用代码中不需要任何额外的同步，这个类都能表现出正确的行为，那么这个类就是线程安全的。
-
-原子性：同一时刻只能有一个线程对它操作
-可见性：一个线程对内存的修改能让其他线程观察到
-有序性：指令执行顺序，杂乱无序
-
-原子性
-Atomic包
-AtomicInte......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-04-28
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-04-28-javagao-bing-fa-xi-lie-yi-bing-fa-ji-chu-yu-mo-ni-gong-ju/">
-        <h2 class="post-title">
-                                 
-            Java多线程与高并发(一):并发基础与模拟工具
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            面试官：你知道Java的内存模型是什么吗？
-
-基本概念
-并发、并行
-引用知乎上一个最高赞：
-
-你吃饭吃到一半，电话来了，你一直到吃完了以后才去接，这就说明你不支持并发也不支持并行。
-
-
-你吃饭吃到一半，电话来了，你停了下来接了电话，接完后继续吃饭，这说明你支持并发。
-
-
-你吃饭吃到一半，电话来了，你一边打电话一边吃饭，这说明你支持并行。
-
-
-并发的关键是你有处理多个任务的能力，不一定要同时。......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-04-28
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-03-18-min-jie-zhong-de-kan-ban/">
-        <h2 class="post-title">
-                                 
-            敏捷中的看板
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            很荣幸，第一份工作就进入了提倡敏捷开发的TW，进的第一个团队也是比较规范使用看板方法的团队。什么敏捷开发、看板方法，在学校的时候是从来没听过的，甚至进公司前一年还在学校学习如何通过瀑布开发方式来完成项目，当时觉得瀑布过于死板，但是又想不到有什么好的方法。
-
-#什么是敏捷开发
-一种以用户的需求进化为核心、高效快速迭代的软件开发方式而已，只要符合了敏捷的元素，你就可以说用的是敏捷，敏捷开发没有固......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-03-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#敏捷" title="敏捷">敏捷</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-02-05-shou-ba-shou-jiao-ni-da-jian-yi-ge-chi-xu-ji-cheng-huan-jing/">
-        <h2 class="post-title">
-                                 
-            手把手教你搭建一个持续集成环境
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            本文将带领你从0开始，用Vagrant + Docker + Ansible + Jenkins + Nginx + GitHub等工具和资源来搭建一条可执行可扩展的持续集成流水线，即使这些名字你都没听过也没关系，本文将会在需要的时候一一解释给你听。
-
-By: 巧颖 &amp; 天一
-#总览
-这是我们将要搭建的所有基础设施的总体架构图，我们将在本文中手把手教你搭建这样一个持续集成环境。
-
-我......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-02-05
+            2017-05-19
         </p>
         <div class="tags">
             
@@ -509,32 +276,31 @@ By: 巧颖 &amp; 天一
 
 <div class="post-preview">
 
-    <a href="/article/2017-12-29-lai-chi-ji/">
+    <a href="/article/2017-05-15-zai-wei-fu-wu-jia-gou-zhong-de-fu-wu-fa-xian-ji-zhi/">
         <h2 class="post-title">
                                  
-            少年的2017年尾声
+            [译][MicroService 4]在微服务架构中的服务发现机制
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            最后一天啦，发现一个半月没有更新博客了，一方面是项目上有点忙又赶上年终评价了，一方面是不知道写什么，还有一方面是痴迷于steam上的吃鸡不能自拔。不如把最近的状况写写吧。
+            
+##为什么用服务发现
+让我们想象你正在写调用有REST API或者Thrift API的代码。为了发送请求，你的代码需要知道网络地址（IP地址和端口）。在跑在物理硬件上运行的传统应用上，服务实例的网络地址是相对静止的。比如你的代码可以读取你本地的配置文件。
+在现代、基于云服务的应用，然而这是非常难以解决的问题，就像下面的图表：
 
-#习惯性博客
-
-写博客真是一件容易上瘾的事情。
-
-但是如果从来没写过日记、博客的时候要你去写一篇长文可真是非常头疼了。记得在小学的时候，日记是语文老师布置下来的强制性的任务，每天都要写，第二天上交，不能少于多少字。写起来......
+服务实例动态分配网络地址。一系列服务实例会因为自动缩放、失败......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2017-12-29
+            2017-05-15
         </p>
         <div class="tags">
             
-              <a href="/tags/#生活绝非编码" title="生活绝非编码">生活绝非编码</a>
+              <a href="/tags/#MicroService" title="MicroService">MicroService</a>
             
         </div>
     
@@ -544,33 +310,227 @@ By: 巧颖 &amp; 天一
 
 <div class="post-preview">
 
-    <a href="/article/2017-11-18-react-nativezu-jian-she-ji-shi-jian/">
+    <a href="/article/2017-05-05-gou-jian-wei-fu-wu-wei-fu-wu-jia-gou-zhong-de-jin-cheng-jian-tong-xin/">
         <h2 class="post-title">
                                  
-            React Native组件设计实践
+            [译][MicroService 3]构建微服务:微服务架构中的进程间通信
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            本文中所提到的组件的定义是基于React Native官方提供的某个/些组件进行包装/组合的用户某个特定App的自定义组件，可能与业务相关，也可能无关。
+            在单体应用上，组件通过语言级别的方法或者方法彼此调用。相比之下，基于微服务的应用是在多台机器上运行的分布式系统。每个服务实例通常是一个进程。
 
-#为什么要写组件
-想象一下，你的每一个页面中除了工具类的引用之外没有任何一个import，当你写了几个页面之后发现很舒服，当你写下一个页面的时候你突然发现你可能需要：
+因此，如下图所示，服务必须用进程间通信（IPC）机制进行交互。
 
-复制 + 粘贴
-花很多时间弄清楚之前的页面中写的是什么东西
-粘贴代码......
+稍后我们会看一下特定的IPC技术，但是首先让我们探索各种设计问题。
+##交互方式
+当为服务选择IPC机制时，首先要考虑服务是如何交互的。有很多客户端服务端交互方式。他们可以被分成两个维......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2017-11-18
+            2017-05-05
         </p>
         <div class="tags">
             
-              <a href="/tags/#前端" title="前端">前端</a>
+              <a href="/tags/#MicroService" title="MicroService">MicroService</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2017-04-22-yi-microservies-2-building-microservices-using-an-api-gateway/">
+        <h2 class="post-title">
+                                 
+            [译][MicroService 2]构建微服务:使用API网关
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            七部曲中的第一篇是关于设计，构建和部署微服务。讨论了微服务的好处和缺点，尽管一系列的微服务有一定的复杂性，但是它们对于复杂应用来说还是通用的理想选择。这是第二篇文章关于讨论使用API网关来构建微服务。
+
+#Building MicroService: Using an API Gateway
+当你选择将应用程序构建为一组微服务时，你需要决定你的客户端将如何与微服务交互。在单体应用中只有一组（......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2017-04-22
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#MicroService" title="MicroService">MicroService</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2017-04-16-microservies-1-introduction-to-microservies/">
+        <h2 class="post-title">
+                                 
+            [译][MicroService 1]介绍微服务
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            微服务现在引起和很大的关注：文章，博客，讨论或者在社交媒体和会议报告上。他们正快速走向Gartner炒作周期的高估预期阶段。与此同时，在软件社区中有怀疑者角儿微服务没有任何新意。Naysayers声称这个想法只是SOA的重塑。不过，尽管有炒作和怀疑，微服务架构模式在敏捷开发和复杂交付应用中有明显的优势。
+这篇博客是关于设计，建立，部署微服务七部曲中的第一篇。这个系列将讲解很多微服务元素。你将......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2017-04-16
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#MicroService" title="MicroService">MicroService</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2017-03-19-yi-how-https-secures-connections/">
+        <h2 class="post-title">
+                                 
+            [译]How HTTPS Secures Connections
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            译自：https://blog.hartleybrody.com/https-certificates/
+
+#HTTPS如何加密连接：每个Web开发者都应该知道的东西
+##为什么
+在我们试图深入了解所有的原理之前，让我们讨论为什么首先加密连接是很重要的，还有HTTPS在守卫着什么。
+当你发送请求给你喜爱的网站时，请求必须通过很多不同的网络连接，其中任何一个网络都可能用来窃听或者篡改你的连接。......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2017-03-19
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#翻译" title="翻译">翻译</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2017-02-21-linuxjin-cheng-hou-tai-qi-dong-zong-jie/">
+        <h2 class="post-title">
+                                 
+            Linux进程后台启动总结
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            &amp; screen nohup service…进程的后台启动方式总结
+
+##&amp;
+这是一个最简单看起来是将进程作为后台启动的方式,让我们试试看
+12➜  ~ sleep 100 &amp;[1] 6564
+这样就可以在当前终端运行其他命令,看起来启动了一个后台进程去运行sleep,但是在终端关闭之后进程会被杀死,使用disown可以将进程继续保持下去即使当前终端关闭
+123➜ ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2017-02-21
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#DevOps" title="DevOps">DevOps</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2017-02-04-docker-portyu-iptables/">
+        <h2 class="post-title">
+                                 
+            Docker port与iptables
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            一个请求是如何从实体机传递到我们的应用的
+iptables -&gt; docker deamon -&gt; docker bridge network -&gt; docker container -&gt; app
+
+##从iptables开始
+参考:https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Lin......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2017-02-04
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#DevOps" title="DevOps">DevOps</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2017-01-29-docker-in-docker/">
+        <h2 class="post-title">
+                                 
+            Docker in Docker
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            我想过一个非常有意思的东西:在docker里面运行docker,然后在docker里运行的docker中再运行一个docker,接着在docker里运行的docker里运行的docker中再开一个docker…接着迭代100次会发生什么
+
+结合这篇文章:https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2017-01-29
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#DevOps" title="DevOps">DevOps</a>
             
         </div>
     
@@ -585,12 +545,12 @@ By: 巧颖 &amp; 天一
 <ul class="pager">
     
         <li class="previous">
-            <a href="/page/3/">&larr; Newer Posts</a>
+            <a href="/archives/5/">&larr; Newer Posts</a>
         </li>
     
     
         <li class="next">
-            <a href="/page/5/">Older Posts &rarr;</a>
+            <a href="/archives/7/">Older Posts &rarr;</a>
         </li>
     
 </ul>
@@ -627,11 +587,11 @@ By: 巧颖 &amp; 天一
             
         
             
-            <a href="/tags/#学习" title="学习" rel="1">学习</a>
+            <a href="/tags/#后台" title="后台" rel="23">后台</a>
             
         
             
-            <a href="/tags/#后台" title="后台" rel="23">后台</a>
+            <a href="/tags/#学习" title="学习" rel="1">学习</a>
             
         
             
@@ -639,11 +599,11 @@ By: 巧颖 &amp; 天一
             
         
             
-            <a href="/tags/#MicroService" title="MicroService" rel="7">MicroService</a>
+            <a href="/tags/#翻译" title="翻译" rel="1">翻译</a>
             
         
             
-            <a href="/tags/#翻译" title="翻译" rel="1">翻译</a>
+            <a href="/tags/#MicroService" title="MicroService" rel="7">MicroService</a>
             
         
             
@@ -893,21 +853,6 @@ By: 巧颖 &amp; 天一
 <img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 
 </html>

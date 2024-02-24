@@ -17,7 +17,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://www.wangtianyi.top/page/3/">
+    <link rel="canonical" href="http://www.wangtianyi.top/archives/7/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -133,14 +133,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">关于作者</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">关于作者</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -210,61 +210,27 @@
 
 <div class="post-preview">
 
-    <a href="/article/2018-12-08-yi-ci-ji-yu-wei-fu-wu-kuang-jia-de-tong-yong-ya-ce-diao-you-shi-zhan/">
+    <a href="/article/2017-01-16-sshdeng-lu-yuan-li-jian-jie/">
         <h2 class="post-title">
                                  
-            一次简单通用的压测调优实战
+            SSH登录原理简介
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            相比于网上教你如何使用ab、jmeter工具进行压测一个接口，本文更关注在压测调优的思路上。
+            每次都用SSH登录,却没有关心过其中的原理,实在没脸用SSH
 
-明确思路
-目的：提升单个接口的QPS（每秒查询率QPS是对一个特定的查询服务器在规定时间内所处理流量多少的衡量标准。）
-工具：本文不关注工具的使用，简单起见，使用apache的ab工具
-步骤：先测试并优化一个空接口（直接返回请求的接口），拿到一个极限QPS，然后分别引进Redis、MySQL的接口......
+##什么是SSH?
+简单说，SSH是一种网络协议，用于计算机之间的加密登录。
+如果一个用户从本地计算机，使用SSH协议登录另一台远程计算机，我们就可以认为，这种登录是安全的，即使被中途截获，密码也不会泄露。
+最早的时候，互联网通信都是明文通信，一旦被截获，内容就暴露无疑。1995年，芬兰学者Tatu Ylonen设计了SSH协议......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2018-12-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-10-20-wei-tuan-dui-gou-jian-devopsti-xi/">
-        <h2 class="post-title">
-                                 
-            为团队构建DevOps体系
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            在开发过程中，如果团队没有基本的DevOps体系来保证应用的稳定，便捷的自动部署，规范的部署流程，优良的开发环境，那么除了开发效率很可能是极为底下之外，团队成员也怕是会怨声载道，更别提应用的健壮性了。
-
-DevOps是什么
-DevOps的定义众说纷纭，个人的理解是：
-
-从狭义上来说是一套实践、方法、工具，是提高交付应用程序和服务能力的一组最佳实践，为了在保证高质量的前提下缩短系统变更从提交到......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-10-20
+            2017-01-16
         </p>
         <div class="tags">
             
@@ -278,29 +244,27 @@ DevOps的定义众说纷纭，个人的理解是：
 
 <div class="post-preview">
 
-    <a href="/article/2018-10-07-cong-javaji-su-ru-men-go/">
+    <a href="/article/2017-01-08-mou-ci-you-hua-shi-jian-nginxshi-na-lai-gan-shi-yao-de/">
         <h2 class="post-title">
                                  
-            从Java极速入门Go
+            记一次性能优化探索-Nginx有什么用
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            
-本文适合有Java开发经验且想学习Go的同学，是一篇非常适合入门Go语言的教程，本文只会涉及部分Go的核心内容，不适合想系统学习Go的同学，但也提供了系统学习的方式。
-Go语言简介
-下面是对Go的简单介绍，可以先了解一下，如果有哪些暂时无法理解的可以先跳过，学完【极速入门】之后回头来看就会恍然大悟。
+            “这张卡马上做完了,赶紧desk check,我们先把测试环境准备好”.我高高兴兴地跟洲说,随手修改了一下配置文件中的微服务访问路径,然后重启服务器,一切看起来那么的一帆风顺.
+“好的,页面开始Loading啦”…10分钟之后…“我受不了了”
 
-简介
-Go是一门语法非常简单的开源编程语言，目的是让程序开发变得更有生产效率。
-Go是一......
+##问题
+1.本地环境开启的应用访问EC2上的某微服务速度慢,但在EC2环境开启的应用访问该微服务速度快.
+2.本地环境加载某一个页面的过程中刷新,......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2018-10-07
+            2017-01-08
         </p>
         <div class="tags">
             
@@ -314,28 +278,60 @@ Go是一......
 
 <div class="post-preview">
 
-    <a href="/article/2018-09-01-da-shang-hua-huo-wan-jie-!/">
+    <a href="/article/2016-12-31-learning-how-to-learn/">
         <h2 class="post-title">
                                  
-            打上花火 完结！
+            Learning how to Learn
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            不容易啊，为了这首歌，练了足足一个月
+            在过去的很多年时间里,我很少,其他人也很少告诉我们自己该如何学习,而是告诉你时间是挤出来的,把时间花到学习上是唯一提高学习成绩的方法.
+如果我能早一些看到,或者说如果我能早一些意识到这一点,把其中的理论实践下去可能会以自己为例反驳上面的观点.
 
-先上菜！吧，客官见笑了~
-缘分
-一个月前的某日在刷抖音的时候突然刷到这首BGM，顿时被曲子所吸引，到网易云音乐上听完完整版之后更是惊叹女声与男声的绝妙融合，音乐无国界！当时就下定决心，要学会的第一首歌就是你啦。显然当时并没有意识到唱好这首歌的难度。
-第一关：语言
-本人当然不会日语。。也并不想学日语。。所以找到了《打上花火》的罗马音版本，但是百度知道上的......
+我们时常听到一些感觉很矛盾的传说:某人特牛逼,学习总是名列前茅,还经常花时间去干别的事,如打篮球,玩游戏.我原来会觉得这种人肯定是天才,脑袋绝顶聪明......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2018-09-01
+            2016-12-31
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#学习" title="学习">学习</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2016-12-25-ni-de-ming-zi-./">
+        <h2 class="post-title">
+                                 
+            你的名字。
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            某夜,趟雨,迟到5分钟,坐下,观影,值了.
+
+这是我看过为数不多的电影之一,但这部电影的剧情是给我感触最深的.全剧可分为三个层次,每个层次内部有很强的主旨,但又有一条主线索贯穿其中.让人沉迷其中.
+##若即若离
+若有若无的联系,情感是最为微妙的,非常容易迷住观众,引人入胜.
+梦中交换身体,邂逅彼此,过着梦想的和从来没有过的生活,用文字约束着交流着.
+“姐姐你什么时候开始这么喜欢摸自己的胸啊.......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2016-12-25
         </p>
         <div class="tags">
             
@@ -349,191 +345,28 @@ Go是一......
 
 <div class="post-preview">
 
-    <a href="/article/2018-08-31-xi-tong-she-ji-mian-shi-ti-zong-he-kao-cha-mian-shi-zhe-de-da-zhao/">
+    <a href="/article/2016-12-18-nusde-hou-tai/">
         <h2 class="post-title">
                                  
-            系统设计面试题：综合考察面试者的大招
+            NUS后台
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            站在面试官的角度，如何设计一道系统面试题，如何考察面试者的一整套流程，以及相关解答
+            Nginx Unicorn Sinatra
+研究一个后台架构,客户端发送的请求最开始是由是Nginx接收的,随后反向代理发送给Unicorn服务器的一个线程,接下来是Sinatra框架和Rack负责处理
 
-在高级程序员面试的过程中，系统设计是一个很可能被问到的一个问题，由于它能体现出面试者很多方面的能力，是一道非常考验综合素质的面试题，一直被面试官青睐。
-比如：业务理解抽象能力、业务挖掘能力、沟通表达能力、高层系统设计能力、底层服务实现经验、全栈经验
-下面用一个自己设计的非常简单的系统设计题来一起体会体会。本......
+###Nginx
+是一个高性能的HTTP和反向代理服务器
+根据以下文件你可以发现在SF中我们是如何使用nginx的
+infrastructure/ansible/roles.add_app......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2018-08-31
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-07-26-jvmdiao-you-ru-men-er-shi-zhan-diao-you-parallelshou-ji-qi/">
-        <h2 class="post-title">
-                                 
-            JVM调优入门（二）：实战调优Parallel收集器
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            在调优JVM的时候，我们的目的是在一定的运行环境下提高吞吐量，降低最大停顿时间。这篇文章以Parallel收集器来进行一次调优实战。
-测试环境：青云上海1区A - 性能型 - ubuntu 16.04 - 2核12G
-
-我们要调的是什么？
-本文就以我们一个项目的启动速度极慢的Jar包为动手目标，将提升启动速度为目的，那是不太可能的，因为GC的速度本来早就已经优化的很快了，所以提升启动速度的效......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-07-27
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-07-26-jvmdiao-you-ru-men-yi-ji-chu-zhi-shi/">
-        <h2 class="post-title">
-                                 
-            JVM调优入门（一）：基础知识
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            当Java程序性能达不到目标，且代码上的优化手段都已经穷尽时，通常需要调整垃圾回收器和JVM内存空间配置来进一步提高性能，这就是JVM调优。
-在调优的时候，我们必须要知道调的是什么，为什么要这样调，这些跟基础知识密不可分。
-比如要知道内存结构、垃圾收集机制、算法、收集器，还要知道如何从GC日志中得到调试的效果，那么本系列文章将带你回顾调优用到的JVM基础知识。然后实战调优一把，最后我会总结出......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-07-25
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-07-20-javasheng-chan-huan-jing-xia-wen-ti-pai-cha/">
-        <h2 class="post-title">
-                                 
-            Java生产环境下问题排查
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            在生产环境中，我们无法通过断点调试、新增log、可视化工具去立马查看当前的运行状态和拿到错误信息，此时，借助Java自带的命令行工具以及相关dump分析工具以及一些小技巧，可以大大提升我们排查问题的效率
-
-运行参数
-下面会列出一些常用且非常有效的命令以及参数来查看运行时Java程序的信息，从而辅助你了解程序运行状态。还有大量可用的功能由其他参数提供，自行参阅oracle文档
-查看JVM参数
-......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-07-20
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-07-13-du-zi-dai-da-yi-ge-gong-neng-mo-kuai-shi-zen-yang-de-ti-yan/">
-        <h2 class="post-title">
-                                 
-            独自带大一个功能模块是怎样的体验
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            最近被安排了，要实现一个脚本任务功能，还要能让已存在的模块复用上。现在来完整的记录和总结一下历时两个月完成它的过程，提供给自己复习以及初学者入门。
-
-背景
-本项目是一个云平台异构纳管平台，愿景是将客户所使用的所有的云平台的资源通过我们的平台管理起来，同时提供部门管理功能方便权限控制。这次要实现的功能是：脚本任务管理。
-你可以访问nicescale来感受一下类似的功能。脚本任务管理的确看起来不......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-07-13
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-06-24-shou-ba-shou-jiao-ni-she-ji-bing-shi-xian-yi-ge-ji-yu-redisde-fen-bu-shi-suo/">
-        <h2 class="post-title">
-                                 
-            手把手教你实现一个基于Redis的分布式锁
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            源码在此：https://github.com/xbox1994/distributed-lock-redis
-
-简介
-分布式锁在分布式系统中非常常见，比如对公共资源进行操作，如卖车票，同一时刻只能有一个节点将某个特定座位的票卖出去；如避免缓存失效带来的大量请求访问数据库的问题
-设计
-这非常像一道面试题：如何实现一个分布式锁？在简介中，基本上已经对这个分布式工具提出了一些需求，你可以不着急看......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-06-24
+            2016-12-18
         </p>
         <div class="tags">
             
@@ -552,13 +385,9 @@ Go是一......
 <ul class="pager">
     
         <li class="previous">
-            <a href="/page/2/">&larr; Newer Posts</a>
+            <a href="/archives/6/">&larr; Newer Posts</a>
         </li>
     
-    
-        <li class="next">
-            <a href="/page/4/">Older Posts &rarr;</a>
-        </li>
     
 </ul>
 
@@ -594,11 +423,11 @@ Go是一......
             
         
             
-            <a href="/tags/#学习" title="学习" rel="1">学习</a>
+            <a href="/tags/#后台" title="后台" rel="23">后台</a>
             
         
             
-            <a href="/tags/#后台" title="后台" rel="23">后台</a>
+            <a href="/tags/#学习" title="学习" rel="1">学习</a>
             
         
             
@@ -606,11 +435,11 @@ Go是一......
             
         
             
-            <a href="/tags/#MicroService" title="MicroService" rel="7">MicroService</a>
+            <a href="/tags/#翻译" title="翻译" rel="1">翻译</a>
             
         
             
-            <a href="/tags/#翻译" title="翻译" rel="1">翻译</a>
+            <a href="/tags/#MicroService" title="MicroService" rel="7">MicroService</a>
             
         
             
@@ -860,21 +689,6 @@ Go是一......
 <img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 
 </html>

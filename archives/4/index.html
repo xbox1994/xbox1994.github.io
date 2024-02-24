@@ -17,7 +17,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://www.wangtianyi.top/page/2/">
+    <link rel="canonical" href="http://www.wangtianyi.top/archives/4/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -133,14 +133,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">关于作者</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">关于作者</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -210,33 +210,38 @@
 
 <div class="post-preview">
 
-    <a href="/article/2019-05-15-jia-gou-ru-men-gao-ke-yong-pian-ji-suan-gao-ke-yong/">
+    <a href="/article/2018-05-11-javaduo-xian-cheng-yu-gao-bing-fa-liu-gao-bing-fa-jie-jue-si-lu/">
         <h2 class="post-title">
                                  
-            【架构入门 - 高可用篇】计算高可用
+            Java多线程与高并发(六):高并发解决思路
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            计算高可用的目标是当部分服务器停止服务时，整体的计算任务能够继续进行，所以本质是通过冗余来规避风险
+            本系列的最后一篇，主要提供一些高并发场景的解决思路，实现的细节虽然需要在实战中学习，但解决的思路一定要有。
 
+扩容
+垂直扩容（纵向扩展）
+提高单个服务（服务器、数据库）自身能力
+但会增大单个服务中其他软件设施的依赖与管理、服务内部复杂度
+水平扩容（横向扩展）
+增加更多服务成员
+但会增加网络、数据库IO开销、管理多个服务器的难度
+对数据库的扩容方案
+确定业务类型
 
-问题
-计算高可用的复杂度体现在任务管理方面，比如一台机器挂了，那么上面的任务如何处理？所以设计高可用架构有以下问题：
-
-哪些服务器可以执行任务？第一种方式是每个服务器都能执行任务；第二种方式是特定主机可以执行任务，如etcd的leader
-任务如何重新执行？第一种是即使任务失败也不处理，但......
+读操作多：采用垂直扩容方案（......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2019-05-15
+            2018-05-11
         </p>
         <div class="tags">
             
-              <a href="/tags/#架构" title="架构">架构</a>
+              <a href="/tags/#后台" title="后台">后台</a>
             
         </div>
     
@@ -246,34 +251,35 @@
 
 <div class="post-preview">
 
-    <a href="/article/2019-05-05-jia-gou-ru-men-gao-xing-neng-pian-shu-ju-ku/">
+    <a href="/article/2018-05-08-javagao-bing-fa-wu-xian-cheng-chi/">
         <h2 class="post-title">
                                  
-            【架构入门 - 高性能篇】数据库高性能
+            Java多线程与高并发(五):线程池
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            单机高性能与集群高性能都是针对负责计算的服务器而言的，负责存储的数据库服务器因为处理的是数据而不是计算，架构和使用方式又有所不同
+            
+new Thread弊端
 
+每次启动线程都需要new Thread新建对象与线程，性能差。线程池能重用存在的线程，减少对象创建、回收的开销。
+线程缺乏统一管理，可以无限制的新建线程，导致OOM。线程池可以控制可以创建、执行的最大并发线程数。
+缺少工程实践的一些高级的功能如定期执行、线程中断。线程池提供定期执行、并发数控制功能
 
-SQL - 读写分离
-基本原理是将数据库读写操作分散到不同节点上，从而分散读写压力到不同的节点上
-
-一主一从或一主多从都可以；主机负责读写操作，从机负责读操作，每个机器都需要同时工作；主机通过复制将数据同步到从机，每个节点都存储了所有的数据
-复制延迟
-MySQ......
+ThreadPoolExecutor
+核心变量
+在创建线程池时......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2019-05-05
+            2018-05-08
         </p>
         <div class="tags">
             
-              <a href="/tags/#架构" title="架构">架构</a>
+              <a href="/tags/#后台" title="后台">后台</a>
             
         </div>
     
@@ -283,37 +289,33 @@ MySQ......
 
 <div class="post-preview">
 
-    <a href="/article/2019-05-01-jia-gou-ru-men-gao-xing-neng-pian-ji-qun/">
+    <a href="/article/2018-05-01-javagao-bing-fa-xi-lie-si-juc/">
         <h2 class="post-title">
                                  
-            【架构入门 - 高性能篇】集群高性能
+            Java多线程与高并发(四):java.util.concurrent包
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            做到集群高性能其实非常简单，三个字【加机器】
-但加机器之后带来的是机器之间配合和集群管理的复杂度，对应也会有解决方案
+            面试官：你用过JUC的哪些工具类？
+前面从基础开始，到线程安全的实现、对象的发布与共享，涉及到很多线程安全的类与工具，JDK1.5开始，提供了更加方便强大的线程同步管理工具包JUC让我们使用，这个也是面试与实践中的重点，本文结合源代码作一些比较落地的讲解。
 
 
-负载均衡
-任务分配是高性能集群主要的复杂性体现，所以选择一个合适的负载均衡器和算法是必须的
-分类
-DNS
-最简单的方式，一般用来实现地理级别的均衡（AWS Route53就是）。比如来自美国的访问就分配给位于美国的服务器，来自中国的访问就分配给位于中国的服务器
-优点：
+报告面试官，JUC中有非常多的类，将部分类按功能进行分类，分别是：
 
-......
+之前提到过的原子atomic包
+比synchronized功能......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2019-05-01
+            2018-05-01
         </p>
         <div class="tags">
             
-              <a href="/tags/#架构" title="架构">架构</a>
+              <a href="/tags/#后台" title="后台">后台</a>
             
         </div>
     
@@ -323,27 +325,212 @@ DNS
 
 <div class="post-preview">
 
-    <a href="/article/2019-04-29-dan-nan-de-ji-ge-gao-neng/">
+    <a href="/article/2018-04-30-javagao-bing-fa-xi-lie-san-dui-xiang-de-an-quan-fa-bu-yu-gong-xiang-ce-lue/">
         <h2 class="post-title">
                                  
-            🥚男的几个高能
+            Java多线程与高并发(三):对象的安全发布与共享策略
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            一拳超人第二季放送开始啦，写点儿东西送给老师和自己
-Note：Music自动播放哦~
+            面试官：你知道如何发布或共享一个对象吗？
 
-
-上大学的时候被这个🥚头男深深吸引了，主要还是这个男人的拳头实在太猛了，一出场就是无敌的存在，第一次让我为反派担心
-因为很少有故事是这样讲的：男主一开始就无敌了，然后各种因缘巧合干掉了无数个在他面前装逼的小喽啰，男主装完逼之后还觉得没什么意思。但这就是引人入胜、夺人眼球的关键，然后就进入了🥚男的套路了......
+发布对象：使一个对象能够被其他线程、其他作用域的代码所使用。
+变量逸出原有作用域
+12345678910111213141516import java.util.Arrays;public class Main &#123;    private String[] strs = &#123;"1", "2", "3"&#125;;    publi......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2019-04-29
+            2018-04-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#后台" title="后台">后台</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2018-04-28-javagao-bing-fa-xi-lie-er-xian-cheng-an-quan-xing/">
+        <h2 class="post-title">
+                                 
+            Java多线程与高并发(二):线程安全性
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            面试官：你能说说什么是线程安全吗？
+
+线程安全性
+当多个线程访问某个类时，不管运行时环境采用何种调度方式或者这些线程将如何交替执行，并且在调用代码中不需要任何额外的同步，这个类都能表现出正确的行为，那么这个类就是线程安全的。
+
+原子性：同一时刻只能有一个线程对它操作
+可见性：一个线程对内存的修改能让其他线程观察到
+有序性：指令执行顺序，杂乱无序
+
+原子性
+Atomic包
+AtomicInte......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2018-04-28
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#后台" title="后台">后台</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2018-04-28-javagao-bing-fa-xi-lie-yi-bing-fa-ji-chu-yu-mo-ni-gong-ju/">
+        <h2 class="post-title">
+                                 
+            Java多线程与高并发(一):并发基础与模拟工具
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            面试官：你知道Java的内存模型是什么吗？
+
+基本概念
+并发、并行
+引用知乎上一个最高赞：
+
+你吃饭吃到一半，电话来了，你一直到吃完了以后才去接，这就说明你不支持并发也不支持并行。
+
+
+你吃饭吃到一半，电话来了，你停了下来接了电话，接完后继续吃饭，这说明你支持并发。
+
+
+你吃饭吃到一半，电话来了，你一边打电话一边吃饭，这说明你支持并行。
+
+
+并发的关键是你有处理多个任务的能力，不一定要同时。......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2018-04-28
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#后台" title="后台">后台</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2018-03-18-min-jie-zhong-de-kan-ban/">
+        <h2 class="post-title">
+                                 
+            敏捷中的看板
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            很荣幸，第一份工作就进入了提倡敏捷开发的TW，进的第一个团队也是比较规范使用看板方法的团队。什么敏捷开发、看板方法，在学校的时候是从来没听过的，甚至进公司前一年还在学校学习如何通过瀑布开发方式来完成项目，当时觉得瀑布过于死板，但是又想不到有什么好的方法。
+
+#什么是敏捷开发
+一种以用户的需求进化为核心、高效快速迭代的软件开发方式而已，只要符合了敏捷的元素，你就可以说用的是敏捷，敏捷开发没有固......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2018-03-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#敏捷" title="敏捷">敏捷</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2018-02-05-shou-ba-shou-jiao-ni-da-jian-yi-ge-chi-xu-ji-cheng-huan-jing/">
+        <h2 class="post-title">
+                                 
+            手把手教你搭建一个持续集成环境
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            本文将带领你从0开始，用Vagrant + Docker + Ansible + Jenkins + Nginx + GitHub等工具和资源来搭建一条可执行可扩展的持续集成流水线，即使这些名字你都没听过也没关系，本文将会在需要的时候一一解释给你听。
+
+By: 巧颖 &amp; 天一
+#总览
+这是我们将要搭建的所有基础设施的总体架构图，我们将在本文中手把手教你搭建这样一个持续集成环境。
+
+我......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2018-02-05
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#DevOps" title="DevOps">DevOps</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2017-12-29-lai-chi-ji/">
+        <h2 class="post-title">
+                                 
+            少年的2017年尾声
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            最后一天啦，发现一个半月没有更新博客了，一方面是项目上有点忙又赶上年终评价了，一方面是不知道写什么，还有一方面是痴迷于steam上的吃鸡不能自拔。不如把最近的状况写写吧。
+
+#习惯性博客
+
+写博客真是一件容易上瘾的事情。
+
+但是如果从来没写过日记、博客的时候要你去写一篇长文可真是非常头疼了。记得在小学的时候，日记是语文老师布置下来的强制性的任务，每天都要写，第二天上交，不能少于多少字。写起来......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 王天一 on
+            2017-12-29
         </p>
         <div class="tags">
             
@@ -357,217 +544,33 @@ Note：Music自动播放哦~
 
 <div class="post-preview">
 
-    <a href="/article/2019-04-20-jia-gou-ru-men-gao-xing-neng-pian-dan-ji/">
+    <a href="/article/2017-11-18-react-nativezu-jian-she-ji-shi-jian/">
         <h2 class="post-title">
                                  
-            【架构入门 - 高性能篇】单机高性能
+            React Native组件设计实践
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            做到单机高性能其实非常简单，一个字【钱】
-但钱的力量远远不够，还需要把钱花在刀刃上
+            本文中所提到的组件的定义是基于React Native官方提供的某个/些组件进行包装/组合的用户某个特定App的自定义组件，可能与业务相关，也可能无关。
 
+#为什么要写组件
+想象一下，你的每一个页面中除了工具类的引用之外没有任何一个import，当你写了几个页面之后发现很舒服，当你写下一个页面的时候你突然发现你可能需要：
 
-协作方式
-在高并发场景中，必须要让服务器同时维护大量请求连接，可能是一个服务进程创建另一个进程，也可能是一个服务线程去创建另一个线程，但连接结束后进程或线程就销毁了，这是一个巨大的浪费
-一个自然的想法就是通过创建一个进程/线程池从而达到资源复用，一个进程/线程可以处理多个连接
-那么如何处理多个连接？
-同步......
+复制 + 粘贴
+花很多时间弄清楚之前的页面中写的是什么东西
+粘贴代码......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 王天一 on
-            2019-04-20
+            2017-11-18
         </p>
         <div class="tags">
             
-              <a href="/tags/#架构" title="架构">架构</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2019-04-09-jia-gou-ru-men-xi-lie-shen-me-shi-jia-gou/">
-        <h2 class="post-title">
-                                 
-            【架构入门】什么是架构
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            对于想要入门架构的小白来说，我们必须要了解以下问题：
-
-什么是架构
-架构的目的
-架构的复杂度来源
-做架构需要具备的能力
-
-
-
-什么是架构
-软件架构指软件系统的顶层结构
-系统：泛指由一群有关联的个体组成，根据某种规则运作，能完成个别元件不能单独完成的工作的群体。比如微信就是一个系统
-顶层结构：系统可分为系统与子系统，差别在于系统可能是另外一个大系统的子系统。比如微信系统中还包含聊天、登录、支付......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2019-04-09
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#架构" title="架构">架构</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2019-03-26-ji-yu-go-microde-wei-fu-wu-jia-gou-ben-di-shi-zhan/">
-        <h2 class="post-title">
-                                 
-            基于Go Micro的微服务架构本地实战
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            本项目Github地址：https://github.com/xbox1994/GoMicroExample
-
-简介
-Go Micro是一个插件化的基础微服务框架，它是一部分微服务工具的集合。基于该框架可以构建出微服务应用程序。Micro的设计哲学是“可插拔”的插件化架构。在架构之外，它默认实现了consul作为服务发现，通过http、protobuf、进行通信。里面包含几乎所有微服务组件，......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2019-03-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2019-03-06-zai-awsshang-kuo-zhan-dao-shu-bai-mo-yong-hu-de-xi-tong/">
-        <h2 class="post-title">
-                                 
-            【译】在AWS上扩展到数百万用户的系统
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-第一步：弄清用例与约束
-
-收集需求和问题的范围
-通过问问题来弄清用例与约束
-讨论假设
-
-我们假定以下用例
-用例
-解决这个问题需要采用迭代的方法：
-
-基准/负载测试
-瓶颈检测
-评估替代方案来解决瓶颈
-重复以上
-
-这是将基本设计升级为可扩展设计的良好模式
-除非你有AWS的背景或者正在申请AWS的相关职位，否则在AWS上的实现细节不需要了解。然而大部分在这里讨论的原理可以应用到除了AWS以外更通......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2019-03-06
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#架构" title="架构">架构</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2019-01-12-jia-gou-ru-men-xi-lie-cong-ye-wu-dao-ping-tai-de-si-wei-zhuan-bian/">
-        <h2 class="post-title">
-                                 
-            【架构入门】从业务到平台的思维转变
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-一个需求：抽奖系统
-如果你接到了一个开发需求：开发一个抽奖活动的后台系统。第一反应如果是打开IDEA，新建一个项目，输入项目名：lottery。然后开始根据需求着手开始进行设计数据库，api，然后进行开发，这是太平常不过的开发流程。
-过了一段时间，你又接到一个类似的需求：开发另一个抽奖活动的后台系统，但是里面的一些业务逻辑、流程处理不太一样，然后就把前一个完成的后台系统复制过来，准备开始修......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2019-01-12
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#架构" title="架构">架构</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2018-12-30-oauth2yuan-li-yu-linkedinde-di-san-fang-fen-xiang-shi-zhan/">
-        <h2 class="post-title">
-                                 
-            OAuth2原理与LinkedIn的第三方分享实战
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-OAuth是什么
-开放授权（OAuth）是一个开放标准，允许用户让第三方应用访问该用户在某一网站上存储的私密的资源（如照片，视频，联系人列表），而无需将用户名和密码提供给第三方应用。在全世界得到广泛应用，目前的版本是2.0版。
-比如我的应用需要实现在领英上替用户分享一个动态，但是只有得到用户的授权才能在我的应用中调用领英的API进行分享操作，如果直接让用户把用户名密码传到我的应用，确实可以......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 王天一 on
-            2018-12-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后台" title="后台">后台</a>
+              <a href="/tags/#前端" title="前端">前端</a>
             
         </div>
     
@@ -582,12 +585,12 @@ OAuth是什么
 <ul class="pager">
     
         <li class="previous">
-            <a href="/">&larr; Newer Posts</a>
+            <a href="/archives/3/">&larr; Newer Posts</a>
         </li>
     
     
         <li class="next">
-            <a href="/page/3/">Older Posts &rarr;</a>
+            <a href="/archives/5/">Older Posts &rarr;</a>
         </li>
     
 </ul>
@@ -624,11 +627,11 @@ OAuth是什么
             
         
             
-            <a href="/tags/#学习" title="学习" rel="1">学习</a>
+            <a href="/tags/#后台" title="后台" rel="23">后台</a>
             
         
             
-            <a href="/tags/#后台" title="后台" rel="23">后台</a>
+            <a href="/tags/#学习" title="学习" rel="1">学习</a>
             
         
             
@@ -636,11 +639,11 @@ OAuth是什么
             
         
             
-            <a href="/tags/#MicroService" title="MicroService" rel="7">MicroService</a>
+            <a href="/tags/#翻译" title="翻译" rel="1">翻译</a>
             
         
             
-            <a href="/tags/#翻译" title="翻译" rel="1">翻译</a>
+            <a href="/tags/#MicroService" title="MicroService" rel="7">MicroService</a>
             
         
             
@@ -890,21 +893,6 @@ OAuth是什么
 <img src="http://www.wangtianyi.top/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 
 </html>
